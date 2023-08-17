@@ -1,0 +1,19 @@
+---
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+- name: Install required packages
+  yum:
+    name:
+      - jq
+      - vim
+      - bc 
+    state: latest
+# - name: Install required packages via pip
+#   pip:
+#     name:
+#       - jmespath
+#     state: latest
+#   tags:
+#     - pip-task
