@@ -1,0 +1,1 @@
+python_version = "3.11" # note - packer is not automatically picking this override up, investigate why

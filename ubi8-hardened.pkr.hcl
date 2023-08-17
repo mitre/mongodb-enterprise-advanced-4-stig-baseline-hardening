@@ -20,11 +20,15 @@ variable "ansible_connection" {
 }
 
 variable "python_version" {
-  default = "3.11"
+  default = "3.9"
 }
 
-source "docker" "ubi8" {
-  image  = "redhat/ubi8:latest"
+variable "base_image" {
+  default = "redhat/ubi8:latest"
+}
+
+source "docker" "target" {
+  image  = "${var.base_image}"
   commit = true
   run_command = [ "-d", "-i", "-t", "--name", var.ansible_host, "{{.Image}}", "/bin/bash" ]
 }
@@ -32,7 +36,7 @@ source "docker" "ubi8" {
 build {
   name = "harden"
   sources = [
-    "source.docker.ubi8"
+    "source.docker.target"
   ]
 
   # ansible needs python to be installed on the target
@@ -50,5 +54,25 @@ build {
           "--extra-vars",
           "ansible_host=${var.ansible_host} ansible_connection=${var.ansible_connection} ansible_python_interpreter=/usr/bin/python3"
       ]
+  }
+
+  provisioner "shell" {
+    environment_vars = [""]
+    scripts  = ["spec/scripts/install.sh"]
+  }
+
+  provisioner "shell-local" {
+    environment_vars = [""]
+    scripts = ["spec/scripts/scan.sh"]
+  }
+
+  provisioner "shell-local" {
+    environment_vars = [""]
+    scripts  = ["spec/scripts/report.sh"]
+  }
+
+  provisioner "shell-local" {
+    environment_vars = [""]
+    scripts  = ["spec/scripts/verify_threshold.sh"]
   }
 }

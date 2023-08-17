@@ -9,6 +9,7 @@
       - jq
       - vim
       - bc 
+      - wget
     state: latest
 # - name: Install required packages via pip
 #   pip:
