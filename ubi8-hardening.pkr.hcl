@@ -23,14 +23,38 @@ variable "python_version" {
   default = "3.9"
 }
 
-variable "base_image" {
-  default = "redhat/ubi8:latest"
+variable "ansible_vars" {
+  type = map(string)
+  default = {
+    "ansible_host"        = "default",
+    "ansible_connection"  = "docker", # use docker socket instead of default SSH
+    "python_version"      = "3.9" 
+  }
+}
+
+# the unhardened image we will use as in input
+variable "input_image" {
+  type = map(string)
+  default = {
+    "tag" = "redhat/ubi8"
+    "version" = "latest"
+  }
+}
+
+# how we want to tag the hardened output image
+variable "output_image" {
+  type = map(string)
+  default = {
+    "tag"       = "redhat/ubi8"
+    "version"   = "latest"
+    "name"      = "test-harden"
+  }
 }
 
 source "docker" "target" {
-  image  = "${var.base_image}"
+  image  = "${var.input_image.tag}:${var.input_image.version}"
   commit = true
-  run_command = [ "-d", "-i", "-t", "--name", var.ansible_host, "{{.Image}}", "/bin/bash" ]
+  run_command = [ "-d", "-i", "-t", "--name", var.output_image.name, "{{.Image}}", "/bin/bash" ]
 }
 
 build {
@@ -42,9 +66,14 @@ build {
   # ansible needs python to be installed on the target
   provisioner "shell" {
     inline = [
-        "yum install -y python${var.python_version}",
+        "yum install -y python${var.ansible_vars.python_version}",
         "ln -s /usr/bin/python3 /usr/bin/python"
     ]
+  }
+
+  provisioner "shell-local" {
+    environment_vars = ["foo=bar"]
+    inline  = ["sleep 3600"]
   }
 
   provisioner "ansible" {
@@ -56,23 +85,29 @@ build {
       ]
   }
 
-  provisioner "shell" {
-    environment_vars = [""]
+  post-processor "docker-tag" {
+    repository = "test"
+    tag = ["test"]
+  }
+
+
+  provisioner "shell-local" {
+    environment_vars = ["foo=bar"]
     scripts  = ["spec/scripts/install.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = [""]
+    environment_vars = ["foo=bar"]
     scripts = ["spec/scripts/scan.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = [""]
+    environment_vars = ["foo=bar"]
     scripts  = ["spec/scripts/report.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = [""]
+    environment_vars = ["foo=bar"]
     scripts  = ["spec/scripts/verify_threshold.sh"]
   }
 }
