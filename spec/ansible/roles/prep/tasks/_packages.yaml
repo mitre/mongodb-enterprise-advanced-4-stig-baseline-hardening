@@ -11,10 +11,9 @@
       - bc 
       - wget
     state: latest
-# - name: Install required packages via pip
-#   pip:
-#     name:
-#       - jmespath
-#     state: latest
-#   tags:
-#     - pip-task
+- name: Install required packages via pip
+  pip:
+    name:
+      - jmespath
+    state: latest
+    executable: "{{ ansible_pip_executable }}"
