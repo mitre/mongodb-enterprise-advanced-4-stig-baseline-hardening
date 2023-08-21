@@ -65,11 +65,11 @@ build {
     "source.docker.target"
   ]
 
-  # ansible needs python to be installed on the target
+  # ansible needs python and pip to be installed on the target
   provisioner "shell" {
     inline = [
-      "yum install -y python${var.ansible_vars.python_version}",
-      "ln -s /usr/bin/python3 /usr/bin/python"
+      "dnf install -y python${var.ansible_vars.python_version} python3-pip",
+      "ln -s /usr/bin/python3 /usr/bin/python",
     ]
   }
 
@@ -80,7 +80,7 @@ build {
       "--extra-vars", "ansible_host=${var.output_image.name}",
       "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
       "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
-      "--extra-vars", "ansible_pip_executable='/usr/bin/python3 -m pip'",
+      "--extra-vars", "ansible_pip_executable=pip3",
     ]
   }
 
