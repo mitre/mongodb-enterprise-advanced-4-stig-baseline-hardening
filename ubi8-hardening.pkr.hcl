@@ -76,13 +76,11 @@ build {
   provisioner "ansible" {
     playbook_file = "spec/ansible/rhel8-stig-hardening-playbook.yaml"
     galaxy_file   = "spec/ansible/requirements.yaml"
-    user          = "root"
     extra_arguments = [ 
-      "--extra-vars", "ansible_host=${var.ansible_vars.ansible_host}",
+      "--extra-vars", "ansible_host=${var.output_image.name}",
       "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
       "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
       "--extra-vars", "ansible_pip_executable='/usr/bin/python3 -m pip'",
-      "-vvv"
     ]
   }
 
