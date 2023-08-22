@@ -1,7 +1,7 @@
 packer {
   required_plugins {
     docker = {
-      version = ">= 1.0.8"
+      version = " >= 1.0.8"
       source  = "github.com/hashicorp/docker"
     }
     ansible = {
@@ -80,7 +80,7 @@ build {
       "--extra-vars", "ansible_host=${var.output_image.name}",
       "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
       "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
-      "--extra-vars", "ansible_pip_executable=pip3",
+      "--extra-vars", "ansible_pip_executable=pip3"
     ]
   }
 
@@ -90,35 +90,30 @@ build {
   }
 
   # use inspec plugin for compliance scanning
-  provisioner "inspec" {
-    inspec_env_vars = ["CHEF_LICENSE=accept"]
-    backend         = "docker"
-    host    = "${var.output_image.name}"
-    profile         = "${var.scan.inspec_profile}"
-    attributes      = ["${var.scan.inspec_input_file}"]
-    extra_arguments = [
-      "--reporter", "cli", "json:${var.scan.report_dir}/${var.scan.inspec_report_filename}"
-    ]
-  }
+  #provisioner "inspec" {
+  #  inspec_env_vars = ["CHEF_LICENSE=accept"]
+  #  backend         = "docker"
+  #  host    = "${var.output_image.name}"
+  #  profile         = "${var.scan.inspec_profile}"
+  #  attributes      = ["${var.scan.inspec_input_file}"]
+  #  extra_arguments = [
+  #    "--reporter", "cli", "json:${var.scan.report_dir}/${var.scan.inspec_report_filename}"
+  #  ]
+  #}
 
   # use raw bash script to invoke scanning tools that don't have their own plugin
   provisioner "shell-local" {
-    environment_vars = ["foo=bar"]
+    environment_vars = ["targetImage=${var.output_image.name}:latest"]
     scripts          = ["spec/scripts/scan.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = ["foo=bar"]
-    scripts          = ["spec/scripts/scan.sh"]
-  }
-
-  provisioner "shell-local" {
-    environment_vars = ["foo=bar"]
+    environment_vars = ["outputFile=scanHDF.json"]
     scripts          = ["spec/scripts/report.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = ["foo=bar"]
+    environment_vars = ["outputFile=scanHDF.json"]
     scripts          = ["spec/scripts/verify_threshold.sh"]
   }
 }
