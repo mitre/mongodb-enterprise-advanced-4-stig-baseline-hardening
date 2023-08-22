@@ -103,17 +103,17 @@ build {
 
   # use raw bash script to invoke scanning tools that don't have their own plugin
   provisioner "shell-local" {
-    environment_vars = ["targetImage=${var.output_image.name}:latest"]
+    environment_vars = ["targetImage=${var.output_image.name}"]
     scripts          = ["spec/scripts/scan.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = ["outputFile=scanHDF.json"]
+    environment_vars = ["outputFile=reports/trivyHDF.json"]
     scripts          = ["spec/scripts/report.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = ["outputFile=scanHDF.json"]
+    environment_vars = ["outputFile=reports/trivyHDF.json", "targetImage=${var.output_image.name}"]
     scripts          = ["spec/scripts/verify_threshold.sh"]
   }
 }
