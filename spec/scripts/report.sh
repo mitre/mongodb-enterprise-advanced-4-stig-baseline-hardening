@@ -1,4 +1,6 @@
-# TODO: push results to a Heimdall server. . . ? just one running on localhost for the demo; see github.com/mitre/heimdall2
-saf view summary -i $outputFile
+#!/bin/bash
+set -uo pipefail
+
+saf view summary -i $OUTPUT_FILE
 #curl thing to heimdall
 exit 0

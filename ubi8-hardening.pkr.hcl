@@ -79,11 +79,6 @@ build {
     ]
   }
 
-  provisioner "shell-local" {
-    environment_vars = ["foo=bar"]
-    scripts          = ["spec/scripts/install.sh"]
-  }
-
   # use raw bash script to invoke scanning tools that don't have their own plugin
   provisioner "shell-local" {
     environment_vars = [
@@ -91,19 +86,20 @@ build {
       "CONTAINER_ID=${var.output_image.name}",
       "REPORT_DIR=${var.scan.report_dir}",
       "REPORT_FILE=${var.scan.inspec_report_filename}",
-      "INPUT_FILE=${var.scan.inspec_input_file}"
+      "INPUT_FILE=${var.scan.inspec_input_file}",
+      "TARGET_IMAGE=${var.output_image.name}"
     ]
     valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
     scripts          = ["spec/scripts/scan.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = ["outputFile=scanHDF.json"]
+    environment_vars = ["OUTPUT_FILE=reports/trivyHDF.json"]
     scripts          = ["spec/scripts/report.sh"]
   }
 
   provisioner "shell-local" {
-    environment_vars = ["outputFile=scanHDF.json"]
+    environment_vars = ["OUTPUT_FILE=reports/trivyHDF.json", "TARGET_IMAGE=${var.output_image.name}"]
     scripts          = ["spec/scripts/verify_threshold.sh"]
   }
 
