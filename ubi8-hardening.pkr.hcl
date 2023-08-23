@@ -8,10 +8,6 @@ packer {
       source  = "github.com/hashicorp/ansible"
       version = "~> 1"
     }
-    inspec = {
-      source  = "github.com/hashicorp/inspec"
-      version = "~> 1"
-    }
   }
 }
 
@@ -37,8 +33,6 @@ variable "input_image" {
 variable "output_image" {
   type = map(string)
   default = {
-    "tag"     = "redhat/ubi8"
-    "version" = "latest"
     "name"    = "test-harden"
   }
 }
@@ -47,15 +41,16 @@ variable "scan" {
   type = map(string)
   default = {
     "report_dir"             = "./reports",
-    "inspec_profile"         = "spec/inspec_profile",
+    "inspec_profile"         = "spec/inspec_wrapper",
     "inspec_report_filename" = "inspec_results.json",
-    "inspec_input_file"      = "spec/inspec_profile/inputs.yml"
+    "inspec_input_file"      = "spec/inspec_wrapper/inputs.yml"
   }
 }
 
 source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
+  pull        = false
   run_command = ["-d", "-i", "-t", "--name", var.output_image.name, "{{.Image}}", "/bin/bash"]
 }
 
@@ -89,21 +84,16 @@ build {
     scripts          = ["spec/scripts/install.sh"]
   }
 
-  # use inspec plugin for compliance scanning
-  #provisioner "inspec" {
-  #  inspec_env_vars = ["CHEF_LICENSE=accept"]
-  #  backend         = "docker"
-  #  host    = "${var.output_image.name}"
-  #  profile         = "${var.scan.inspec_profile}"
-  #  attributes      = ["${var.scan.inspec_input_file}"]
-  #  extra_arguments = [
-  #    "--reporter", "cli", "json:${var.scan.report_dir}/${var.scan.inspec_report_filename}"
-  #  ]
-  #}
-
   # use raw bash script to invoke scanning tools that don't have their own plugin
   provisioner "shell-local" {
-    environment_vars = ["targetImage=${var.output_image.name}:latest"]
+    environment_vars = [
+      "PROFILE=${var.scan.inspec_profile}",
+      "CONTAINER_ID=${var.output_image.name}",
+      "REPORT_DIR=${var.scan.report_dir}",
+      "REPORT_FILE=${var.scan.inspec_report_filename}",
+      "INPUT_FILE=${var.scan.inspec_input_file}"
+    ]
+    valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
     scripts          = ["spec/scripts/scan.sh"]
   }
 
@@ -115,5 +105,10 @@ build {
   provisioner "shell-local" {
     environment_vars = ["outputFile=scanHDF.json"]
     scripts          = ["spec/scripts/verify_threshold.sh"]
+  }
+
+  post-processor "docker-tag" {
+    repository = "harden-test"
+    tags = ["latest"]
   }
 }
