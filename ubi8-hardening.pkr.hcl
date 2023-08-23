@@ -69,8 +69,8 @@ build {
   }
 
   provisioner "ansible" {
-    playbook_file = "spec/ansible/rhel8-stig-hardening-playbook.yaml"
-    galaxy_file   = "spec/ansible/requirements.yaml"
+    playbook_file = "spec/ansible/rhel8-stig-hardening-playbook.yml"
+    galaxy_file   = "spec/ansible/requirements.yml"
     extra_arguments = [ 
       "--extra-vars", "ansible_host=${var.output_image.name}",
       "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
@@ -79,6 +79,7 @@ build {
     ]
   }
 
+  ### SCAN
   # use raw bash script to invoke scanning tools that don't have their own plugin
   provisioner "shell-local" {
     environment_vars = [
@@ -93,18 +94,26 @@ build {
     scripts          = ["spec/scripts/scan.sh"]
   }
 
+  ### REPORT
   provisioner "shell-local" {
-    environment_vars = ["OUTPUT_FILE=reports/trivyHDF.json"]
+    environment_vars = ["REPORT_DIR=${var.scan.report_dir}"]
     scripts          = ["spec/scripts/report.sh"]
   }
 
+  ### VERIFY
   provisioner "shell-local" {
-    environment_vars = ["OUTPUT_FILE=reports/trivyHDF.json", "TARGET_IMAGE=${var.output_image.name}"]
+    environment_vars = [
+      "TARGET_IMAGE=${var.output_image.name}",
+      "REPORT_DIR=${var.scan.report_dir}"
+    ]
+    valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
+                              # this does not mean we want to halt the run 
     scripts          = ["spec/scripts/verify_threshold.sh"]
   }
 
+  ### TAG
   post-processor "docker-tag" {
-    repository = "harden-test"
+    repository = "${vars.output_image.name}"
     tags = ["latest"]
   }
 }
