@@ -20,6 +20,7 @@ jobs:
           sudo apt update && sudo apt install packer
           python3 -m pip install --user ansible
           python3 -m pip install --upgrade --user ansible
+          pip install jmespath
           npm install -g @mitre/saf
           curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
       - name: Clone repository in
