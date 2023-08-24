@@ -20,7 +20,7 @@ jobs:
           brew install packer
           brew install ansible
           brew install mitre/saf/saf-cli
-          brew install inspec
+          brew install chef/chef/inspec
       - name: run packer
         run: |
           packer init
