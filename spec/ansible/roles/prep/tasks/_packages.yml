@@ -12,4 +12,8 @@
       - wget
     state: latest
 - name: Install required packages via pip
-  shell: /usr/bin/python3 -m pip install jmespath
+  pip:
+    name:
+      - jmespath
+    state: latest
+    executable: "{{ ansible_pip_executable }}"
