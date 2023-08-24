@@ -23,6 +23,6 @@ jobs:
           curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
       - name: run packer
         run: |
-          packer init
+          packer init ubi8-hardening.pkr.hcl
           packer build .  
     
