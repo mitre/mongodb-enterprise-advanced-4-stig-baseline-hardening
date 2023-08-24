@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+jobs:
+  my_job:
+    name: Harden ubi8 Container
+    runs-on: ubuntu-latest
+    env:
+      foo: bar
+    steps:
+      - name: add dependencies
+        run: |
+          sudo apt-get update
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew install docker
+          brew install packer
+          brew install ansible
+          brew install mitre/saf/saf-cli
+          brew install inspec
+      - name: run packer
+        run: |
+          packer init
+          packer build .  
+    
