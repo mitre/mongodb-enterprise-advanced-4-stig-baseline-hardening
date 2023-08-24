@@ -24,10 +24,8 @@ jobs:
       - name: Clone repository in
         run: |
           git clone https://github.com/mitre/ubi8-hardening-demo.git
-          pwd
-          ls
       - name: run packer
         run: |
           packer init ubi8-hardening.pkr.hcl
           packer build .  
-        working-directory: ~/ubi8-hardening-demo/
+        working-directory: /ubi8-hardening-demo/
