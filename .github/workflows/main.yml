@@ -23,6 +23,11 @@ jobs:
           pip install jmespath
           npm install -g @mitre/saf
           curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
       - name: Clone repository in
         run: |
           git clone https://github.com/mitre/ubi8-hardening-demo.git
