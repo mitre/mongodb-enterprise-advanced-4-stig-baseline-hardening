@@ -49,7 +49,8 @@ variable "scan" {
     "report_dir"             = "./reports",
     "inspec_profile"         = "spec/inspec_profile",
     "inspec_report_filename" = "inspec_results.json",
-    "inspec_input_file"      = "spec/inspec_profile/inputs.yml"
+    "inspec_input_file"      = "spec/inspec_profile/inputs.yml",
+    "threshold_input_file"   = "permissiveThreshold.yaml"
   }
 }
 
@@ -113,7 +114,11 @@ build {
   }
 
   provisioner "shell-local" {
-    environment_vars = ["outputFile=reports/trivyHDF.json", "targetImage=${var.output_image.name}"]
+    environment_vars = [
+      "outputFile=reports/trivyHDF.json", 
+      "targetImage=${var.output_image.name}", 
+      "thresholdFile=${var.scan.threshold_input_file}"
+    ]
     scripts          = ["spec/scripts/verify_threshold.sh"]
   }
 }

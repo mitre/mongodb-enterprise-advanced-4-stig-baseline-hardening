@@ -1,0 +1,11 @@
+failed:
+  critical:
+    max: 0
+  high:
+    max: 0
+skipped:
+  total:
+    max: 0
+error:
+  total:
+    max: 0
