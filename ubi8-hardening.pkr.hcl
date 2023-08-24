@@ -16,7 +16,7 @@ variable "ansible_vars" {
   default = {
     "ansible_host"       = "default",
     "ansible_connection" = "docker", # use docker socket instead of default SSH
-    "python_version"     = "3.9"
+    "python_version"     = "3.10"
   }
 }
 
