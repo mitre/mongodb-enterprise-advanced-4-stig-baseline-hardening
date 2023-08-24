@@ -14,12 +14,12 @@ jobs:
       - name: add dependencies
         run: |
           sudo apt-get update
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin
-          brew install docker
-          brew install packer
-          brew install ansible
-          brew install mitre/saf/saf-cli
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install packer
+          python3 -m pip install --user ansible
+          npm install -g @mitre/saf
           curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
       - name: Clone repository in
         run: |
