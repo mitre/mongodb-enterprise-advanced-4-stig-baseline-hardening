@@ -20,7 +20,7 @@ jobs:
           brew install packer
           brew install ansible
           brew install mitre/saf/saf-cli
-          brew install chef/chef/inspec
+          curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
       - name: run packer
         run: |
           packer init
