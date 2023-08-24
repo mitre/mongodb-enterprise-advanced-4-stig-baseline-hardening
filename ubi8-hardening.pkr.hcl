@@ -113,7 +113,7 @@ build {
 
   ### TAG
   post-processor "docker-tag" {
-    repository = "${vars.output_image.name}"
+    repository = "${var.output_image.name}"
     tags = ["latest"]
   }
 }
