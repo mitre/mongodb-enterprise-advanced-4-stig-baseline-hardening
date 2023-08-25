@@ -1,6 +1,9 @@
 #!/bin/bash
 set -uo pipefail
 
+pwd
+ls -lah
+
 INSPEC_THRESHOLD_CHECK=$(saf validate threshold -F inspec.threshold.yml -i "$REPORT_DIR/Aqua Security - Trivy.json")
 TRIVY_THRESHOLD_CHECK=$(saf validate threshold -F trivy.threshold.yml -i "$REPORT_DIR/inspec_results.json")
 
