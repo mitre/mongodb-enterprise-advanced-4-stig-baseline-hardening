@@ -34,3 +34,7 @@ jobs:
         run: |
           packer init ubi8-hardening.pkr.hcl
           packer build .
+      - name: Save scan artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: reports
