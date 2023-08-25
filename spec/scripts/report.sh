@@ -21,9 +21,9 @@ if curl -F "data=@$(pwd)/$outputFile" \
     "https://localhost/evaluations" \
     -k 
 then
-    echo \n File uploaded successfully.
+    echo -e "\nFile uploaded successfully."
     exit 0
 else 
-    echo \n File was not uploaded, error in api calls.
+    echo -e "\nFile was not uploaded, error in api calls."
     exit 1
 fi
