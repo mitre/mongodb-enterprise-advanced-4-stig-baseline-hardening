@@ -2,7 +2,12 @@
 set -uo pipefail
 
 pwd
+echo "ls'ing the main repo" 
 ls -lah
+
+echo "ls'ing reports"
+ls -lah reports
+
 
 INSPEC_THRESHOLD_CHECK=$(saf validate threshold -F inspec.threshold.yml -i "$REPORT_DIR/Aqua Security - Trivy.json")
 TRIVY_THRESHOLD_CHECK=$(saf validate threshold -F trivy.threshold.yml -i "$REPORT_DIR/inspec_results.json")

@@ -40,7 +40,7 @@ variable "output_image" {
 variable "scan" {
   type = map(string)
   default = {
-    "report_dir"             = "./reports",
+    "report_dir"             = "reports",
     "inspec_profile"         = "spec/inspec_wrapper",
     "inspec_report_filename" = "inspec_results.json",
     "inspec_input_file"      = "spec/inspec_wrapper/inputs.yml"
