@@ -83,6 +83,7 @@ build {
   # use raw bash script to invoke scanning tools that don't have their own plugin
   provisioner "shell-local" {
     environment_vars = [
+      "CHEF_LICENSE=accept",
       "PROFILE=${var.scan.inspec_profile}",
       "CONTAINER_ID=${var.output_image.name}",
       "REPORT_DIR=${var.scan.report_dir}",
