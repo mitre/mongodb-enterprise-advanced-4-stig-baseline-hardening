@@ -29,10 +29,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install trivy
       - name: Clone repository in
-        run: |
-          git clone https://github.com/mitre/ubi8-hardening-demo.git
+        uses: actions/checkout@v3
       - name: run packer
         run: |
           packer init ubi8-hardening.pkr.hcl
-          packer build .  
-        working-directory: /home/runner/work/ubi8-hardening-demo/ubi8-hardening-demo/ubi8-hardening-demo/
+          packer build .

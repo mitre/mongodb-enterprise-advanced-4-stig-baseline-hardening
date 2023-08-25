@@ -1,0 +1,8 @@
+---
+lockfile_version: 1
+depends:
+- name: rhel8
+  resolved_source:
+    git: https://github.com/mitre/redhat-enterprise-linux-8-stig-baseline.git
+    ref: a60816a56f79efd1ae670e8c9d989c03d4a0548d
+  version_constraints: []
