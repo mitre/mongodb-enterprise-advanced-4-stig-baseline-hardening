@@ -8,6 +8,10 @@ ls -lah
 echo "ls'ing reports"
 ls -lah reports
 
+# catch misnamed Trivy report
+if [ -f "reports/aquasecurity - aquasecurity.json" ]; then
+    mv "reports/aquasecurity - aquasecurity.json" "reports/Aqua Security - Trivy.json"
+fi
 
 INSPEC_THRESHOLD_CHECK=$(saf validate threshold -F inspec.threshold.yml -i "$REPORT_DIR/Aqua Security - Trivy.json")
 TRIVY_THRESHOLD_CHECK=$(saf validate threshold -F trivy.threshold.yml -i "$REPORT_DIR/inspec_results.json")
