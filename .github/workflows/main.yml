@@ -33,8 +33,9 @@ jobs:
       - name: run packer
         run: |
           packer init ubi8-hardening.pkr.hcl
-          packer build .
+          packer build -var 'report={"report_to_heimdall":"false"}' .
       - name: Save scan artifacts
         uses: actions/upload-artifact@v3
         with:
           path: reports
+        if: always()

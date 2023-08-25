@@ -2,16 +2,18 @@
 set -uo pipefail
 
 saf view summary -i $REPORT_DIR/*.json
-if curl -F "data=@$(pwd)/$outputFile" \
-    -F "filename=$outputFile" \
-    -F 'public=false' \
-    -H "Authorization: Api-Key $apiKey" \
-    "https://localhost/evaluations" \
-    -k 
-then
-    echo -e "\nFile uploaded successfully."
+ls $REPORT_DIR
+if $REPORT_TO_HEIMDALL
+then 
+    for f in $REPORT_DIR/*.json
+    do
+        curl -F "data=@$(pwd)/$f" \
+        -F "filename=$f" \
+        -F 'public=false' \
+        -H "Authorization: Api-Key $API_KEY" \
+        "https://localhost/evaluations" \
+        -k
+    done
+else
     exit 0
-else 
-    echo -e "\nFile was not uploaded, error in api calls."
-    exit 1
 fi

@@ -47,6 +47,13 @@ variable "scan" {
   }
 }
 
+variable "report" {
+  type = map(string)
+  default = {
+    "report_to_heimdall"     = true
+  }
+}
+
 source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
@@ -61,23 +68,23 @@ build {
   ]
 
   # ansible needs python and pip to be installed on the target
-  provisioner "shell" {
-    inline = [
-      "dnf install -y python${var.ansible_vars.python_version} python3-pip",
-      "ln -s /usr/bin/python3 /usr/bin/python",
-    ]
-  }
+  # provisioner "shell" {
+  #   inline = [
+  #     "dnf install -y python${var.ansible_vars.python_version} python3-pip",
+  #     "ln -s /usr/bin/python3 /usr/bin/python",
+  #   ]
+  # }
 
-  provisioner "ansible" {
-    playbook_file = "spec/ansible/rhel8-stig-hardening-playbook.yml"
-    galaxy_file   = "spec/ansible/requirements.yml"
-    extra_arguments = [ 
-      "--extra-vars", "ansible_host=${var.output_image.name}",
-      "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
-      "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
-      "--extra-vars", "ansible_pip_executable=pip3"
-    ]
-  }
+  # provisioner "ansible" {
+  #   playbook_file = "spec/ansible/rhel8-stig-hardening-playbook.yml"
+  #   galaxy_file   = "spec/ansible/requirements.yml"
+  #   extra_arguments = [ 
+  #     "--extra-vars", "ansible_host=${var.output_image.name}",
+  #     "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
+  #     "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
+  #     "--extra-vars", "ansible_pip_executable=pip3"
+  #   ]
+  # }
 
   ### SCAN
   # use raw bash script to invoke scanning tools that don't have their own plugin
@@ -97,7 +104,11 @@ build {
 
   ### REPORT
   provisioner "shell-local" {
-    environment_vars = ["REPORT_DIR=${var.scan.report_dir}"]
+    environment_vars = [
+      "REPORT_DIR=${var.scan.report_dir}",
+      "REPORT_TO_HEIMDALL=${var.report.report_to_heimdall}",
+      "API_KEY=****"
+    ]
     scripts          = ["spec/scripts/report.sh"]
   }
 
