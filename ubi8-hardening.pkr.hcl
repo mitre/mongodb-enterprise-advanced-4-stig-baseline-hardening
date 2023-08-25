@@ -67,7 +67,7 @@ build {
     "source.docker.target"
   ]
 
-  ansible needs python and pip to be installed on the target
+  #ansible needs python and pip to be installed on the target
   provisioner "shell" {
     inline = [
       "dnf install -y python${var.ansible_vars.python_version} python3-pip",
