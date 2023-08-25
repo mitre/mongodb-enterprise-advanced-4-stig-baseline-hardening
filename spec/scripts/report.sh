@@ -2,7 +2,6 @@
 set -uo pipefail
 
 saf view summary -i $REPORT_DIR/*.json
-ls $REPORT_DIR
 if $REPORT_TO_HEIMDALL
 then 
     for f in $REPORT_DIR/*.json
