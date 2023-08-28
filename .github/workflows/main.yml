@@ -37,5 +37,5 @@ jobs:
       - name: Save scan artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: reports
+          path: reports/*.json
         if: always()
