@@ -1,4 +1,3 @@
-- src: https://github.com/ansible-lockdown/RHEL8-STIG
-  name: rhel8STIG
-  
+- name: rhel8STIG
+  src: https://github.com/ansible-lockdown/RHEL8-STIG
   
