@@ -24,8 +24,8 @@ variable "ansible_vars" {
 variable "input_image" {
   type = map(string)
   default = {
-    "tag"     = "redhat/ubi8"
-    "version" = "latest"
+    "tag"     = "registry1.dso.mil/ironbank/opensource/mongodb/mongodb"
+    "version" = "6.0.5"
   }
 }
 
@@ -33,7 +33,7 @@ variable "input_image" {
 variable "output_image" {
   type = map(string)
   default = {
-    "name"    = "test-harden"
+    "name"    = "mongo-hardened"
   }
 }
 
@@ -57,8 +57,8 @@ variable "report" {
 source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
-  pull        = false
-  run_command = ["-d", "-i", "-t", "--name", var.output_image.name, "{{.Image}}", "/bin/bash"]
+  pull        = true
+  run_command = ["-d", "-i", "-t", "--name", var.output_image.name, "--user", "root", "{{.Image}}", "/bin/bash"]
 }
 
 build {

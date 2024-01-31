@@ -2,12 +2,32 @@
 - hosts:
     - localhost
   roles:
-    - roles/prep  # basic update and config tasks
-    - rhel8STIG   # apply STIG requirement controls
+    - roles/prep # basic update and config tasks
+    - rhel8STIG # apply STIG requirement controls
   serial: 50
   user: 0
   vars:
-    rhel8stig_bootloader_password_hash: 'changethispassword'
+    rhel8stig_bootloader_password_hash: "changethispassword"
     rhel_08_040123: false
     rhel_08_040124: false
     rhel_08_040125: false
+    rhel_08_010372: false
+    rhel_08_010373: false
+    rhel_08_010374: false
+    rhel_08_010671: false
+    rhel_08_040209: false
+    rhel_08_040210: false
+    rhel_08_040220: false
+    rhel_08_040230: false
+    rhel_08_040249: false
+    rhel_08_040259: false
+    rhel_08_040261: false
+    rhel_08_040262: false
+    rhel_08_040270: false
+    rhel_08_040279: false
+    rhel_08_040280: false
+    rhel_08_040281: false
+    rhel_08_040283: false
+    rhel_08_040284: false
+    rhel_08_040285: false
+    rhel_08_040286: false
