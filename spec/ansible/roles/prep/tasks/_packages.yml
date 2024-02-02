@@ -15,5 +15,6 @@
   pip:
     name:
       - jmespath
+      - pymongo
     state: latest
     executable: "{{ ansible_pip_executable }}"

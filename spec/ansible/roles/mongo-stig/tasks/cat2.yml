@@ -1,0 +1,821 @@
+---
+- name: "MEDIUM | V-252134 | AUDIT | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252134
+    - audit
+
+- name: "MEDIUM | V-252134 | PATCH | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252134
+    - patch
+
+- name: "MEDIUM | V-252135 | AUDIT | The audit information produced by MongoDB must be protected from unauthorized access."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252135
+    - audit
+
+- name: "MEDIUM | V-252135 | PATCH | The audit information produced by MongoDB must be protected from unauthorized access."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252135
+    - patch
+
+- name: "MEDIUM | V-252136 | AUDIT | MongoDB must protect its audit features from unauthorized access."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252136
+    - audit
+
+- name: "MEDIUM | V-252136 | PATCH | MongoDB must protect its audit features from unauthorized access."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252136
+    - patch
+
+- name: "MEDIUM | V-252137 | AUDIT | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252137
+    - audit
+
+- name: "MEDIUM | V-252137 | PATCH | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252137
+    - patch
+
+- name: "MEDIUM | V-252138 | AUDIT | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252138
+    - audit
+
+- name: "MEDIUM | V-252138 | PATCH | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252138
+    - patch
+
+- name: "MEDIUM | V-252140 | AUDIT | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252140
+    - audit
+
+- name: "MEDIUM | V-252140 | PATCH | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252140
+    - patch
+
+- name: "MEDIUM | V-252141 | AUDIT | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252141
+    - audit
+
+- name: "MEDIUM | V-252141 | PATCH | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252141
+    - patch
+
+- name: "MEDIUM | V-252142 | AUDIT | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252142
+    - audit
+
+- name: "MEDIUM | V-252142 | PATCH | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252142
+    - patch
+
+- name: "MEDIUM | V-252143 | AUDIT | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252143
+    - audit
+
+- name: "MEDIUM | V-252143 | PATCH | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252143
+    - patch
+
+- name: "MEDIUM | V-252144 | AUDIT | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252144
+    - audit
+
+- name: "MEDIUM | V-252144 | PATCH | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252144
+    - patch
+
+- name: "MEDIUM | V-252145 | AUDIT | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252145
+    - audit
+
+- name: "MEDIUM | V-252145 | PATCH | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252145
+    - patch
+
+- name: "MEDIUM | V-252147 | AUDIT | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252147
+    - audit
+
+- name: "MEDIUM | V-252147 | PATCH | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252147
+    - patch
+
+- name: "MEDIUM | V-252148 | AUDIT | MongoDB must limit the total number of concurrent connections to the database."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252148
+    - audit
+
+- name: "MEDIUM | V-252148 | PATCH | MongoDB must limit the total number of concurrent connections to the database."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252148
+    - patch
+
+- name: "MEDIUM | V-252151 | AUDIT | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252151
+    - audit
+
+- name: "MEDIUM | V-252151 | PATCH | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252151
+    - patch
+
+- name: "MEDIUM | V-252153 | AUDIT | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252153
+    - audit
+
+- name: "MEDIUM | V-252153 | PATCH | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252153
+    - patch
+
+- name: "MEDIUM | V-252154 | AUDIT | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252154
+    - audit
+
+- name: "MEDIUM | V-252154 | PATCH | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252154
+    - patch
+
+- name: "MEDIUM | V-252155 | AUDIT | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252155
+    - audit
+
+- name: "MEDIUM | V-252155 | PATCH | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252155
+    - patch
+
+- name: "MEDIUM | V-252156 | AUDIT | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252156
+    - audit
+
+- name: "MEDIUM | V-252156 | PATCH | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252156
+    - patch
+
+- name: "MEDIUM | V-252157 | AUDIT | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252157
+    - audit
+
+- name: "MEDIUM | V-252157 | PATCH | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252157
+    - patch
+
+- name: "MEDIUM | V-252161 | AUDIT | MongoDB must map the PKI-authenticated identity to an associated user account."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252161
+    - audit
+
+- name: "MEDIUM | V-252161 | PATCH | MongoDB must map the PKI-authenticated identity to an associated user account."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252161
+    - patch
+
+- name: "MEDIUM | V-252163 | AUDIT | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252163
+    - audit
+
+- name: "MEDIUM | V-252163 | PATCH | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252163
+    - patch
+
+- name: "MEDIUM | V-252164 | AUDIT | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252164
+    - audit
+
+- name: "MEDIUM | V-252164 | PATCH | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252164
+    - patch
+
+- name: "MEDIUM | V-252166 | AUDIT | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252166
+    - audit
+
+- name: "MEDIUM | V-252166 | PATCH | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252166
+    - patch
+
+- name: "MEDIUM | V-252167 | AUDIT | MongoDB must check the validity of all data inputs except those specifically identified by the organization."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252167
+    - audit
+
+- name: "MEDIUM | V-252167 | PATCH | MongoDB must check the validity of all data inputs except those specifically identified by the organization."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252167
+    - patch
+
+- name: "MEDIUM | V-252168 | AUDIT | MongoDB must provide non-privileged users with error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252168
+    - audit
+
+- name: "MEDIUM | V-252168 | PATCH | MongoDB must provide non-privileged users with error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252168
+    - patch
+
+- name: "MEDIUM | V-252169 | AUDIT | MongoDB must reveal detailed error messages only to the ISSO, ISSM, SA, and DBA."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252169
+    - audit
+
+- name: "MEDIUM | V-252169 | PATCH | MongoDB must reveal detailed error messages only to the ISSO, ISSM, SA, and DBA."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252169
+    - patch
+
+- name: "MEDIUM | V-252170 | AUDIT | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252170
+    - audit
+
+- name: "MEDIUM | V-252170 | PATCH | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252170
+    - patch
+
+- name: "MEDIUM | V-252171 | AUDIT | MongoDB must utilize centralized management of the content captured in audit records generated by all components of MongoDB."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252171
+    - audit
+
+- name: "MEDIUM | V-252171 | PATCH | MongoDB must utilize centralized management of the content captured in audit records generated by all components of MongoDB."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252171
+    - patch
+
+- name: "MEDIUM | V-252172 | AUDIT | MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252172
+    - audit
+
+- name: "MEDIUM | V-252172 | PATCH | MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252172
+    - patch
+
+- name: "MEDIUM | V-252173 | AUDIT | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252173
+    - audit
+
+- name: "MEDIUM | V-252173 | PATCH | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252173
+    - patch
+
+- name: "MEDIUM | V-252174 | AUDIT | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252174
+    - audit
+
+- name: "MEDIUM | V-252174 | PATCH | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252174
+    - patch
+
+- name: "MEDIUM | V-252175 | AUDIT | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252175
+    - audit
+
+- name: "MEDIUM | V-252175 | PATCH | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252175
+    - patch
+
+- name: "MEDIUM | V-252176 | AUDIT | MongoDB must require users to reauthenticate when organization-defined circumstances or situations require reauthentication."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252176
+    - audit
+
+- name: "MEDIUM | V-252176 | PATCH | MongoDB must require users to reauthenticate when organization-defined circumstances or situations require reauthentication."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252176
+    - patch
+
+- name: "MEDIUM | V-252177 | AUDIT | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252177
+    - audit
+
+- name: "MEDIUM | V-252177 | PATCH | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252177
+    - patch
+
+- name: "MEDIUM | V-252178 | AUDIT | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252178
+    - audit
+
+- name: "MEDIUM | V-252178 | PATCH | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252178
+    - patch
+
+- name: "MEDIUM | V-252179 | AUDIT | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252179
+    - audit
+
+- name: "MEDIUM | V-252179 | PATCH | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252179
+    - patch
+
+- name: "MEDIUM | V-252180 | AUDIT | MongoDB must maintain the confidentiality and integrity of information during reception."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252180
+    - audit
+
+- name: "MEDIUM | V-252180 | PATCH | MongoDB must maintain the confidentiality and integrity of information during reception."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252180
+    - patch
+
+- name: "MEDIUM | V-252181 | AUDIT | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252181
+    - audit
+
+- name: "MEDIUM | V-252181 | PATCH | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252181
+    - patch
+
+- name: "MEDIUM | V-252182 | AUDIT | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252182
+    - audit
+
+- name: "MEDIUM | V-252182 | PATCH | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252182
+    - patch
+
+- name: "MEDIUM | V-252183 | AUDIT | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252183
+    - audit
+
+- name: "MEDIUM | V-252183 | PATCH | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252183
+    - patch
+
+- name: "MEDIUM | V-252185 | AUDIT | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
+  command: true
+  register: result
+  always_run: yes
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat2
+    - medium
+    - V-252185
+    - audit
+
+- name: "MEDIUM | V-252185 | PATCH | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
+  command: true
+  tags:
+    - cat2
+    - medium
+    - V-252185
+    - patch
+

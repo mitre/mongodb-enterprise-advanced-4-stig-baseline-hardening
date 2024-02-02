@@ -58,7 +58,7 @@ source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
   pull        = true
-  run_command = ["-d", "-i", "-t", "--name", var.output_image.name, "--user", "root", "{{.Image}}", "/bin/bash"]
+  run_command = ["-d", "-i", "-t", "--name", var.output_image.name, "--user", "root","-e","MONGO_INITDB_ROOT_USERNAME=root", "-e","MONGO_INITDB_ROOT_PASSWORD=admin","-p","27017:27017", "{{.Image}}", "/bin/bash"]
 }
 
 build {
@@ -96,7 +96,7 @@ build {
       "REPORT_DIR=${var.scan.report_dir}",
       "REPORT_FILE=${var.scan.inspec_report_filename}",
       "INPUT_FILE=${var.scan.inspec_input_file}",
-      "TARGET_IMAGE=${var.output_image.name}"
+      "TARGET_IMAGE=${var.output_image.name}",
     ]
     valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
     scripts          = ["spec/scripts/scan.sh"]
