@@ -1,8 +1,6 @@
 ---
 - name: "HIGH | V-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
   community.mongodb.mongodb_parameter:
-    login_user: root
-    login_password: admin
     param: tlsMode
     value: requireTLS
     param_type: str

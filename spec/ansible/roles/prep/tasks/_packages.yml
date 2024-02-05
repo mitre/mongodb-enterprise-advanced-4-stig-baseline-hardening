@@ -1,10 +1,10 @@
 ---
 - name: Upgrade all packages
-  yum:
+  apt:
     name: '*'
     state: latest
 - name: Install required packages
-  yum:
+  apt:
     name:
       - jq
       - vim

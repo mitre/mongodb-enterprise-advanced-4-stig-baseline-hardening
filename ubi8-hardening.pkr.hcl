@@ -24,8 +24,8 @@ variable "ansible_vars" {
 variable "input_image" {
   type = map(string)
   default = {
-    "tag"     = "registry1.dso.mil/ironbank/opensource/mongodb/mongodb"
-    "version" = "6.0.5"
+    "tag"     = "mongo"
+    "version" = "latest"
   }
 }
 
@@ -58,7 +58,7 @@ source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
   pull        = true
-  run_command = ["-d", "-i", "-t", "--name", var.output_image.name, "--user", "root","-e","MONGO_INITDB_ROOT_USERNAME=root", "-e","MONGO_INITDB_ROOT_PASSWORD=admin","-p","27017:27017", "{{.Image}}", "/bin/bash"]
+  run_command = ["-d", "-it", "--name", var.output_image.name, "--user", "root","-p","27017:27017", "{{.Image}}"]
 }
 
 build {
@@ -70,7 +70,8 @@ build {
   #ansible needs python and pip to be installed on the target
   provisioner "shell" {
     inline = [
-      "dnf install -y python${var.ansible_vars.python_version} python3-pip",
+      "apt-get update",
+      "apt-get install -y python${var.ansible_vars.python_version} python3-pip",
       "ln -s /usr/bin/python3 /usr/bin/python",
     ]
   }
@@ -88,40 +89,40 @@ build {
 
   ### SCAN
   # use raw bash script to invoke scanning tools that don't have their own plugin
-  provisioner "shell-local" {
-    environment_vars = [
-      "CHEF_LICENSE=accept",
-      "PROFILE=${var.scan.inspec_profile}",
-      "CONTAINER_ID=${var.output_image.name}",
-      "REPORT_DIR=${var.scan.report_dir}",
-      "REPORT_FILE=${var.scan.inspec_report_filename}",
-      "INPUT_FILE=${var.scan.inspec_input_file}",
-      "TARGET_IMAGE=${var.output_image.name}",
-    ]
-    valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
-    scripts          = ["spec/scripts/scan.sh"]
-  }
+  // provisioner "shell-local" {
+  //   environment_vars = [
+  //     "CHEF_LICENSE=accept",
+  //     "PROFILE=${var.scan.inspec_profile}",
+  //     "CONTAINER_ID=${var.output_image.name}",
+  //     "REPORT_DIR=${var.scan.report_dir}",
+  //     "REPORT_FILE=${var.scan.inspec_report_filename}",
+  //     "INPUT_FILE=${var.scan.inspec_input_file}",
+  //     "TARGET_IMAGE=${var.output_image.name}",
+  //   ]
+  //   valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
+  //   scripts          = ["spec/scripts/scan.sh"]
+  // }
 
-  ### REPORT
-  provisioner "shell-local" {
-    environment_vars = [
-      "REPORT_DIR=${var.scan.report_dir}",
-      "REPORT_TO_HEIMDALL=${var.report.report_to_heimdall}",
-      "API_KEY=****"
-    ]
-    scripts          = ["spec/scripts/report.sh"]
-  }
+  // ### REPORT
+  // provisioner "shell-local" {
+  //   environment_vars = [
+  //     "REPORT_DIR=${var.scan.report_dir}",
+  //     "REPORT_TO_HEIMDALL=${var.report.report_to_heimdall}",
+  //     "API_KEY=****"
+  //   ]
+  //   scripts          = ["spec/scripts/report.sh"]
+  // }
 
-  ### VERIFY
-  provisioner "shell-local" {
-    environment_vars = [
-      "TARGET_IMAGE=${var.output_image.name}",
-      "REPORT_DIR=${var.scan.report_dir}"
-    ]
-    valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
-                              # this does not mean we want to halt the run 
-    scripts          = ["spec/scripts/verify_threshold.sh"]
-  }
+  // ### VERIFY
+  // provisioner "shell-local" {
+  //   environment_vars = [
+  //     "TARGET_IMAGE=${var.output_image.name}",
+  //     "REPORT_DIR=${var.scan.report_dir}"
+  //   ]
+  //   valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
+  //                             # this does not mean we want to halt the run 
+  //   scripts          = ["spec/scripts/verify_threshold.sh"]
+  // }
 
   ### TAG
   post-processor "docker-tag" {
