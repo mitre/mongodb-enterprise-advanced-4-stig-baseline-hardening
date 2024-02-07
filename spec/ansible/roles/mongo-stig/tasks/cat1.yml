@@ -1,9 +1,18 @@
 ---
 - name: "HIGH | V-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
-  lineinfile:
+  blockinfile:
     path: "{{ mongod_config_path }}"
-    insertbefore: BOF
-    line: '# Your comment here'
+    marker: "#Finding V-252139"
+    insertafter: "^net:"
+    block: | #need the ID as a placeholder for the space
+      #
+        tls:
+          mode: requireTLS
+          certificateKeyFile: /etc/ssl/mongodb.pem
+          CAFile: /etc/ssl/caToValidateClientCertificates.pem
+          allowInvalidCertificates: false
+          allowConnectionsWithoutCertificates: false
+    state: present
   register: result
   changed_when: no
   ignore_errors: yes
@@ -11,205 +20,120 @@
     - cat1
     - high
     - V-252139
-    - audit
 
-# - name: "HIGH | V-252146 | AUDIT | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
+# - name: "HIGH | V-252146 | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
 #   command: true
 #   register: result
-#   always_run: yes
+#   
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252146
-#     - audit
 
-# - name: "HIGH | V-252146 | PATCH | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252146
-#     - patch
+- name: "HIGH | V-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
+  blockinfile:
+    path: "{{ mongod_config_path }}"
+    marker: "#Finding V-252149"
+    insertafter: "^#security:"
+    block: |
+      security:
+        authorization: enabled
+    state: present
+  register: result
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat1
+    - high
+    - V-252149
 
-# - name: "HIGH | V-252149 | AUDIT | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
-#   command: true
-#   register: result
-#   always_run: yes
-#   changed_when: no
-#   ignore_errors: yes
-#   tags:
-#     - cat1
-#     - high
-#     - V-252149
-#     - audit
-
-# - name: "HIGH | V-252149 | PATCH | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252149
-#     - patch
-
-# - name: "HIGH | V-252150 | AUDIT | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
+# - name: "HIGH | V-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
 #   command: true
 #   register: result
-#   always_run: yes
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252150
-#     - audit
 
-# - name: "HIGH | V-252150 | PATCH | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252150
-#     - patch
-
-# - name: "HIGH | V-252152 | AUDIT | MongoDB software installation account must be restricted to authorized users."
+# - name: "HIGH | V-252152 | MongoDB software installation account must be restricted to authorized users."
 #   command: true
 #   register: result
-#   always_run: yes
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252152
-#     - audit
 
-# - name: "HIGH | V-252152 | PATCH | MongoDB software installation account must be restricted to authorized users."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252152
-#     - patch
-
-# - name: "HIGH | V-252158 | AUDIT | If passwords are used for authentication, MongoDB must implement LDAP or Kerberos for authentication to enforce the DoD standards for password complexity and lifetime."
+# - name: "HIGH | V-252158 | If passwords are used for authentication, MongoDB must implement LDAP or Kerberos for authentication to enforce the DoD standards for password complexity and lifetime."
 #   command: true
 #   register: result
-#   always_run: yes
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252158
-#     - audit
 
-# - name: "HIGH | V-252158 | PATCH | If passwords are used for authentication, MongoDB must implement LDAP or Kerberos for authentication to enforce the DoD standards for password complexity and lifetime."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252158
-#     - patch
+- name: "HIGH | V-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+  command: true
+  register: result
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat1
+    - high
+    - V-252159
 
-# - name: "HIGH | V-252159 | AUDIT | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
-#   command: true
-#   register: result
-#   always_run: yes
-#   changed_when: no
-#   ignore_errors: yes
-#   tags:
-#     - cat1
-#     - high
-#     - V-252159
-#     - audit
+- name: "HIGH | V-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
+  command: true
+  register: result
+  changed_when: no
+  ignore_errors: yes
+  tags:
+    - cat1
+    - high
+    - V-252160
 
-# - name: "HIGH | V-252159 | PATCH | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252159
-#     - patch
 
-# - name: "HIGH | V-252160 | AUDIT | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
+# - name: "HIGH | V-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
 #   command: true
 #   register: result
-#   always_run: yes
-#   changed_when: no
-#   ignore_errors: yes
-#   tags:
-#     - cat1
-#     - high
-#     - V-252160
-#     - audit
-
-# - name: "HIGH | V-252160 | PATCH | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252160
-#     - patch
-
-# - name: "HIGH | V-252162 | AUDIT | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
-#   command: true
-#   register: result
-#   always_run: yes
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252162
-#     - audit
 
-# - name: "HIGH | V-252162 | PATCH | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252162
-#     - patch
-
-# - name: "HIGH | V-252165 | AUDIT | MongoDB must protect the confidentiality and integrity of all information at rest."
+# - name: "HIGH | V-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
 #   command: true
 #   register: result
-#   always_run: yes
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252165
-#     - audit
 
-# - name: "HIGH | V-252165 | PATCH | MongoDB must protect the confidentiality and integrity of all information at rest."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252165
-#     - patch
-
-# - name: "HIGH | V-252184 | AUDIT | MongoDB products must be a version supported by the vendor."
+# - name: "HIGH | V-252184 | MongoDB products must be a version supported by the vendor."
 #   command: true
 #   register: result
-#   always_run: yes
 #   changed_when: no
 #   ignore_errors: yes
 #   tags:
 #     - cat1
 #     - high
 #     - V-252184
-#     - audit
 
-# - name: "HIGH | V-252184 | PATCH | MongoDB products must be a version supported by the vendor."
-#   command: true
-#   tags:
-#     - cat1
-#     - high
-#     - V-252184
-#     - patch
+- name: Print the contents of mongod.conf
+  command: cat "{{ mongod_config_path }}"
+  register: mongod_conf_content
 
+- name: Display contents of mongod.conf
+  debug:
+    msg: "{{ mongod_conf_content.stdout }}"
