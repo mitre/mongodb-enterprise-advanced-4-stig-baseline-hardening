@@ -3,6 +3,7 @@
   blockinfile:
     path: "{{ mongod_config_path }}"
     marker: "#Finding V-252139"
+    prepend_newline: true
     insertafter: "^net:"
     block: | #need the ID as a placeholder for the space
       #
@@ -12,10 +13,9 @@
           CAFile: /etc/ssl/caToValidateClientCertificates.pem
           allowInvalidCertificates: false
           allowConnectionsWithoutCertificates: false
-    state: present
   register: result
   changed_when: no
-  ignore_errors: yes
+  ignore_errors: true
   tags:
     - cat1
     - high
@@ -26,44 +26,71 @@
 #   register: result
 #   
 #   changed_when: no
-#   ignore_errors: yes
+#   ignore_errors: true
 #   tags:
 #     - cat1
 #     - high
 #     - V-252146
 
-- name: "HIGH | V-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
+- name: Check if 'security:' exists and is not commented out
+  shell: "grep -P '^security:' {{ mongod_config_path }} || true"
+  register: security_check
+  changed_when: false
+  ignore_errors: true
+
+- name: "HIGH | V-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block does not exist."
   blockinfile:
     path: "{{ mongod_config_path }}"
     marker: "#Finding V-252149"
+    prepend_newline: true
     insertafter: "^#security:"
     block: |
       security:
         authorization: enabled
-    state: present
+  when: security_check.stdout == ""      
   register: result
   changed_when: no
-  ignore_errors: yes
+  ignore_errors: true
   tags:
     - cat1
     - high
     - V-252149
 
-# - name: "HIGH | V-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
-#   command: true
-#   register: result
-#   changed_when: no
-#   ignore_errors: yes
-#   tags:
-#     - cat1
-#     - high
-#     - V-252150
+- name: "HIGH | V-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block exists."
+  blockinfile:
+    path: "{{ mongod_config_path }}"
+    marker: "#Finding V-252149"
+    prepend_newline: true
+    insertafter: "^security:"
+    block: |
+      #
+        authorization: enabled
+  when: security_check.stdout != ""      
+  register: result
+  changed_when: no
+  ignore_errors: true
+  tags:
+    - cat1
+    - high
+    - V-252149
+
+- name: "HIGH | V-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
+  community.mongodb.mongodb_shell: #works but unsure what output is
+    db: "database"
+    eval: "db.getRoles({rolesInfo: 1, showPrivileges:true, showBuiltinRoles: true })"
+  register: result
+  changed_when: no
+  ignore_errors: true
+  tags:
+    - cat1
+    - high
+    - V-252150
 
 # - name: "HIGH | V-252152 | MongoDB software installation account must be restricted to authorized users."
 #   command: true
 #   register: result
 #   changed_when: no
-#   ignore_errors: yes
+#   ignore_errors: true
 #   tags:
 #     - cat1
 #     - high
@@ -73,38 +100,57 @@
 #   command: true
 #   register: result
 #   changed_when: no
-#   ignore_errors: yes
+#   ignore_errors: true
 #   tags:
 #     - cat1
 #     - high
 #     - V-252158
 
 - name: "HIGH | V-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
-  command: true
+  blockinfile:
+    path: "{{ mongod_config_path }}"
+    marker: "#Finding V-252159"
+    prepend_newline: true
+    insertafter: "EOF"
+    block: |
+      setParameter:
+        authenticationMechanisms: SCRAM-SHA-256 
+    state: present
   register: result
   changed_when: no
-  ignore_errors: yes
+  ignore_errors: true
   tags:
     - cat1
     - high
     - V-252159
 
-- name: "HIGH | V-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
-  command: true
-  register: result
-  changed_when: no
-  ignore_errors: yes
-  tags:
-    - cat1
-    - high
-    - V-252160
+# - name: "HIGH | V-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+#   #the command for part two of this finding no longer exists in recent versions of mongo
+#   command: true 
+#   register: result
+#   changed_when: no
+#   ignore_errors: true
+#   tags:
+#     - cat1
+#     - high
+#     - V-252159
+
+# - name: "HIGH | V-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
+#   command: true
+#   register: result
+#   changed_when: no
+#   ignore_errors: true
+#   tags:
+#     - cat1
+#     - high
+#     - V-252160
 
 
 # - name: "HIGH | V-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
 #   command: true
 #   register: result
 #   changed_when: no
-#   ignore_errors: yes
+#   ignore_errors: true
 #   tags:
 #     - cat1
 #     - high
@@ -114,7 +160,7 @@
 #   command: true
 #   register: result
 #   changed_when: no
-#   ignore_errors: yes
+#   ignore_errors: true
 #   tags:
 #     - cat1
 #     - high
@@ -124,7 +170,7 @@
 #   command: true
 #   register: result
 #   changed_when: no
-#   ignore_errors: yes
+#   ignore_errors: true
 #   tags:
 #     - cat1
 #     - high

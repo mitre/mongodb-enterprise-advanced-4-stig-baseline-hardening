@@ -7,16 +7,16 @@
       - CAT1
       - high
 
-# - name: Include CAT II
-#   ansible.builtin.import_tasks: cat2.yml
-#   when: mongostig_cat2
-#   tags:
-#       - CAT2
-#       - medium
+- name: Include CAT II
+  ansible.builtin.import_tasks: cat2.yml
+  when: mongostig_cat2
+  tags:
+      - CAT2
+      - medium
 
-# - name: Include CAT III
-#   ansible.builtin.import_tasks: cat3.yml
-#   when: mongostig_cat3
-#   tags:
-#       - CAT3
-#       - low
+- name: Include CAT III
+  ansible.builtin.import_tasks: cat3.yml
+  when: mongostig_cat3
+  tags:
+      - CAT3
+      - low
