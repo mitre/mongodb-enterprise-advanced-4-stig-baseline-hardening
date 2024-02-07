@@ -24,7 +24,7 @@ variable "ansible_vars" {
 variable "input_image" {
   type = map(string)
   default = {
-    "tag"     = "mongo"
+    "tag"     = "mongo-ansible-ready"
     "version" = "latest"
   }
 }
@@ -57,7 +57,7 @@ variable "report" {
 source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
-  pull        = true
+  pull        = false #change back to true in final
   run_command = ["-d", "-it", "--name", var.output_image.name, "--user", "root","-p","27017:27017", "{{.Image}}"]
 }
 
@@ -68,16 +68,16 @@ build {
   ]
 
   #ansible needs python and pip to be installed on the target
-  provisioner "shell" {
-    inline = [
-      "apt-get update",
-      "apt-get install -y python${var.ansible_vars.python_version} python3-pip",
-      "ln -s /usr/bin/python3 /usr/bin/python",
-    ]
-  }
+  // provisioner "shell" {
+  //   inline = [
+  //     "apt-get update",
+  //     "apt-get install -y python${var.ansible_vars.python_version} python3-pip",
+  //     "ln -s /usr/bin/python3 /usr/bin/python",
+  //   ]
+  // }
 
   provisioner "ansible" {
-    playbook_file = "spec/ansible/rhel8-stig-hardening-playbook.yml"
+    playbook_file = "spec/ansible/mongo-stig-hardening-playbook.yml"
     galaxy_file   = "spec/ansible/requirements.yml"
     extra_arguments = [ 
       "--extra-vars", "ansible_host=${var.output_image.name}",

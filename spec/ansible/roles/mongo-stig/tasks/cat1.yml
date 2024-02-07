@@ -1,9 +1,9 @@
 ---
 - name: "HIGH | V-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
-  community.mongodb.mongodb_parameter:
-    param: tlsMode
-    value: requireTLS
-    param_type: str
+  lineinfile:
+    path: "{{ mongod_config_path }}"
+    insertbefore: BOF
+    line: '# Your comment here'
   register: result
   changed_when: no
   ignore_errors: yes
