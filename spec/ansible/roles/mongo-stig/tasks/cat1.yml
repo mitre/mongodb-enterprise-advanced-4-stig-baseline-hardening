@@ -1,8 +1,9 @@
 ---
-- name: "HIGH | V-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
+- name: "HIGH | SV-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
+  #change to SV
   blockinfile:
     path: "{{ mongod_config_path }}"
-    marker: "#Finding V-252139"
+    marker: "#Rule ID SV-252139"
     prepend_newline: true
     insertafter: "^net:"
     block: | #need the ID as a placeholder for the space
@@ -19,9 +20,9 @@
   tags:
     - cat1
     - high
-    - V-252139
+    - SV-252139
 
-# - name: "HIGH | V-252146 | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
+# - name: "HIGH | SV-252146 | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
 #   command: true
 #   register: result
 #   
@@ -30,7 +31,7 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252146
+#     - SV-252146
 
 - name: Check if 'security:' exists and is not commented out
   shell: "grep -P '^security:' {{ mongod_config_path }} || true"
@@ -38,10 +39,10 @@
   changed_when: false
   ignore_errors: true
 
-- name: "HIGH | V-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block does not exist."
+- name: "HIGH | SV-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block does not exist."
   blockinfile:
     path: "{{ mongod_config_path }}"
-    marker: "#Finding V-252149"
+    marker: "#Rule ID SV-252149"
     prepend_newline: true
     insertafter: "^#security:"
     block: |
@@ -54,12 +55,12 @@
   tags:
     - cat1
     - high
-    - V-252149
+    - SV-252149
 
-- name: "HIGH | V-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block exists."
+- name: "HIGH | SV-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block exists."
   blockinfile:
     path: "{{ mongod_config_path }}"
-    marker: "#Finding V-252149"
+    marker: "#Rule ID SV-252149"
     prepend_newline: true
     insertafter: "^security:"
     block: |
@@ -72,9 +73,9 @@
   tags:
     - cat1
     - high
-    - V-252149
+    - SV-252149
 
-- name: "HIGH | V-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
+- name: "HIGH | SV-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
   community.mongodb.mongodb_shell: #works but unsure what output is
     db: "database"
     eval: "db.getRoles({rolesInfo: 1, showPrivileges:true, showBuiltinRoles: true })"
@@ -84,9 +85,9 @@
   tags:
     - cat1
     - high
-    - V-252150
+    - SV-252150
 
-# - name: "HIGH | V-252152 | MongoDB software installation account must be restricted to authorized users."
+# - name: "HIGH | SV-252152 | MongoDB software installation account must be restricted to authorized users."
 #   command: true
 #   register: result
 #   changed_when: no
@@ -94,9 +95,9 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252152
+#     - SV-252152
 
-# - name: "HIGH | V-252158 | If passwords are used for authentication, MongoDB must implement LDAP or Kerberos for authentication to enforce the DoD standards for password complexity and lifetime."
+# - name: "HIGH | SV-252158 | If passwords are used for authentication, MongoDB must implement LDAP or Kerberos for authentication to enforce the DoD standards for password complexity and lifetime."
 #   command: true
 #   register: result
 #   changed_when: no
@@ -104,12 +105,12 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252158
+#     - SV-252158
 
-- name: "HIGH | V-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+- name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
   blockinfile:
     path: "{{ mongod_config_path }}"
-    marker: "#Finding V-252159"
+    marker: "#Rule ID SV-252159"
     prepend_newline: true
     insertafter: "EOF"
     block: |
@@ -122,10 +123,10 @@
   tags:
     - cat1
     - high
-    - V-252159
+    - SV-252159
 
-# - name: "HIGH | V-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
-#   #the command for part two of this finding no longer exists in recent versions of mongo
+# - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+#   #the command for part two of this Rule ID no longer exists in recent versions of mongo
 #   command: true 
 #   register: result
 #   changed_when: no
@@ -133,9 +134,9 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252159
+#     - SV-252159
 
-# - name: "HIGH | V-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
+# - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
 #   command: true
 #   register: result
 #   changed_when: no
@@ -143,10 +144,10 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252160
+#     - SV-252160
 
 
-# - name: "HIGH | V-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
+# - name: "HIGH | SV-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
 #   command: true
 #   register: result
 #   changed_when: no
@@ -154,9 +155,9 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252162
+#     - SV-252162
 
-# - name: "HIGH | V-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
+# - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
 #   command: true
 #   register: result
 #   changed_when: no
@@ -164,9 +165,9 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252165
+#     - SV-252165
 
-# - name: "HIGH | V-252184 | MongoDB products must be a version supported by the vendor."
+# - name: "HIGH | SV-252184 | MongoDB products must be a version supported by the vendor."
 #   command: true
 #   register: result
 #   changed_when: no
@@ -174,7 +175,7 @@
 #   tags:
 #     - cat1
 #     - high
-#     - V-252184
+#     - SV-252184
 
 - name: Print the contents of mongod.conf
   command: cat "{{ mongod_config_path }}"

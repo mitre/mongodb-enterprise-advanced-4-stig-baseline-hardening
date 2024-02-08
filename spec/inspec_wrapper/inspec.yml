@@ -1,8 +1,0 @@
-name: inspec-wrapper
-title: Wrapper Profile for Hardening Pipeline Validation
-version: 0.0.1
-
-# See https://saf.mitre.org/#/validate for more STIG profiles
-# depends:
-#   - name: rhel8
-#     git: https://github.com/mitre/redhat-enterprise-linux-8-stig-baseline.git
