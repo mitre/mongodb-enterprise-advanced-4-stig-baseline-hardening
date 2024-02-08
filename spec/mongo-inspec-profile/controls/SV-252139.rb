@@ -55,4 +55,13 @@ https://docs.mongodb.com/v4.4/tutorial/configure-ssl/'
   tag 'documentable'
   tag cci: ['CCI-000197', 'CCI-000185']
   tag nist: ['IA-5 (1) (c)', 'IA-5 (2) (b) (1)']
+
+  describe yaml('/etc/mongod.conf.orig') do
+        its(['net','tls','mode']){should eq "requireTLS"}
+        its(['net','tls','certificateKeyFile']){should eq "/etc/ssl/mongodb.pem"}
+        its(['net','tls','CAFile']){should eq "/etc/ssl/caToValidateClientCertificates.pem"}
+        its(['net','tls','allowInvalidCertificates']){should eq false}
+        its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
+    end
+    
 end
