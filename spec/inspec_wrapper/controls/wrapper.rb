@@ -2,4 +2,10 @@
 # You can also write overrides to dependency controls in this file
 # See https://docs.chef.io/inspec/profiles/#profile-dependencies
 
-include_controls "rhel8"
+control 'foobar' do
+    title 'Foobar'
+    desc 'This is a test control'
+    describe file('/tmp') do
+        it { should be_directory }
+    end
+end
