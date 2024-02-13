@@ -62,4 +62,10 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
   tag 'documentable'
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
+
+  #THERE IS A PART TWO THATS NOT COMPLETED
+  describe yaml('/etc/mongod.conf.orig') do
+        its(['setParameter','authenticationMechanisms']){should eq "SCRAM-SHA-256"}
+    end
+
 end

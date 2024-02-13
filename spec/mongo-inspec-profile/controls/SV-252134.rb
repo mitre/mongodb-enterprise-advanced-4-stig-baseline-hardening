@@ -77,4 +77,11 @@ https://docs.mongodb.com/v4.4/tutorial/configure-audit-filters/'
   tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-000140', 'CCI-000166', 'CCI-000171', 'CCI-000172', 'CCI-001464', 'CCI-001487', 'CCI-001814', 'CCI-001844', 'CCI-001851', 'CCI-001858']
   tag nist: ['AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 (1)', 'AU-5 b', 'AU-10', 'AU-12 b', 'AU-12 c', 'AU-14 (1)', 'AU-3 f', 'CM-5 (1)', 'AU-3 (2)', 'AU-4 (1)', 'AU-5 (2)']
 
+
+  describe yaml('/etc/mongod.conf.orig') do
+        its(['auditLog','destination']){should eq "file"}
+        its(['auditLog','format']){should eq "BSON"}
+        its(['auditLog','path']){should eq "/var/log/mongodb/audit/auditLog.bson"}
+    end
+
 end

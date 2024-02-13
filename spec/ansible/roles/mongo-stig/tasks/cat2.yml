@@ -106,6 +106,8 @@
   register: security_check
   changed_when: false
   ignore_errors: true
+  tags:
+    - SV-252143
 
 - name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block does not exist."
   blockinfile:

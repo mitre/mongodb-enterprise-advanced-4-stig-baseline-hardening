@@ -38,6 +38,8 @@
   register: security_check
   changed_when: false
   ignore_errors: true
+  tags:
+    - SV-252149
 
 - name: "HIGH | SV-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals. | Security block does not exist."
   blockinfile:
@@ -108,6 +110,7 @@
 #     - SV-252158
 
 - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+  #THERE IS A PART TWO THATS NOT COMPLETED
   blockinfile:
     path: "{{ mongod_config_path }}"
     marker: "#Rule ID SV-252159"
@@ -115,7 +118,7 @@
     insertafter: "EOF"
     block: |
       setParameter:
-        authenticationMechanisms: SCRAM-SHA-256 
+        authenticationMechanisms: SCRAM-SHA-256
     state: present
   register: result
   changed_when: no
