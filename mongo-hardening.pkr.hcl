@@ -70,9 +70,10 @@ build {
   #ansible needs python and pip to be installed on the target
   // provisioner "shell" {
   //   inline = [
-  //     "apt-get update",
-  //     "apt-get install -y python${var.ansible_vars.python_version} python3-pip",
-  //     "ln -s /usr/bin/python3 /usr/bin/python",
+  //     "cp /etc/mongod.conf.orig /etc/mongod.conf"
+  //     // "apt-get update",
+  //     // "apt-get install -y python${var.ansible_vars.python_version} python3-pip",
+  //     // "ln -s /usr/bin/python3 /usr/bin/python",
   //   ]
   // }
 

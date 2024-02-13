@@ -1,0 +1,18 @@
+---
+- name: "Check or create {{ mongod_config_path }} file"
+  ansible.builtin.stat:
+    path: "{{ mongod_config_path }}"
+  register: conf
+  changed_when: no
+  ignore_errors: true
+  tags:
+    - prep
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: files/conf.template
+    dest: "{{ mongod_config_path }}"
+    owner: "{{ mongo_user }}"
+    group: "{{ mongo_group }}"
+    mode: '755'
+  when: conf.stat.exists == false

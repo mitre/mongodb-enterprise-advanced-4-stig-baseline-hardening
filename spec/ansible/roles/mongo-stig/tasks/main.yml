@@ -1,4 +1,10 @@
 ---
+- name: Mongo.conf Prep
+  ansible.builtin.import_tasks: prep.yml
+  when: prep_conf
+  tags:
+      - prep
+
 # tasks file for mongo-stig
 - name: Include CAT I
   ansible.builtin.import_tasks: cat1.yml
@@ -13,10 +19,3 @@
   tags:
       - CAT2
       - medium
-
-- name: Include CAT III
-  ansible.builtin.import_tasks: cat3.yml
-  when: mongostig_cat3
-  tags:
-      - CAT3
-      - low

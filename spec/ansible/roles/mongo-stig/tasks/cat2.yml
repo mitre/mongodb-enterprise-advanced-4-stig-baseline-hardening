@@ -1,22 +1,23 @@
 # ---
-- name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-242134"
-    prepend_newline: true
-    insertafter: "^#auditLog:"
-    block: |
-      auditLog:
-        destination: file
-        format: BSON
-        path: /var/log/mongodb/audit/auditLog.bson
-  register: result
-  changed_when: no
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252134
+#####ENTERPRISE ONLY
+# - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
+#   blockinfile:
+#     path: "{{ mongod_config_path }}"
+#     marker: "#Rule ID SV-242134"
+#     prepend_newline: true
+#     insertafter: "^#auditLog:"
+#     block: |
+#       auditLog:
+#         destination: file
+#         format: BSON
+#         path: /var/log/mongodb/audit/auditLog.bson
+#   register: result
+#   changed_when: no
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252134
 
 # - name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
 #   command: true
@@ -72,24 +73,24 @@
 #     - medium
 #     - SV-252140
 
-- name: "MEDIUM | SV-252141 | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
-  #need to add check text
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-252141"
-    prepend_newline: true
-    insertafter: "EOF"
-    block: |
-      storage:
-       journal:
-          enabled: true
-  register: result
-  changed_when: no
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252141
+# - name: "MEDIUM | SV-252141 | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
+#   #need to add check text and if else statement
+#   blockinfile:
+#     path: "{{ mongod_config_path }}"
+#     marker: "#Rule ID SV-252141"
+#     prepend_newline: true
+#     insertafter: "^storage:"
+#     block: |
+#       #
+#         journal:
+#           enabled: true
+#   register: result
+#   changed_when: no
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252141
 
 # - name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
 #   command: true
@@ -101,49 +102,49 @@
 #     - medium
 #     - SV-252142
 
-- name: Check if 'security:' exists and is not commented out
-  shell: "grep -P '^security:' {{ mongod_config_path }} || true"
-  register: security_check
-  changed_when: false
-  ignore_errors: true
-  tags:
-    - SV-252143
+# - name: Check if 'security:' exists and is not commented out
+#   shell: "grep -P '^security:' {{ mongod_config_path }} || true"
+#   register: security_check
+#   changed_when: false
+#   ignore_errors: true
+#   tags:
+#     - SV-252143
 
-- name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block does not exist."
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-252143"
-    prepend_newline: true
-    insertafter: "^#security:"
-    block: |
-      security:
-        javascriptEnabled: false
-  when: security_check.stdout == ""
-  register: result
-  changed_when: no
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252143
+# - name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block does not exist."
+#   blockinfile:
+#     path: "{{ mongod_config_path }}"
+#     marker: "#Rule ID SV-252143"
+#     prepend_newline: true
+#     insertafter: "^#security:"
+#     block: |
+#       security:
+#         javascriptEnabled: false
+#   when: security_check.stdout == ""
+#   register: result
+#   changed_when: no
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252143
 
-- name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block exists."
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-252143"
-    prepend_newline: true
-    insertafter: "^security:"
-    block: |
-      #
-        javascriptEnabled: false
-  when: security_check.stdout != ""
-  register: result
-  changed_when: no
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252143
+# - name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block exists."
+#   blockinfile:
+#     path: "{{ mongod_config_path }}"
+#     marker: "#Rule ID SV-252143"
+#     prepend_newline: true
+#     insertafter: "^security:"
+#     block: |
+#       #
+#         javascriptEnabled: false
+#   when: security_check.stdout != ""
+#   register: result
+#   changed_when: no
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252143
 
 # - name: "MEDIUM | SV-252144 | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
 #   command: true
