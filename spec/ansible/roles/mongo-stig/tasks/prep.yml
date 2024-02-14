@@ -16,3 +16,5 @@
     group: "{{ mongo_group }}"
     mode: '755'
   when: conf.stat.exists == false
+  tags:
+    - prep
