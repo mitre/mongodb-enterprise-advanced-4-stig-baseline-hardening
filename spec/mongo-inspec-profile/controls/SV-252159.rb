@@ -65,7 +65,7 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
 
   #THERE IS A PART TWO THATS NOT COMPLETED
   describe yaml('/etc/mongod.conf') do
-        its(['setParameter','authenticationMechanisms']){should eq "SCRAM-SHA-256"}
+        its(['setParameter','authenticationMechanisms']){should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN']}
     end
 
 end

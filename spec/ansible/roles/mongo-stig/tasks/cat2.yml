@@ -1,5 +1,5 @@
-# ---
-#####ENTERPRISE ONLY
+---
+##### ENTERPRISE ONLY
 # - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
 #   blockinfile:
 #     path: "{{ mongod_config_path }}"
@@ -11,8 +11,6 @@
 #         destination: file
 #         format: BSON
 #         path: /var/log/mongodb/audit/auditLog.bson
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -21,42 +19,45 @@
 
 # - name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
 #   command: true
-#   register: result
-#   
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252135
 
-# - name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
-#   command: true
-#   register: result
-#   
-#   changed_when: no
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252136
+##### DONE BUT DOESNT WONT RUN CUZ PERMISSIONS ERROR???, NEEDS INSPEC STILL, maybe it requires the user to be mongod
+- name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
+  ansible.builtin.shell: |
+      chown {{ mongo_user }} {{ mongod_config_path }}
+      chgrp {{ mongo_user }} {{ mongod_config_path }}
+      chmod 660 {{ mongod_config_path }}
+  
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252136
 
-# - name: "MEDIUM | SV-252137 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
-#   #this control is to remove stuff
-#   command: true
-#   register: result
-#   changed_when: no
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252137
+#####UNTESTED
+- name: "MEDIUM | SV-252137 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  ansible.builtin.replace:
+    path: "{{ mongod_config_path }}"
+    regexp: "{{ item.regexp }}"
+    replace: ''
+  loop:
+    - { regexp: '^\s*enabled: true\s*$' }
+    - { regexp: '^\s*JSONPEnabled: true\s*$' }
+    - { regexp: '^\s*RESTInterfaceEnabled: true\s*$' }
+  
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252137
 
 # - name: "MEDIUM | SV-252138 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
 #   #this control is to remove stuff
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -65,16 +66,14 @@
 
 # - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252140
 
-###DOES NOT EXIST IN MONGO 6+
-#need to add check text and if else statement
+##### DOES NOT EXIST IN MONGO 6+
+##### need to add check text and if else statement
 # - name: "MEDIUM | SV-252141 | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
 #   blockinfile:
 #     path: "{{ mongod_config_path }}"
@@ -85,8 +84,6 @@
 #       #
 #         journal:
 #           enabled: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -95,8 +92,6 @@
 
 # - name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -121,8 +116,6 @@
       security:
         javascriptEnabled: false
   when: security_check.stdout == ""
-  register: result
-  changed_when: no
   ignore_errors: true
   tags:
     - cat2
@@ -139,8 +132,6 @@
       #
         javascriptEnabled: false
   when: security_check.stdout != ""
-  register: result
-  changed_when: no
   ignore_errors: true
   tags:
     - cat2
@@ -149,8 +140,6 @@
 
 # - name: "MEDIUM | SV-252144 | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -159,8 +148,6 @@
 
 # - name: "MEDIUM | SV-252145 | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -170,8 +157,6 @@
 # - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
 #   mongo enterprise only
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -180,8 +165,6 @@
 
 # - name: "MEDIUM | SV-252148 | MongoDB must limit the total number of concurrent connections to the database."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -190,8 +173,6 @@
 
 # - name: "MEDIUM | SV-252151 | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -200,8 +181,6 @@
 
 # - name: "MEDIUM | SV-252153 | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -210,8 +189,6 @@
 
 # - name: "MEDIUM | SV-252154 | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
 #   command: true
-#   register: results
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -220,8 +197,6 @@
 
 # - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -230,8 +205,6 @@
 
 # - name: "MEDIUM | SV-252156 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -240,8 +213,6 @@
 
 # - name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -250,8 +221,6 @@
 
 # - name: "MEDIUM | SV-252161 | MongoDB must map the PKI-authenticated identity to an associated user account."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -260,8 +229,6 @@
 
 # - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -270,8 +237,6 @@
 
 # - name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -280,8 +245,6 @@
 
 # - name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -290,8 +253,6 @@
 
 # - name: "MEDIUM | SV-252167 | MongoDB must check the validity of all data inputs except those specifically identified by the organization."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -300,8 +261,6 @@
 
 # - name: "MEDIUM | SV-252168 | MongoDB must provide non-privileged users with error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -310,8 +269,6 @@
 
 # - name: "MEDIUM | SV-252169 | MongoDB must reveal detailed error messages only to the ISSO, ISSM, SA, and DBA."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -320,8 +277,6 @@
 
 # - name: "MEDIUM | SV-252170 | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -330,8 +285,6 @@
 
 # - name: "MEDIUM | SV-252171 | MongoDB must utilize centralized management of the content captured in audit records generated by all components of MongoDB."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -340,8 +293,6 @@
 
 # - name: "MEDIUM | SV-252172 | MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -350,8 +301,6 @@
 
 # - name: "MEDIUM | SV-252173 | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -360,8 +309,6 @@
 
 # - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -370,8 +317,6 @@
 
 # - name: "MEDIUM | SV-252175 | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -380,8 +325,6 @@
 
 # - name: "MEDIUM | SV-252176 | MongoDB must require users to reauthenticate when organization-defined circumstances or situations require reauthentication."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -390,8 +333,6 @@
 
 # - name: "MEDIUM | SV-252177 | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -400,8 +341,6 @@
 
 # - name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -410,8 +349,6 @@
 
 # - name: "MEDIUM | SV-252179 | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -420,8 +357,6 @@
 
 # - name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -430,8 +365,6 @@
 
 # - name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -440,8 +373,6 @@
 
 # - name: "MEDIUM | SV-252182 | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
 #   command: true
-#   register: result
-#   changed_when: no
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -449,9 +380,7 @@
 #     - SV-252182
 
 # - name: "MEDIUM | SV-252183 | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
-#   command: true
-#   register: result
-#   changed_when: no
+#   command: true  
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -459,9 +388,7 @@
 #     - SV-252183
 
 # - name: "MEDIUM | SV-252185 | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
-#   command: true
-#   register: result
-#   changed_when: no
+#   command: true 
 #   ignore_errors: true
 #   tags:
 #     - cat2
