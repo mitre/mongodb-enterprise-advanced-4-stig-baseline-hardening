@@ -24,7 +24,7 @@ variable "ansible_vars" {
 variable "input_image" {
   type = map(string)
   default = {
-    "tag"     = "mongo-ansible-ready"
+    "tag"     = "enterprise_ansible_ready"
     "version" = "latest"
   }
 }

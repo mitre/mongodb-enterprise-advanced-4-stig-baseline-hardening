@@ -31,7 +31,6 @@
       chown {{ mongo_user }} {{ mongod_config_path }}
       chgrp {{ mongo_user }} {{ mongod_config_path }}
       chmod 660 {{ mongod_config_path }}
-  
   ignore_errors: true
   tags:
     - cat2
@@ -48,7 +47,6 @@
     - { regexp: '^\s*enabled: true\s*$' }
     - { regexp: '^\s*JSONPEnabled: true\s*$' }
     - { regexp: '^\s*RESTInterfaceEnabled: true\s*$' }
-  
   ignore_errors: true
   tags:
     - cat2

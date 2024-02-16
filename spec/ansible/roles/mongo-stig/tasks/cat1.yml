@@ -100,7 +100,7 @@
 #     - high
 #     - SV-252149
 
-##### this is currently just checking it, this part should be in the inspec, but what is the actual requirement
+##### MANUAL
 # - name: "HIGH | SV-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
 #   community.mongodb.mongodb_shell:
 #     db: "database"
@@ -112,7 +112,7 @@
 #     - SV-252150
 
 
-##### nothing to change with ansible?
+##### MANUAL
 # - name: "HIGH | SV-252152 | MongoDB software installation account must be restricted to authorized users."
 #   command: true
 #   ignore_errors: true
@@ -133,21 +133,33 @@
 
 ##### PART TWO OF THIS DOESNT EXIST IN NEWER MONGO
 ##### This whole rule seems out of date as the authSchemaUpgrade command was removed in mongo 4
-- name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-252159"
-    prepend_newline: true
-    insertafter: "EOF"
-    block: |
-      setParameter:
-        authenticationMechanisms: SCRAM-SHA-256
-    state: present
-  ignore_errors: true
-  tags:
-    - cat1
-    - high
-    - SV-252159
+# - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+#   blockinfile:
+#     path: "{{ mongod_config_path }}"
+#     marker: "#Rule ID SV-252159"
+#     prepend_newline: true
+#     insertafter: "EOF"
+#     block: |
+#       setParameter:
+#         authenticationMechanisms: SCRAM-SHA-256
+#     state: present
+#   ignore_errors: true
+#   tags:
+#     - cat1
+#     - high
+#     - SV-252159
+  
+# - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
+#   yedit:
+#       src: "{{ mongod_config_path }}"
+#       key: setParameter
+#       value: 
+#         authenticationMechanisms: SCRAM-SHA-256
+#   ignore_errors: true
+#   tags:
+#     - cat1
+#     - high
+#     - SV-252159
 
 ##### check text conflict with 252136?
 - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
