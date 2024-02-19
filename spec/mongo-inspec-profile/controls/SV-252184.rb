@@ -31,4 +31,12 @@ Upgrade unsupported DBMS or unsupported components to a supported version of the
   tag 'documentable'
   tag cci: ['CCI-002605']
   tag nist: ['SI-2 c']
+
+  describe 'Review the system documentation and interview the database administrator.
+    Identify all database software components. Review the version and release information.' do
+    skip 'If the DBMS or any of the software components are not supported by MongoDB, this is a finding. 
+    Remove or decommission all unsupported software products.
+    Upgrade unsupported DBMS or unsupported components to a supported version of the product.'
+  end
+
 end

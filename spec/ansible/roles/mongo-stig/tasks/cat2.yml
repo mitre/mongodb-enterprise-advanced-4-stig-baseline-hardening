@@ -96,40 +96,11 @@
 #     - medium
 #     - SV-252142
 
-- name: Check if 'security:' exists and is not commented out
-  shell: "grep -P '^security:' {{ mongod_config_path }} || true"
-  register: security_check
-  changed_when: false
-  ignore_errors: true
-  tags:
-    - SV-252143
-
-- name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block does not exist."
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-252143"
-    prepend_newline: true
-    insertafter: "^#security:"
-    block: |
-      security:
-        javascriptEnabled: false
-  when: security_check.stdout == ""
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252143
-
-- name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it. | Security block exists."
-  blockinfile:
-    path: "{{ mongod_config_path }}"
-    marker: "#Rule ID SV-252143"
-    prepend_newline: true
-    insertafter: "^security:"
-    block: |
-      #
-        javascriptEnabled: false
-  when: security_check.stdout != ""
+- name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it."
+  yedit:
+      src: "{{ mongod_config_path }}"
+      key: security.javascriptEnabled
+      value: false
   ignore_errors: true
   tags:
     - cat2

@@ -53,4 +53,8 @@ For the operating system finding, refer to the appropriate operating system docu
   tag 'documentable'
   tag cci: ['CCI-002450', 'CCI-000803']
   tag nist: ['SC-13 b', 'IA-7']
+
+  describe yaml('/etc/mongod.conf') do
+        its(['net','tls','FIPSMode']){should eq true}
+    end
 end

@@ -37,4 +37,12 @@ Train all users of the tool in the nature of using the plain-text password optio
   tag 'documentable'
   tag cci: ['CCI-000206']
   tag nist: ['IA-6']
+
+  describe 'To prevent the compromise of authentication information such as passwords and PINs during the authentication process, the feedback from the system must not provide any information that would allow an unauthorized user to compromise the authentication mechanism.' do
+    skip 'For the MongoDB command-line tools mongo shell, mongodump, mongorestore, mongoimport, mongoexport, which cannot be configured not to obfuscate a plain-text password, and any other essential tool with the same limitation; verify that the system documentation explains the need for the tool, who uses it, and any relevant mitigations and that AO approval has been obtained.
+    If it is not documented, this is a finding.
+    Request evidence that all users of MongoDB command-line tools are trained in the use of the -p option/plain-text password option and how to keep the password protected from unauthorized viewing/capture, and that they adhere to this practice.
+    If evidence of training does not exist, this is a finding.'
+  end
+
 end

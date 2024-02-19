@@ -23,4 +23,9 @@ If access or use of this account is not restricted to the minimum number of pers
   tag 'documentable'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
+
+  describe 'Review procedures for controlling, granting access to, and tracking use of the DBMS software installation account.' do
+    skip 'If access or use of this account is not restricted to the minimum number of personnel required or if unauthorized access to the account has been granted, this is a finding.'
+  end
+
 end
