@@ -4,6 +4,10 @@ prep_conf: true
 mongostig_cat1: true
 mongostig_cat2: true
 mongostig_cat3: true 
-mongod_config_path: "/etc/mongod.conf"
 mongo_user: root
 mongo_group: root
+mongod_config_path: "/etc/mongod.conf"
+mongo_audit_directory_path: "/var/log/mongodb/audit"
+mongo_audit_file_path: "/var/log/mongodb/audit/auditlog.bson"
+certificate_key_path: "/etc/ssl/mongodb.pem"
+ca_file_path: "/etc/ssl/caToValidateClientCertificates.pem"

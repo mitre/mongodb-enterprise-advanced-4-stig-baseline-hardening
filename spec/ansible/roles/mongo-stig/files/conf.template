@@ -19,8 +19,7 @@
 #net:
   #port: 27017
   #bindIp: 127.0.0.1
-
-
+  
 # how the process runs
 processManagement:
   timeZoneInfo: /usr/share/zoneinfo

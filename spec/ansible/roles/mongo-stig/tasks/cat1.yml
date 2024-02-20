@@ -7,9 +7,9 @@
 #     - key: net.tls.mode
 #       value: requireTLS
 #     - key: net.tls.certificateKeyFile
-#       value: /etc/ssl/mongodb.pem
+#       value: "{{ certificate_key_path }}"
 #     - key: net.tls.CAFile
-#       value: /etc/ssl/caToValidateClientCertificates.pem
+#       value: "{{ ca_file_path }}"
 #     - key: net.tls.allowInvalidCertificates
 #       value: false
 #     - key: net.tls.allowConnectionsWithoutCertificates

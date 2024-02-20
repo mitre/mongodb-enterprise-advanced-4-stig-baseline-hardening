@@ -1,66 +1,72 @@
 ---
 ##### ENTERPRISE ONLY
-# - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
-#   blockinfile:
-#     path: "{{ mongod_config_path }}"
-#     marker: "#Rule ID SV-242134"
-#     prepend_newline: true
-#     insertafter: "^#auditLog:"
-#     block: |
-#       auditLog:
-#         destination: file
-#         format: BSON
-#         path: /var/log/mongodb/audit/auditLog.bson
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252134
-
-# - name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252135
-
-##### DONE BUT DOESNT WONT RUN CUZ PERMISSIONS ERROR???, NEEDS INSPEC STILL, maybe it requires the user to be mongod
-- name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
-  ansible.builtin.shell: |
-      chown {{ mongo_user }} {{ mongod_config_path }}
-      chgrp {{ mongo_user }} {{ mongod_config_path }}
-      chmod 660 {{ mongod_config_path }}
+- name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
+  yedit:
+    src: "{{ mongod_config_path }}"
+    edits:
+    - key: auditLog.destination
+      value: file
+    - key: auditLog.format
+      value: BSON
+    - key: auditLog.path
+      value: "{{ mongo_audit_file_path }}"
   ignore_errors: true
   tags:
     - cat2
     - medium
-    - SV-252136
+    - SV-252134
+    - enterprise
 
-#####UNTESTED
+- name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
+  ansible.builtin.shell: |
+      chown {{ mongo_user }} {{ mongo_audit_directory_path }}
+      chgrp {{ mongo_user }} {{ mongo_audit_directory_path }}
+      chmod 700 {{ mongo_audit_directory_path }}
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252135
+
+##### DONE BUT DOESNT WONT RUN CUZ PERMISSIONS ERROR???, maybe it requires the user to be mongod
+# - name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
+#   ansible.builtin.shell: |
+#       chown {{ mongo_user }} {{ mongod_config_path }}
+#       chgrp {{ mongo_user }} {{ mongod_config_path }}
+#       chmod 660 {{ mongod_config_path }}
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252136
+
+##### Work around since removing multiple edits doesnt seem to work
 - name: "MEDIUM | SV-252137 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
-  ansible.builtin.replace:
-    path: "{{ mongod_config_path }}"
-    regexp: "{{ item.regexp }}"
-    replace: ''
-  loop:
-    - { regexp: '^\s*enabled: true\s*$' }
-    - { regexp: '^\s*JSONPEnabled: true\s*$' }
-    - { regexp: '^\s*RESTInterfaceEnabled: true\s*$' }
+  yedit:
+    src: "{{ mongod_config_path }}"
+    edits:
+    - key: net.http.enabled
+      value: {}
+    - key: net.http.JSONPEnabled
+      value: {}
+    - key: net.http.RESTInterfaceEnabled
+      value: {}
   ignore_errors: true
   tags:
     - cat2
     - medium
     - SV-252137
 
-# - name: "MEDIUM | SV-252138 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
-#   #this control is to remove stuff
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252138
+- name: "MEDIUM | SV-252138 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
+  yedit:
+    src: "{{ mongod_config_path }}"
+    key: net.http
+    state: absent
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252138
 
 # - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
 #   command: true
