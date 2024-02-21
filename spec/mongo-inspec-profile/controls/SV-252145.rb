@@ -54,4 +54,9 @@ https://docs.mongodb.com/v4.4/reference/command/createRole/'
   tag 'documentable'
   tag cci: ['CCI-002165', 'CCI-002235']
   tag nist: ['AC-3 (4)', 'AC-6 (10)']
+
+  describe yaml('/etc/mongod.conf') do
+        its(['security','authorization']){should eq "enabled"}
+    end
+    
 end

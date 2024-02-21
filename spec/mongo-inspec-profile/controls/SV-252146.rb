@@ -57,4 +57,5 @@ For the operating system finding, refer to the appropriate operating system docu
   describe yaml('/etc/mongod.conf') do
         its(['net','tls','FIPSMode']){should eq true}
     end
+    
 end

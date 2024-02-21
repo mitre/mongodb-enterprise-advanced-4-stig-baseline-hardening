@@ -42,4 +42,9 @@ For any non-MongoDB data that is found under the MongoDB created directories tha
   tag 'documentable'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
+
+  describe 'Check if any non-MongoDB application, non-MongoDB data, or non-MongoDB directories exists under any of the MongoDB created directories or sub-directories.' do
+    skip 'If any non-MongoDB application, non-MongoDB data, or non-MongoDB directories exists under the MongoDB-created directories, this is a finding.'
+  end
+
 end

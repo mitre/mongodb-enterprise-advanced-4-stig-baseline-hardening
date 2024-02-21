@@ -17,16 +17,17 @@
     - SV-252134
     - enterprise
 
-- name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
-  ansible.builtin.shell: |
-      chown {{ mongo_user }} {{ mongo_audit_directory_path }}
-      chgrp {{ mongo_user }} {{ mongo_audit_directory_path }}
-      chmod 700 {{ mongo_audit_directory_path }}
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252135
+##### FILES DONT EXIST
+# - name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
+#   ansible.builtin.shell: |
+#       chown {{ mongo_user }} {{ mongo_audit_directory_path }}
+#       chgrp {{ mongo_user }} {{ mongo_audit_directory_path }}
+#       chmod 700 {{ mongo_audit_directory_path }}
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252135
 
 ##### DONE BUT DOESNT WONT RUN CUZ PERMISSIONS ERROR???, maybe it requires the user to be mongod
 # - name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
@@ -68,6 +69,7 @@
     - medium
     - SV-252138
 
+##### MANUAL??? https://github.com/mitre/crunchy-data-postgresql-stig-baseline/blob/ebc58258ba175cb1d3859fd8039e05b5b3493dda/controls/V-233524.rb#L4
 # - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
 #   command: true
 #   ignore_errors: true
@@ -77,25 +79,26 @@
 #     - SV-252140
 
 ##### DOES NOT EXIST IN MONGO 6+
-##### need to add check text and if else statement
 # - name: "MEDIUM | SV-252141 | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
-#   blockinfile:
-#     path: "{{ mongod_config_path }}"
-#     marker: "#Rule ID SV-252141"
-#     prepend_newline: true
-#     insertafter: "^storage:"
-#     block: |
-#       #
-#         journal:
-#           enabled: true
+#   yedit:
+#     src: "{{ mongod_config_path }}"
+#     key: storage.journale.enabled
+#     state: true
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252141
 
+##### UNTESTED, FILES DONT EXIST
 # - name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
-#   command: true
+#   ansible.builtin.shell: |
+#       chown {{ mongo_user }}:{{ mongo_user }} {{ mongod_config_path }}
+#       chmod 600 {{ mongod_config_path }}
+#       chown -R mongod:mongod {{ data_file_directory_path }}
+#       chmod 755 {{ data_file_directory_path }}
+#       find {{ data_file_directory_path }}/* -type f | xargs  chmod 600
+#       find {{ data_file_directory_path }}/* -type d | xargs  chmod 700
 #   ignore_errors: true
 #   tags:
 #     - cat2
@@ -113,6 +116,7 @@
     - medium
     - SV-252143
 
+##### MANUAL
 # - name: "MEDIUM | SV-252144 | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
 #   command: true
 #   ignore_errors: true
@@ -121,31 +125,53 @@
 #     - medium
 #     - SV-252144
 
+##### same ansible as 252149
 # - name: "MEDIUM | SV-252145 | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
-#   command: true
+#   yedit:
+#       src: "{{ mongod_config_path }}"
+#       key: security.authorization
+#       value: enabled
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252145
 
+##### ENTERPRISE, Added a PII tag, this only needs to be run if there will be PII in the db
 # - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
-#   mongo enterprise only
-#   command: true
+#   yedit:
+#     src: "{{ mongod_config_path }}"
+#     edits:
+#     - key: security.enableEncryption
+#       value: true
+#     - key: kmip.serverName
+#       value: "{{ KMIP_server_host_name }}"
+#     - key: kmip.port
+#       value: "{{ KMIP_server_port }}"
+#     - key: kimp.ServerCAFile
+#       value: "{{ KMIP_server_ca_file }}"
+#     - key: kmip.clientCertificationFile
+#       value: "{{ KMIP_client_certificate_file }}"
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252147
+#     - enterprise
+#     - pii
 
-# - name: "MEDIUM | SV-252148 | MongoDB must limit the total number of concurrent connections to the database."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252148
+- name: "MEDIUM | SV-252148 | MongoDB must limit the total number of concurrent connections to the database."
+  yedit:
+      src: "{{ mongod_config_path }}"
+      key: net.maxIncomingConnections
+      value: "{{ max_incoming_connections }}"
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252148
 
+##### MANUAL
 # - name: "MEDIUM | SV-252151 | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
 #   command: true
 #   ignore_errors: true
@@ -154,6 +180,7 @@
 #     - medium
 #     - SV-252151
 
+##### MANUAL
 # - name: "MEDIUM | SV-252153 | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
 #   command: true
 #   ignore_errors: true
@@ -178,6 +205,7 @@
 #     - medium
 #     - SV-252155
 
+##### THIS IS LITERALLY JUST 252137 and 252138
 # - name: "MEDIUM | SV-252156 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
 #   command: true
 #   ignore_errors: true
@@ -186,8 +214,12 @@
 #     - medium
 #     - SV-252156
 
+##### IS THIS ALSO NOT 252149 and 252145 BUT WITH A MANUAL CHECK???
 # - name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
-#   command: true
+#   yedit:
+#       src: "{{ mongod_config_path }}"
+#       key: security.authorization
+#       value: enabled
 #   ignore_errors: true
 #   tags:
 #     - cat2

@@ -7,7 +7,7 @@
 #     - key: net.tls.mode
 #       value: requireTLS
 #     - key: net.tls.certificateKeyFile
-#       value: "{{ certificate_key_path }}"
+#       value: "{{ certificate_key_file_path }}"
 #     - key: net.tls.CAFile
 #       value: "{{ ca_file_path }}"
 #     - key: net.tls.allowInvalidCertificates
@@ -103,13 +103,13 @@
     - high
     - SV-252159
 
-##### check text conflict with 252136?
+##### FILES DONT EXIST check text conflict with 252136? 
 # - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
 #   ansible.builtin.shell: |
-#       chown {{ mongo_user }}:{{ mongo_user }} /etc/ssl/mongodb.pem
-#       chmod 600 /etc/ssl/mongodb.pem
-#       chown {{ mongo_user }}:{{ mongo_user }} /etc/ssl/caToValidateClientCertificates.pem
-#       chmod 600 /etc/ssl/caToValidateClientCertificates.pem
+#       chown {{ mongo_user }}:{{ mongo_user }} {{ certificate_key_file_path }}
+#       chmod 600 {{ certificate_key_file_path }}
+#       chown {{ mongo_user }}:{{ mongo_user }} {{ ca_file_path }}
+#       chmod 600 {{ ca_file_path }}
 #   ignore_errors: true
 #   tags:
 #     - cat1

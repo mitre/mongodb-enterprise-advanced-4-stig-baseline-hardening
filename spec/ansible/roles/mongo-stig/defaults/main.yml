@@ -9,5 +9,11 @@ mongo_group: root
 mongod_config_path: "/etc/mongod.conf"
 mongo_audit_directory_path: "/var/log/mongodb/audit"
 mongo_audit_file_path: "/var/log/mongodb/audit/auditlog.bson"
-certificate_key_path: "/etc/ssl/mongodb.pem"
+certificate_key_file_path: "/etc/ssl/mongodb.pem"
 ca_file_path: "/etc/ssl/caToValidateClientCertificates.pem"
+data_file_directory_path: "/var/lib/mongo"
+max_incoming_connections: 800000
+KMIP_server_host_name: ""
+KMIP_server_port: ""
+KMIP_server_ca_file: ""
+KMIP_client_certificate_file: ""
