@@ -56,7 +56,7 @@ https://docs.mongodb.com/v4.4/reference/command/createRole/'
   tag nist: ['AC-3 (4)', 'AC-6 (10)']
 
   describe yaml(input('mongod_config_path')) do
-        its(['security','authorization']){should eq "enabled"}
-    end
+    its(['security','authorization']){should eq "enabled"}
+  end
     
 end

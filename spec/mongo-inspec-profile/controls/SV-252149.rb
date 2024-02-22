@@ -49,7 +49,7 @@ https://docs.mongodb.com/v4.4/core/security-ldap-external/#configuration'
   tag nist: ['AC-2 (1)']
 
   describe yaml(input('mongod_config_path')) do
-        its(['security','authorization']){should eq "enabled"}
-    end
+    its(['security','authorization']){should eq "enabled"}
+  end
     
 end

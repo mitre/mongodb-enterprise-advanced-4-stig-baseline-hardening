@@ -1,6 +1,6 @@
 control 'SV-252169' do
   title 'MongoDB must reveal detailed error messages only to the ISSO, ISSM, SA, and DBA.'
-  desc %q(If MongoDB provides too much information in error logs and administrative messages to the screen, this could lead to compromise. The structure and content of error messages need to be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.
+  desc '(If MongoDB provides too much information in error logs and administrative messages to the screen, this could lead to compromise. The structure and content of error messages need to be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.
 
 Some default DBMS error messages can contain information that could aid an attacker in, among other things, identifying the database type, host address, or state of the database. Custom errors may contain sensitive customer information.
 
@@ -47,4 +47,9 @@ Identify and remove any administrative roles and privileges from application use
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
+
+  describe yaml(input('mongod_config_path')) do
+    its(['security','redactClientLogData']){should eq true}
+  end
+  
 end

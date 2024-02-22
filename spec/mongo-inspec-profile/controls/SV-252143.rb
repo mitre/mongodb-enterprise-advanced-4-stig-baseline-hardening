@@ -34,7 +34,7 @@ security:
   tag nist: ['SI-10']
 
   describe yaml(input('mongod_config_path')) do
-        its(['security','javascriptEnabled']){should eq false}
-    end
+    its(['security','javascriptEnabled']){should eq false}
+  end
 
 end

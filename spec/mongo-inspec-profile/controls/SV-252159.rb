@@ -65,7 +65,7 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
 
   #authSchemaUpgrade command doesn't exist anymore since version 4, so part 2 is not doable
   describe yaml(input('mongod_config_path')) do
-        its(['setParameter','authenticationMechanisms']){should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN']}
-    end
+    its(['setParameter','authenticationMechanisms']){should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN']}
+  end
 
 end

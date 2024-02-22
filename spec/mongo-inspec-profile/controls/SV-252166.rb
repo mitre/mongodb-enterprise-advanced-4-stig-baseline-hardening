@@ -25,4 +25,9 @@ If the code that exists for data movement does not comply with the organization-
   tag 'documentable'
   tag cci: ['CCI-001090']
   tag nist: ['SC-4']
+
+  describe 'Review the procedures for the refreshing of development/test data from production.' do
+    skip 'If code for data movement does not comply with the organization-defined data transfer policy and/or fails to remove any copies of production data from unprotected locations, this is a finding.'
+  end
+  
 end

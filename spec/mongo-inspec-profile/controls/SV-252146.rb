@@ -55,7 +55,7 @@ For the operating system finding, refer to the appropriate operating system docu
   tag nist: ['SC-13 b', 'IA-7']
 
   describe yaml(input('mongod_config_path')) do
-        its(['net','tls','FIPSMode']){should eq true}
-    end
+    its(['net','tls','FIPSMode']){should eq true}
+  end
     
 end
