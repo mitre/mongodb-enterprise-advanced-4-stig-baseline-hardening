@@ -29,8 +29,8 @@ Alternately, scripts can also be written to inspect the database software librar
   tag nist: ['CM-5 (6)']
 
   describe 'Review monitoring procedures and implementation evidence to verify monitoring of changes to database software libraries, related applications, and configuration files occurs.' do
-    skip 'Implement procedures to monitor for unauthorized changes to DBMS software libraries, related software application libraries, and configuration files.
-    If a third-party automated tool is not employed, an automated job that reports file information on the directories and files of interest and compares them to the baseline report for the same will meet the requirement.'
+    skip 'Implement procedures to monitor for unauthorized changes to DBMS software libraries, related software application libraries, and configuration files.'
+    skip 'If a third-party automated tool is not employed, an automated job that reports file information on the directories and files of interest and compares them to the baseline report for the same will meet the requirement.'
   end
 
 end

@@ -86,4 +86,9 @@ To remove a user that is not authorized run the following command:
   tag 'documentable'
   tag cci: ['CCI-000187']
   tag nist: ['IA-5 (2) (a) (2)']
+
+  describe 'Each unique x.509 client certificate corresponds to a single MongoDB user; meaning it cannot use a single-client certificate to authenticate more than one MongoDB user.' do
+    skip 'If using LDAP for authentication, this is not applicable.'
+    skip 'If the authenticated MongoDB user displayed does not have a user value equal to the x.509 certs Subject Name, this is a finding.'
+  end
 end

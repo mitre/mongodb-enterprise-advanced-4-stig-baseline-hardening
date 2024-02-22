@@ -35,9 +35,9 @@ https://docs.mongodb.com/v4.4/tutorial/control-access-to-mongodb-with-kerberos-a
   tag nist: ['IA-5 (1) (a)']
 
   describe 'Password complexity and lifetime must be enforced by an external authentication source such as LDAP, Active Directory, or Kerberos.' do
-    skip 'If MongoDB is using Native LDAP authentication where the LDAP server is configured to enforce password complexity and lifetime, this is not a finding.
-    If MongoDB is using Kerberos authentication where Kerberos is configured to enforce password complexity and lifetime, this is not a finding.
-    If MongoDB is not configured for SCRAM-SHA1, MONGODB-CR, or LDAP authentication, this is a finding.'
+    skip 'If MongoDB is using Native LDAP authentication where the LDAP server is configured to enforce password complexity and lifetime, this is not a finding.'
+    skip 'If MongoDB is using Kerberos authentication where Kerberos is configured to enforce password complexity and lifetime, this is not a finding.'
+    skip 'If MongoDB is not configured for SCRAM-SHA1, MONGODB-CR, or LDAP authentication, this is a finding.'
   end
 
 end

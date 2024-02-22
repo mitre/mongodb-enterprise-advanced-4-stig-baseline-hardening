@@ -34,9 +34,9 @@ Upgrade unsupported DBMS or unsupported components to a supported version of the
 
   describe 'Review the system documentation and interview the database administrator.
     Identify all database software components. Review the version and release information.' do
-    skip 'If the DBMS or any of the software components are not supported by MongoDB, this is a finding. 
-    Remove or decommission all unsupported software products.
-    Upgrade unsupported DBMS or unsupported components to a supported version of the product.'
+    skip 'If the DBMS or any of the software components are not supported by MongoDB, this is a finding.'
+    skip 'Remove or decommission all unsupported software products.'
+    skip 'Upgrade unsupported DBMS or unsupported components to a supported version of the product.'
   end
 
 end

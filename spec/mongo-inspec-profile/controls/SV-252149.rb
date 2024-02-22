@@ -48,7 +48,7 @@ https://docs.mongodb.com/v4.4/core/security-ldap-external/#configuration'
   tag cci: ['CCI-000015']
   tag nist: ['AC-2 (1)']
 
-  describe yaml('/etc/mongod.conf') do
+  describe yaml(input('mongod_config_path')) do
         its(['security','authorization']){should eq "enabled"}
     end
     

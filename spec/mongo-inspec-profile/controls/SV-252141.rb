@@ -47,7 +47,7 @@ Stop/start (restart) any or all mongod or mongos processes.'
   tag cci: ['CCI-001190', 'CCI-001665']
   tag nist: ['SC-24', 'SC-24']
 
-  describe yaml('/etc/mongod.conf') do
+  describe yaml(input('mongod_config_path')) do
           its(['storage','journal','enabled']){should eq true}
       end
 

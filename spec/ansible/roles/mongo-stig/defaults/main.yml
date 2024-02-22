@@ -8,7 +8,7 @@ mongo_user: root
 mongo_group: root
 mongod_config_path: "/etc/mongod.conf"
 mongo_audit_directory_path: "/var/log/mongodb/audit"
-mongo_audit_file_path: "/var/log/mongodb/audit/auditlog.bson"
+mongo_audit_file_path: "/var/log/mongodb/audit/auditLog.bson"
 certificate_key_file_path: "/etc/ssl/mongodb.pem"
 ca_file_path: "/etc/ssl/caToValidateClientCertificates.pem"
 data_file_directory_path: "/var/lib/mongo"

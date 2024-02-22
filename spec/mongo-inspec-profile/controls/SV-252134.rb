@@ -78,10 +78,10 @@ https://docs.mongodb.com/v4.4/tutorial/configure-audit-filters/'
   tag nist: ['AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 (1)', 'AU-5 b', 'AU-10', 'AU-12 b', 'AU-12 c', 'AU-14 (1)', 'AU-3 f', 'CM-5 (1)', 'AU-3 (2)', 'AU-4 (1)', 'AU-5 (2)']
 
 
-  describe yaml('/etc/mongod.conf') do
+  describe yaml(input('mongod_config_path')) do
         its(['auditLog','destination']){should eq "file"}
         its(['auditLog','format']){should eq "BSON"}
-        its(['auditLog','path']){should eq "/var/log/mongodb/audit/auditLog.bson"}
+        its(['auditLog','path']){should match input('mongo_audit_file_path')}
     end
 
 end

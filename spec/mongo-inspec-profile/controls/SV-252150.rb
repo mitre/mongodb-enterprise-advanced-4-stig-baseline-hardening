@@ -40,8 +40,8 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
   tag nist: ['AC-3']
 
   describe 'The MongoDB administrator must ensure that additional application access control is enforced.' do
-    skip 'Review the system documentation to determine the required levels of protection for MongoDB server securables by type of login. 
-    Review the permissions actually in place on the server. If the actual permissions do not match the documented requirements, this is a finding.'
+    skip 'Review the system documentation to determine the required levels of protection for MongoDB server securables by type of login.'
+    skip 'Review the permissions actually in place on the server. If the actual permissions do not match the documented requirements, this is a finding.'
   end
 
 end

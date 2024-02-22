@@ -10,3 +10,54 @@ version: 1.0.0
 supports: []
 depends: []
 inspec_version: null
+
+inputs:
+  - name: mongo_user
+    description: "The system user of the mongod process"
+    type: string
+    value: "root"
+    required: true
+    sensitive: true
+  
+  - name: mongo_group
+    description: "The system group of the mongod process"
+    type: string
+    value: "root"
+    required: true
+    sensitive: true
+
+  - name: mongod_config_path
+    description: "The path to the mongod configuration file"
+    type: string
+    value: "/etc/mongod.conf"
+    required: true
+
+  - name: mongo_audit_directory_path
+    description: "The path to the mongo audit directory"
+    type: string
+    value: "/var/log/mongodb/audit"
+    required: true
+
+  - name: mongo_audit_file_path
+    description: "The path to the mongo audit file"
+    type: string
+    value: "/var/log/mongodb/audit/auditLog.bson"
+    required: true
+
+  - name: certificate_key_file_path
+    description: "The path to the mongo certificate key"
+    type: string
+    value: "/etc/ssl/mongodb.pem"
+    required: true
+
+  - name: ca_file_path
+    description: "The path to the mongo CA file"
+    type: string
+    value: "/etc/ssl/caToValidateClientCertificates.pem"
+    required: true
+
+  - name: data_file_directory_path
+    description: "The path to the mongo data file directory"
+    type: string
+    value: "/var/lib/mongo"
+    required: true
