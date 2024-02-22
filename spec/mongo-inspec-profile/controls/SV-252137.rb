@@ -36,4 +36,9 @@ In the MongoDB database configuration file (default location: /etc/mongod.conf),
   tag 'documentable'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
+
+  describe yaml(input('mongod_config_path')) do
+    its(['net','http']){should be nil}
+  end
+  
 end

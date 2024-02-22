@@ -1,15 +1,32 @@
 ---
 ##### ENTERPRISE ONLY
 - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components."
-  yedit:
-    src: "{{ mongod_config_path }}"
-    edits:
-    - key: auditLog.destination
-      value: file
-    - key: auditLog.format
-      value: BSON
-    - key: auditLog.path
-      value: "{{ mongo_audit_file_path }}"
+  block:
+    - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components. | syslog option"
+      yedit:
+        src: "{{ mongod_config_path }}"
+        key: auditLog.destination
+        value: "{{ audit_log_destination}}"
+      when: audit_log_destination == "syslog"
+
+    - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components. | check if file exists"
+      ansible.builtin.file:
+        path: "{{ mongo_audit_file_path }}"
+        state: touch
+      when: audit_log_destination == "file"
+
+    - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components. | file option"
+      yedit:
+        src: "{{ mongod_config_path }}"
+        edits:
+        - key: auditLog.destination
+          value: file
+        - key: auditLog.format
+          value: BSON
+        - key: auditLog.path
+          value: "{{ mongo_audit_file_path }}"
+      when: audit_log_destination == "file"
+
   ignore_errors: true
   tags:
     - cat2
@@ -29,29 +46,23 @@
 #     - medium
 #     - SV-252135
 
-##### DONE BUT DOESNT WONT RUN CUZ PERMISSIONS ERROR???, maybe it requires the user to be mongod
-# - name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
-#   ansible.builtin.shell: |
-#       chown {{ mongo_user }} {{ mongod_config_path }}
-#       chgrp {{ mongo_user }} {{ mongod_config_path }}
-#       chmod 660 {{ mongod_config_path }}
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252136
+- name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
+  ansible.builtin.shell: |
+      chown {{ mongo_user }} {{ mongod_config_path }}
+      chgrp {{ mongo_user }} {{ mongod_config_path }}
+      chmod 660 {{ mongod_config_path }}
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252136
 
 ##### Work around since removing multiple edits doesnt seem to work
 - name: "MEDIUM | SV-252137 | Unused database components that are integrated in MongoDB and cannot be uninstalled must be disabled."
   yedit:
     src: "{{ mongod_config_path }}"
-    edits:
-    - key: net.http.enabled
-      value: {}
-    - key: net.http.JSONPEnabled
-      value: {}
-    - key: net.http.RESTInterfaceEnabled
-      value: {}
+    key: net.http
+    state: absent
   ignore_errors: true
   tags:
     - cat2
@@ -245,16 +256,17 @@
 #     - medium
 #     - SV-252163
 
-- name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
-  yedit:
-    src: "{{ mongod_config_path }}"
-    key: net.tls.mode
-    value: requireTLS
-  ignore_errors: true
-  tags:
-    - cat2
-    - medium
-    - SV-252164
+##### NEEDS SOME FILE I DONT HAVE
+# - name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
+#   yedit:
+#     src: "{{ mongod_config_path }}"
+#     key: net.tls.mode
+#     value: requireTLS
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252164
 
 ##### MANUAL
 # - name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
@@ -318,8 +330,9 @@
       value: BSON
     - key: auditLog.path
       value: "{{ mongo_audit_file_path }}"
-    - key: auditLog.filter
-      value: '{ atype: { $in: [ "createCollection", "dropCollection" ] } }'
+    # - key: auditLog.filter
+    #   value: '{ atype: { $in: [ "createCollection", "dropCollection" ] } }'
+  when: audit_log_destination == "file"
   ignore_errors: true
   tags:
     - cat2
