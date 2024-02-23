@@ -31,4 +31,10 @@ Update MongoDB to the necessary major and minor release in accordance with the o
   tag 'documentable'
   tag cci: ['CCI-002605']
   tag nist: ['SI-2 c']
+
+  describe 'Review the organizational or site-specific software update policy and verify that MongoDB has been updated consistent with the time frame specified by the policy.' do
+    skip 'Institute and adhere to the policies and procedures to ensure that MongoDB is updated consistent with the organizational or site-specific software update policy and time frame.'
+    skip 'Update MongoDB to the necessary major and minor release in accordance with the organizational or site-specific policy.'
+  end
+
 end

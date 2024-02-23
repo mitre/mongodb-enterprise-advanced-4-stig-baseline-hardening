@@ -348,6 +348,7 @@
 #     - medium
 #     - SV-252172
 
+##### MANUAL
 # - name: "MEDIUM | SV-252173 | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
 #   command: true
 #   ignore_errors: true
@@ -380,6 +381,7 @@
 #     - medium
 #     - SV-252176
 
+##### MANUAL
 # - name: "MEDIUM | SV-252177 | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
 #   command: true
 #   ignore_errors: true
@@ -412,6 +414,7 @@
 #     - medium
 #     - SV-252180
 
+##### MANUAL
 # - name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
 #   command: true
 #   ignore_errors: true
@@ -428,6 +431,7 @@
 #     - medium
 #     - SV-252182
 
+##### MANUAL
 # - name: "MEDIUM | SV-252183 | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
 #   command: true  
 #   ignore_errors: true
@@ -436,6 +440,7 @@
 #     - medium
 #     - SV-252183
 
+##### MANUAL
 # - name: "MEDIUM | SV-252185 | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
 #   command: true 
 #   ignore_errors: true

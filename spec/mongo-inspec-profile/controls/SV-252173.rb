@@ -31,4 +31,11 @@ Configure the required alert in the monitoring software to send an alert where s
   tag 'documentable'
   tag cci: ['CCI-001855']
   tag nist: ['AU-5 (1)']
+
+  describe 'View the MongoDB configuration file and view the auditlog.path to identify the storage volume.' do
+    skip 'Configure the required alert in the monitoring software to send an alert where storage volume holding the auditLog file utilization reaches 75 percent.'
+    skip 'If appropriate support staff are not notified immediately upon storage volume utilization reaching 75%, this is a finding'
+    skip 'Verify that MongoDB Ops Manager or other organization approved monitoring software is installed.'
+  end
+
 end

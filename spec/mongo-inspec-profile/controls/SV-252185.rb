@@ -22,4 +22,10 @@ https://docs.mongodb.com/v4.4/tutorial/install-mongodb-enterprise-on-red-hat/'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
+
+  describe 'Assessing the system against the STIG configurations and guidance of the current document is the check for this requirement. ' do
+    skip 'Configure MongoDB in accordance with security configuration settings and guidance of this STIG document to meet the configurations required by the STIG, NSA configuration guidelines, CTOs, DTMs, and IAVMs.'
+    skip 'If the MongoDB is not configured in accordance with the security configuration settings of this document, this is a finding.'
+  end
+
 end
