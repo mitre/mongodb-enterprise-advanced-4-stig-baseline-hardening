@@ -123,7 +123,6 @@ The $redact operator is applied through trusted middleware. This trusted middlew
   tag cci: ['CCI-002262', 'CCI-002263', 'CCI-002264']
   tag nist: ['AC-16 a', 'AC-16 a', 'AC-16 a']
 
-
   #not sure what goes here for this one
   describe 'Review the organizational or site-specific security labeling documentation to understand how documents in specific MongoDB collection(s) must be marked.This marking process should be applied as data is entered into the database.' do
     skip 'If security labeling is not required, this is not a finding.'

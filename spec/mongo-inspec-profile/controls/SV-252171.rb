@@ -63,4 +63,12 @@ Configure and/or deploy software tools to ensure that DBMS audit records are wri
   tag 'documentable'
   tag cci: ['CCI-001844']
   tag nist: ['AU-3 (2)']
+
+  describe yaml(input('mongod_config_path')) do
+      its(['auditLog','destination']){should eq "file"}
+      its(['auditLog','format']){should eq "BSON"}
+      its(['auditLog','path']){should match mongo_audit_file_path}
+      its(['auditLog','filter']){should match '{ atype: { $in: [ "createCollection", "dropCollection" ] } }'}
+    end
+
 end

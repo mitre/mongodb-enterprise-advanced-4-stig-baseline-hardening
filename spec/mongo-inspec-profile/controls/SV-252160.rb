@@ -45,4 +45,32 @@ chmod 600 /etc/ssl/caToValidateClientCertificates.pem'
   tag 'documentable'
   tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (a) (1)']
+
+  describe yaml(input('mongod_config_path')) do
+    its(['net','tls','mode']){should eq "requireTLS"}
+    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_path')}
+    its(['net','tls','CAFile']){should match input('ca_file_path')}
+  end
+
+  describe file(input('mongod_config_path')) do
+    it { should exist }
+    it { should be_owned_by input('mongo_user') }
+    it { should be_grouped_into input('mongo_group') }
+    it { should_not be_more_permissive_than('0600') }
+  end
+
+  describe file(input('certificate_key_file_path')) do
+    it { should exist }
+    it { should be_owned_by input('mongo_user') }
+    it { should be_grouped_into input('mongo_group') }
+    it { should_not be_more_permissive_than('0600') }
+  end
+
+  describe file(input('ca_file_path')) do
+    it { should exist }
+    it { should be_owned_by input('mongo_user') }
+    it { should be_grouped_into input('mongo_group') }
+    it { should_not be_more_permissive_than('0600') }
+  end
+
 end

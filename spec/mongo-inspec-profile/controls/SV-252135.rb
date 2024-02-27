@@ -100,4 +100,12 @@ Given the example above, the %MongoDB auditLog directory% is /var/log/mongodb/au
   tag 'documentable'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a', 'AU-9 a', 'AU-9 a']
+
+  describe directory(input('mongod_config_path')) do
+    it { should exist }
+    it { should be_owned_by input('mongo_user') }
+    it { should be_grouped_into input('mongo_group') }
+    it { should_not be_more_permissive_than('0700') }
+  end
+
 end

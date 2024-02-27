@@ -39,4 +39,9 @@ Allocate sufficient space to the storage volume hosting the file identified in t
   tag 'documentable'
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']
+
+  describe yaml(input('mongod_config_path')) do
+      its(['auditLog', 'destination']) { should eq "syslog"}
+    end
+  
 end
