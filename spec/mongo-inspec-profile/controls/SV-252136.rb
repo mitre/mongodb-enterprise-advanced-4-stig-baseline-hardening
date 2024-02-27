@@ -75,7 +75,7 @@ Change: 2020-03-16 14:27:32.451000000 -0400
   tag nist: ['AU-9 a', 'AU-9', 'AU-9']
 
   describe file(input('mongod_config_path')) do
-    it {should exist}
+    it { should exist }
     it { should be_owned_by input('mongo_user') }
     it { should be_grouped_into input('mongo_group') }
     it { should_not be_more_permissive_than('0660') }

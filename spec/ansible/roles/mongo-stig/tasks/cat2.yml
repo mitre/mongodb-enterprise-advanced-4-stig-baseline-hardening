@@ -34,17 +34,19 @@
     - SV-252134
     - enterprise
 
-##### FILES DONT EXIST
+##### DIRECTORIES DONT EXIST
 # - name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
 #   ansible.builtin.shell: |
 #       chown {{ mongo_user }} {{ mongo_audit_directory_path }}
 #       chgrp {{ mongo_user }} {{ mongo_audit_directory_path }}
 #       chmod 700 {{ mongo_audit_directory_path }}
+#   when: audit_log_destination == "file"
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252135
+#     - enterprise
 
 - name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
   ansible.builtin.shell: |

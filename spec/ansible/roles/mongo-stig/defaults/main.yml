@@ -7,7 +7,7 @@ mongostig_cat3: true
 mongo_user: root
 mongo_group: root
 #audit_log_destination | "file" or "syslog"
-audit_log_destination: "syslog"
+audit_log_destination: "file"
 mongod_config_path: "/etc/mongod.conf"
 mongo_audit_directory_path: "/var/log/mongodb/audit"
 mongo_audit_file_path: "/var/log/mongodb/audit/auditLog.bson"
