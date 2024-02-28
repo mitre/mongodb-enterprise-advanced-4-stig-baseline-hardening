@@ -31,4 +31,13 @@ https://docs.mongodb.com/v4.4/reference/command/revokeRolesFromUser/'
   tag 'documentable'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
+
+  #the beginning of something great
+  db_name = 'database'
+  command_string = "mongosh #{db_name} --quiet --eval 'db.getUsers()'"
+
+  describe command(command_string) do
+    its('stdout') { should include 'dbOwner' }
+  end
+
 end

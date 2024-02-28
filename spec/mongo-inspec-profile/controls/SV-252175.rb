@@ -74,4 +74,15 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   tag 'documentable'
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
+  
+  # Create user
+  describe command(inspec.profile.file('/scripts/SV-252175-1.sh')) do
+    its('stderr') { should eq '' }
+  end
+
+  # Write operation
+  describe command(inspec.profile.file('/scripts/SV-252175-2.sh')) do
+    its('stderr') { should eq '' }
+  end
+
 end

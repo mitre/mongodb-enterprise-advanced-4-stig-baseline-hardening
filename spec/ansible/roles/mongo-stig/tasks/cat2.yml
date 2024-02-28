@@ -364,6 +364,7 @@
 #     - cat2
 #     - medium
 #     - SV-252173
+#     - enterprise
 
 # - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status."
 #   command: true
