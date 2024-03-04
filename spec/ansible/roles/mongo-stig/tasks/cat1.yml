@@ -92,12 +92,12 @@
 #     - high
 #     - SV-252159
   
-##### CHANGES TO ENTERPRISE WITH GSSAPI AND PLAIN
+##### CHANGES TO ENTERPRISE WITH GSSAPI AND PLAIN, ASKS FOR ALL OF THEM
 - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
   yedit:
       src: "{{ mongod_config_path }}"
       key: setParameter.authenticationMechanisms
-      value: SCRAM-SHA-256,SCRAM-SHA-1,MONGODB-X509,GSSAPI,PLAIN
+      value: SCRAM-SHA-256
   ignore_errors: true
   tags:
     - cat1

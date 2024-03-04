@@ -75,9 +75,19 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
   
-  # Create user
-  describe command(inspec.profile.file('/scripts/SV-252175-1.sh')) do
-    its('stderr') { should eq '' }
+  MONGO_HOST=input('mongo_host')
+  MONGO_PORT=input('mongo_port')
+  ADMIN_USER="admin"
+  ADMIN_PWD="admin"
+
+  #mongo_session = mongodb_session(input('mongo_dba'), input('mongo_dba_password'), input('mongo_host'), input('mongo_port'), input('mongo_database'), input('mongo_auth_database'))
+
+
+  # MongoDB command to create a read-only user
+  CREATE_USER_COMMAND="EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
+
+  describe json({command: "mongosh --host #{MONGO_HOST} --port #{MONGO_PORT} --quiet --eval \"#{CREATE_USER_COMMAND}\""}) do
+    its('ok') { should cmp 1 }
   end
 
   # Write operation

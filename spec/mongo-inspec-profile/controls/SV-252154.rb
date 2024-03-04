@@ -34,7 +34,7 @@ https://docs.mongodb.com/v4.4/reference/command/revokeRolesFromUser/'
 
   #the beginning of something great
   db_name = 'database'
-  command_string = "mongosh #{db_name} --quiet --eval 'db.getUsers()'"
+  command_string = "mongosh #{db_name} --quiet --eval 'db.getRoles()'"
 
   describe command(command_string) do
     its('stdout') { should include 'dbOwner' }

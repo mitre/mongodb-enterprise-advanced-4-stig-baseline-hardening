@@ -18,3 +18,11 @@
   when: conf.stat.exists == false
   tags:
     - prep
+
+# get these and register as fact minus what the user said shouldnt be hardened
+# json query filter
+# get databases command 
+# get roles
+# get users
+
+##create some roles and users for testing

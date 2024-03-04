@@ -8,8 +8,6 @@ ADMIN_USER="admin"
 ADMIN_PWD="admin"
 
 # MongoDB command to create a read-only user
-CREATE_USER_COMMAND="db.createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]})"
+CREATE_USER_COMMAND="db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]})"
 
-mongosh --host $MONGO_HOST --port $MONGO_PORT --eval "use test; $CREATE_USER_COMMAND"
-
-#mongosh --eval "use test; db.createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]})"
+mongosh --host $MONGO_HOST --port $MONGO_PORT --quiet --eval "$CREATE_USER_COMMAND"

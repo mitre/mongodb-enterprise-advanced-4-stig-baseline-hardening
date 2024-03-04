@@ -67,7 +67,7 @@ Configure and/or deploy software tools to ensure that DBMS audit records are wri
   describe yaml(input('mongod_config_path')) do
       its(['auditLog','destination']){should eq "file"}
       its(['auditLog','format']){should eq "BSON"}
-      its(['auditLog','path']){should match mongo_audit_file_path}
+      its(['auditLog','path']){should match input('mongo_audit_file_path')}
       its(['auditLog','filter']){should match '{ atype: { $in: [ "createCollection", "dropCollection" ] } }'}
     end
 
