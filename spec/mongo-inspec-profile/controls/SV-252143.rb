@@ -33,7 +33,7 @@ security:
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['security','javascriptEnabled']){should eq false}
   end
 

@@ -34,16 +34,16 @@
 #     - enterprise
 
 ##### DISABLED FOR EASIER TESTING
-# - name: "HIGH | SV-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
-#   yedit:
-#       src: "{{ mongod_config_path }}"
-#       key: security.authorization
-#       value: enabled
-#   ignore_errors: true
-#   tags:
-#     - cat1
-#     - high
-#     - SV-252149
+- name: "HIGH | SV-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
+  yedit:
+      src: "{{ mongod_config_path }}"
+      key: security.authorization
+      value: enabled
+  ignore_errors: true
+  tags:
+    - cat1
+    - high
+    - SV-252149
 
 ##### MANUAL
 # - name: "HIGH | SV-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
@@ -108,9 +108,9 @@
 ##### FILES DONT EXIST check text conflict with 252136? 
 # - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
 #   ansible.builtin.shell: |
-#       chown {{ mongo_user }}:{{ mongo_user }} {{ certificate_key_file_path }}
+#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_path }}
 #       chmod 600 {{ certificate_key_file_path }}
-#       chown {{ mongo_user }}:{{ mongo_user }} {{ ca_file_path }}
+#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_path }}
 #       chmod 600 {{ ca_file_path }}
 #   ignore_errors: true
 #   tags:

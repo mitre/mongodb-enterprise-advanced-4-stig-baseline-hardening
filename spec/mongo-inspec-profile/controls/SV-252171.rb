@@ -35,7 +35,7 @@ If this is not present, is empty, or commented, this is a finding.
 Review the system documentation for a description of how audit records are off-loaded and how local audit log space is managed.
 
 If the DBMS audit records are not written directly to or systematically transferred to a centralized log management system, this is a finding.'
-  desc 'fix', %q(If audit operations filters are not configured in the MongoDB configuration file (default location: /etc/mongod.conf), configure them according to application requirements, but at a minimum, ensure destination and filter are set in a mongod.conf YAML auditLog configuration setting.
+  desc 'fix', %q(If audit operations filters are not configured in the MongoDB configuration file (default location: /etc/mongod.conf), configure them according to application requirements, but at a minimum, ensure destination and filter are set in a mongod.conf mongodb_conf auditLog configuration setting.
 
 For example, to audit all database operations involving creating or dropping a collection, the %MongoDB configuration file% (by default /etc/mongod.conf) auditLog section would read as follows:
 
@@ -64,7 +64,7 @@ Configure and/or deploy software tools to ensure that DBMS audit records are wri
   tag cci: ['CCI-001844']
   tag nist: ['AU-3 (2)']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
       its(['auditLog','destination']){should eq "file"}
       its(['auditLog','format']){should eq "BSON"}
       its(['auditLog','path']){should match input('mongo_audit_file_path')}

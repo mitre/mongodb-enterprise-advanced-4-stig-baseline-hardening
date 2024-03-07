@@ -58,14 +58,14 @@ find /var/lib/mongo/* -type d | xargs  chmod 700'
 
   describe file(input('mongod_config_path')) do
     it { should exist }
-    it { should be_owned_by input('mongo_user') }
+    it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }
     it { should_not be_more_permissive_than('0600') }
   end
 
   describe directory(input('data_file_directory_path')) do
     it { should exist }
-    it { should be_owned_by input('mongo_user') }
+    it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }
     it { should_not be_more_permissive_than('0755') }
   end

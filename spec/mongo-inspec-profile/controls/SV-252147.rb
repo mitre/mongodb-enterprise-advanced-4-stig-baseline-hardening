@@ -43,7 +43,7 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag cci: ['CCI-002475', 'CCI-002476']
   tag nist: ['SC-28 (1)', 'SC-28 (1)']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['security','enableEncrypt']){should eq true}
 
     its(['kmip','serverName']){should match input('KMIP_server_host_name')}

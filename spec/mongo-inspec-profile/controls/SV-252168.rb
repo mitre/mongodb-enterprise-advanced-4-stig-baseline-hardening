@@ -47,7 +47,7 @@ Restart the MongoDB server from the operating system:
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['security','redactClientLogData']){should eq true}
   end
   

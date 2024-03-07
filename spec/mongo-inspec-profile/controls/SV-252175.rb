@@ -75,24 +75,30 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
   
-  MONGO_HOST=input('mongo_host')
-  MONGO_PORT=input('mongo_port')
-  ADMIN_USER="admin"
-  ADMIN_PWD="admin"
-
-  #mongo_session = mongodb_session(input('mongo_dba'), input('mongo_dba_password'), input('mongo_host'), input('mongo_port'), input('mongo_database'), input('mongo_auth_database'))
-
+  #mongo_session = mongodb_session(user: input('mongo_dba'), password: input('mongo_dba_password'), host: input('mongo_host'), port: input('mongo_port'), database: "test", auth_mech: scram256)
 
   # MongoDB command to create a read-only user
   CREATE_USER_COMMAND="EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
 
-  describe json({command: "mongosh --host #{MONGO_HOST} --port #{MONGO_PORT} --quiet --eval \"#{CREATE_USER_COMMAND}\""}) do
+  WRITE_COMMAND="EJSON.stringify(db.testCollection.insertOne({x: 1}))"
+  # describe mongodb_session(user: "", password: "", database: "test").query(rolesInfo: "dbAdmin") do
+  #   its("params") { should_not be_empty }
+  # end
+
+  #mongosh "mongodb://#{input('mongo_host')}:#{input('mongo_port')}"
+
+
+  describe json({command: "mongosh \"mongodb://#{input('mongo_host')}:#{input('mongo_port')}\" --quiet --eval \"#{CREATE_USER_COMMAND}\""}) do
     its('ok') { should cmp 1 }
   end
 
-  # Write operation
-  describe command(inspec.profile.file('/scripts/SV-252175-2.sh')) do
-    its('stderr') { should eq '' }
+  describe json({command: "mongosh \"mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test\" --quiet --eval \"#{WRITE_COMMAND}\""}) do
+    its('ok') { should cmp 1 }
   end
+
+  # # Write operation
+  # describe command(inspec.profile.file('/scripts/SV-252175-2.sh')) do
+  #   its('stderr') { should eq '' }
+  # end
 
 end

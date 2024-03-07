@@ -37,7 +37,7 @@ https://docs.mongodb.com/v4.4/tutorial/configure-ssl/.'
   tag cci: ['CCI-001188']
   tag nist: ['SC-23 (3)']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['net','tls','mode']){should eq "requireTLS"}
   end
 

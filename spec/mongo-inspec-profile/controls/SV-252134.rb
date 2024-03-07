@@ -80,13 +80,13 @@ https://docs.mongodb.com/v4.4/tutorial/configure-audit-filters/'
   mongo_audit_file_path = input('mongo_audit_file_path')
 
   describe.one do
-    describe yaml(input('mongod_config_path')) do
+    describe mongodb_conf(input('mongod_config_path')) do
       its(['auditLog','destination']){should eq "file"}
       its(['auditLog','format']){should eq "BSON"}
       its(['auditLog','path']){should match mongo_audit_file_path}
     end
 
-    describe yaml(input('mongod_config_path')) do
+    describe mongodb_conf(input('mongod_config_path')) do
       its(['auditLog', 'destination']) { should eq "syslog"}
     end
   end

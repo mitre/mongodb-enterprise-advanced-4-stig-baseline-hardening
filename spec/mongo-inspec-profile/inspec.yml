@@ -12,7 +12,7 @@ depends: []
 inspec_version: null
 
 inputs:
-  - name: mongo_user
+  - name: mongo_owner
     description: "The system user of the mongod process"
     type: string
     value: "root"
@@ -23,6 +23,20 @@ inputs:
     description: "The system group of the mongod process"
     type: string
     value: "root"
+    required: true
+    sensitive: true
+
+  - name: mongo_dba
+    description: "The mongo DBA user to access the test database"
+    type: string
+    value: ""
+    required: true
+    sensitive: true
+
+  - name: mongo_dba_password
+    description: "The password for the mongo DBA user"
+    type: string
+    value: ""
     required: true
     sensitive: true
   

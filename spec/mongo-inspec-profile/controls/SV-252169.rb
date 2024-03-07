@@ -48,7 +48,7 @@ Identify and remove any administrative roles and privileges from application use
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['security','redactClientLogData']){should eq true}
   end
   

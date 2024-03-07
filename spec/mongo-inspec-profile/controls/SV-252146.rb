@@ -54,7 +54,7 @@ For the operating system finding, refer to the appropriate operating system docu
   tag cci: ['CCI-002450', 'CCI-000803']
   tag nist: ['SC-13 b', 'IA-7']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['net','tls','FIPSMode']){should eq true}
   end
     

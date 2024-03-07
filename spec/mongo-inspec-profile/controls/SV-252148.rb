@@ -37,7 +37,7 @@ The following is the MongoDB documentation regarding these user limits: https://
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
-  describe yaml(input('mongod_config_path')) do
+  describe mongodb_conf(input('mongod_config_path')) do
     its(['net', 'maxIncomingConnections']) { should be_a_kind_of(Integer) }
   end
 

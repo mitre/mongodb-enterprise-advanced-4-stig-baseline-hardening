@@ -9,6 +9,7 @@
         value: "{{ audit_log_destination}}"
       when: audit_log_destination == "syslog"
 
+    #fatal: [localhost]: FAILED! => {"changed": false, "msg": "Error, could not touch target: [Errno 2] No such file or directory: b'/var/log/mongodb/audit/auditLog.bson'", "path": "/var/log/mongodb/audit/auditLog.bson"}
     - name: "MEDIUM | SV-252134 | MongoDB must provide audit record generation for DoD-defined auditable events within all DBMS/database components. | check if file exists"
       ansible.builtin.file:
         path: "{{ mongo_audit_file_path }}"
@@ -37,8 +38,8 @@
 ##### DIRECTORIES DONT EXIST
 # - name: "MEDIUM | SV-252135 | The audit information produced by MongoDB must be protected from unauthorized access."
 #   ansible.builtin.shell: |
-#       chown {{ mongo_user }} {{ mongo_audit_directory_path }}
-#       chgrp {{ mongo_user }} {{ mongo_audit_directory_path }}
+#       chown {{ mongo_owner }} {{ mongo_audit_directory_path }}
+#       chgrp {{ mongo_owner }} {{ mongo_audit_directory_path }}
 #       chmod 700 {{ mongo_audit_directory_path }}
 #   when: audit_log_destination == "file"
 #   ignore_errors: true
@@ -50,8 +51,8 @@
 
 - name: "MEDIUM | SV-252136 | MongoDB must protect its audit features from unauthorized access."
   ansible.builtin.shell: |
-      chown {{ mongo_user }} {{ mongod_config_path }}
-      chgrp {{ mongo_user }} {{ mongod_config_path }}
+      chown {{ mongo_owner }} {{ mongod_config_path }}
+      chgrp {{ mongo_owner }} {{ mongod_config_path }}
       chmod 660 {{ mongod_config_path }}
   ignore_errors: true
   tags:
@@ -105,7 +106,7 @@
 ##### DIRECTORY DOESNT EXIST
 # - name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
 #   ansible.builtin.shell: |
-#       chown {{ mongo_user }}:{{ mongo_user }} {{ mongod_config_path }}
+#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ mongod_config_path }}
 #       chmod 600 {{ mongod_config_path }}
 #       chown -R mongod:mongod {{ data_file_directory_path }}
 #       chmod 755 {{ data_file_directory_path }}
