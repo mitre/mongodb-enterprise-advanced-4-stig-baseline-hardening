@@ -58,7 +58,7 @@ source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
   pull        = false #change back to true in final
-  run_command = ["-d", "-it", "--name", var.output_image.name, "--user", "root","-p","27017:27017", "{{.Image}}"]
+  run_command = ["-d", "--name", var.output_image.name, "--user", "root","-p","27017:27017", "{{.Image}}"]
 }
 
 build {
@@ -124,7 +124,7 @@ build {
   //   scripts          = ["spec/scripts/verify_threshold.sh"]
   // }
 
-  ### TAG
+  ### TAG DOCKER IMAGE
   post-processor "docker-tag" {
     repository = "${var.output_image.name}"
     tags = ["latest"]
