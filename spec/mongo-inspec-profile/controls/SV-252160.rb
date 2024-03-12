@@ -56,21 +56,21 @@ chmod 600 /etc/ssl/caToValidateClientCertificates.pem'
     it { should exist }
     it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }
-    it { should_not be_more_permissive_than('0600') }
+    it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
 
   describe file(input('certificate_key_file_path')) do
     it { should exist }
     it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }
-    it { should_not be_more_permissive_than('0600') }
+    it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
 
   describe file(input('ca_file_path')) do
     it { should exist }
     it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }
-    it { should_not be_more_permissive_than('0600') }
+    it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
 
 end

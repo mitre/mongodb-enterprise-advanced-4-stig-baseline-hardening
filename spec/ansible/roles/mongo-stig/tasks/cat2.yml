@@ -40,7 +40,7 @@
 #   ansible.builtin.shell: |
 #       chown {{ mongo_owner }} {{ mongo_audit_directory_path }}
 #       chgrp {{ mongo_owner }} {{ mongo_audit_directory_path }}
-#       chmod 700 {{ mongo_audit_directory_path }}
+#       chmod {{ mongo_permissions }} {{ mongo_audit_directory_path }}
 #   when: audit_log_destination == "file"
 #   ignore_errors: true
 #   tags:
@@ -53,7 +53,7 @@
   ansible.builtin.shell: |
       chown {{ mongo_owner }} {{ mongod_config_path }}
       chgrp {{ mongo_owner }} {{ mongod_config_path }}
-      chmod 660 {{ mongod_config_path }}
+      chmod {{ mongo_permissions }} {{ mongod_config_path }}
   ignore_errors: true
   tags:
     - cat2
@@ -107,11 +107,11 @@
 # - name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
 #   ansible.builtin.shell: |
 #       chown {{ mongo_owner }}:{{ mongo_owner }} {{ mongod_config_path }}
-#       chmod 600 {{ mongod_config_path }}
+#       chmod {{ mongo_permissions }} {{ mongod_config_path }}
 #       chown -R mongod:mongod {{ data_file_directory_path }}
-#       chmod 755 {{ data_file_directory_path }}
-#       find {{ data_file_directory_path }}/* -type f | xargs  chmod 600
-#       find {{ data_file_directory_path }}/* -type d | xargs  chmod 700
+#       chmod {{ mongo_permissions }} {{ data_file_directory_path }}
+#       find {{ data_file_directory_path }}/* -type f | xargs  chmod {{ mongo_permissions }}
+#       find {{ data_file_directory_path }}/* -type d | xargs  chmod {{ mongo_permissions }}
 #   ignore_errors: true
 #   tags:
 #     - cat2

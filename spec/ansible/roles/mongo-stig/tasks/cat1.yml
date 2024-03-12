@@ -109,9 +109,9 @@
 # - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
 #   ansible.builtin.shell: |
 #       chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_path }}
-#       chmod 600 {{ certificate_key_file_path }}
+#       chmod {{ mongo_permissions }} {{ certificate_key_file_path }}
 #       chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_path }}
-#       chmod 600 {{ ca_file_path }}
+#       chmod {{ mongo_permissions }} {{ ca_file_path }}
 #   ignore_errors: true
 #   tags:
 #     - cat1

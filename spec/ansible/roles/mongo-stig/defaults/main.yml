@@ -8,6 +8,7 @@ mongo_owner: root
 mongo_group: root
 mongo_host: "localhost"
 mongo_port: 27017
+mongo_permissions: 600
 #audit_log_destination | "file" or "syslog"
 audit_log_destination: "file"
 mongod_config_path: "/etc/mongod.conf"
