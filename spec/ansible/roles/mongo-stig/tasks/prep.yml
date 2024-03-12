@@ -41,12 +41,17 @@
     msg: "{{ database_list.stdout }}"
 
 - name: Create MongoDB admin user
-  community.mongodb.mongodb_user:
-    database: admin
-    name: admin
-    password: admin
-    roles: dbOwner
-    state: present
+  ansible.builtin.command: |
+    mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('test').createUser({user: 'admin', pwd: 'admin', roles: [{role: 'dbOwner', db: 'admin'}]})"
+  register: database_list
+
+# - name: Create MongoDB admin user
+#   community.mongodb.mongodb_user:
+#     database: admin
+#     name: admin
+#     password: admin
+#     roles: dbOwner
+#     state: present
 
 ##### same note as previous get
 - name: Get all the users in a database

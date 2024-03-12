@@ -75,7 +75,6 @@
 
 
 ##### PART TWO OF THIS DOESNT EXIST IN MONGO 4+
-##### This whole rule seems out of date as the authSchemaUpgrade command was removed in mongo 4
 # - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
 #   blockinfile:
 #     path: "{{ mongod_config_path }}"
@@ -105,7 +104,7 @@
     - SV-252159
     - enterprise
 
-##### FILES DONT EXIST check text conflict with 252136? 
+##### FILES DONT EXIST
 # - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
 #   ansible.builtin.shell: |
 #       chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_path }}

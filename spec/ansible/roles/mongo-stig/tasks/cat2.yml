@@ -315,6 +315,8 @@
     - medium
     - SV-252169
 
+
+##### MANUAL
 # - name: "MEDIUM | SV-252170 | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
 #   command: true
 #   ignore_errors: true

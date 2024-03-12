@@ -57,15 +57,31 @@ variable "report" {
 source "docker" "target" {
   image       = "${var.input_image.tag}:${var.input_image.version}"
   commit      = true
-  pull        = false #change back to true in final
-  run_command = ["-d", "--name", var.output_image.name, "--user", "root","-p","27017:27017", "{{.Image}}"]
+  pull        = false # Change back to true in final
+  run_command = [
+    "-d",
+    "--name", "${var.output_image.name}",
+    "--user", "root",
+    "-p", "27017:27017",
+    "{{.Image}}",
+    // "-v", "mongodb_configdb:/data/configdb",
+    // "-v", "mongodb_db:/data/db",
+  ]
 }
+
 
 build {
   name = "harden"
   sources = [
     "source.docker.target"
   ]
+
+  provisioner "shell-local" {
+    inline = [
+      "docker volume create mongodb_configdb",
+      "docker volume create mongodb_db",
+    ]
+  }
 
   #ansible needs python and pip to be installed on the target
   // provisioner "shell" {
