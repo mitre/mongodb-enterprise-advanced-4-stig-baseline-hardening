@@ -63,12 +63,11 @@ source "docker" "target" {
     "--name", "${var.output_image.name}",
     "--user", "root",
     "-p", "27017:27017",
-    "{{.Image}}",
-    // "-v", "mongodb_configdb:/data/configdb",
-    // "-v", "mongodb_db:/data/db",
+    "-v", "mongodb_configdb:/data/configdb",
+    "-v", "mongodb_db:/data/db",
+    "{{.Image}}"
   ]
 }
-
 
 build {
   name = "harden"
