@@ -6,7 +6,9 @@ mongostig_cat2: true
 mongostig_cat3: true 
 mongo_owner: root
 mongo_group: root
-mongo_host: "localhost"
+mongo_dba: admin
+mongo_dba_password: admin
+mongo_host: localhost
 mongo_port: 27017
 mongo_permissions: 600
 #audit_log_destination | "file" or "syslog"

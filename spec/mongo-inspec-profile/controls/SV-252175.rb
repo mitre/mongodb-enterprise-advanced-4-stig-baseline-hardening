@@ -88,11 +88,11 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   #mongosh "mongodb://#{input('mongo_host')}:#{input('mongo_port')}"
 
 
-  describe json({command: "mongosh \"mongodb://#{input('mongo_host')}:#{input('mongo_port')}\" --quiet --eval \"#{CREATE_USER_COMMAND}\""}) do
+  describe json({command: "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}\" --quiet --eval \"#{CREATE_USER_COMMAND}\""}) do
     its('ok') { should cmp 1 }
   end
 
-  describe json({command: "mongosh \"mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test\" --quiet --eval \"#{WRITE_COMMAND}\""}) do
+  describe json({command: "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/test\" --quiet --eval \"#{WRITE_COMMAND}\""}) do
     its('ok') { should cmp 1 }
   end
 

@@ -29,12 +29,12 @@
 
 ##### note: this is per database, not the cluster, might need have a method to check all roles in all databases, i think test db is default
 ##### add user and pw
-- name: Get all the roles in a database
-  ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/" --quiet --eval "EJSON.stringify(db.getRoles({ showBuiltinRoles: true }))"
-  register: database_list
-  tags:
-    - prep
+# - name: Get all the roles in a database
+#   ansible.builtin.command: |
+#     mongosh "mongodb://localhost:27017/" --quiet --eval "EJSON.stringify(db.getRoles({ showBuiltinRoles: false }))"
+#   register: database_list
+#   tags:
+#     - prep
 
 - name: Display contents of database_list
   debug:
@@ -42,7 +42,7 @@
 
 - name: Create MongoDB admin user
   ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('test').createUser({user: 'admin', pwd: 'admin', roles: [{role: 'dbOwner', db: 'admin'}]})"
+    mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('admin').createUser({user: '{{ mongo_dba }}', pwd: '{{ mongo_dba_password }}', roles: [{role: 'dbOwner', db: 'admin'}]})"
   register: database_list
 
 # - name: Create MongoDB admin user
@@ -56,7 +56,7 @@
 ##### same note as previous get
 - name: Get all the users in a database
   ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/test" --quiet --eval "EJSON.stringify(db.getUsers())"
+    mongosh "mongodb://localhost:27017/test" --quiet --eval "EJSON.stringify(db.getSiblingDB('admin').getUsers())"
   register: users_list
   tags:
     - prep
