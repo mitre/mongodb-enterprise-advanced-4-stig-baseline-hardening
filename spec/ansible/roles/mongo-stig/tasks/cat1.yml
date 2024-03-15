@@ -96,7 +96,7 @@
   yedit:
       src: "{{ mongod_config_path }}"
       key: setParameter.authenticationMechanisms
-      value: SCRAM-SHA-256
+      value: SCRAM-SHA-1
   ignore_errors: true
   tags:
     - cat1

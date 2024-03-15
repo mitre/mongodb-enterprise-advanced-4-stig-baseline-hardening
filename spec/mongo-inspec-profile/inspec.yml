@@ -31,24 +31,28 @@ inputs:
     type: string
     value: "admin"
     required: true
+    sensitive: true
 
   - name: mongo_dba_password
     description: "The password for the mongo DBA user"
     type: string
     value: "admin"
     required: true
+    sensitive: true
   
   - name: mongo_host
     description: "The hostname or IP address used to connect to the database"
     type: string
     value: "localhost"
     required: true
+    sensitive: true
 
   - name: mongo_port
     description: "The port used to connect to the database"
     type: numeric
     value: 27017
     required: true
+    sensitive: true
 
   - name: mongod_config_path
     description: "The path to the mongod configuration file"

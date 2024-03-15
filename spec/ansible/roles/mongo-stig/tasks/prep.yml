@@ -4,7 +4,6 @@
     path: "{{ mongod_config_path }}"
   register: conf
   changed_when: no
-  ignore_errors: true
   tags:
     - prep
 
@@ -19,39 +18,19 @@
   tags:
     - prep
 
-##### add user and pw login details
-- name: Get list of databases
-  ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/" --quiet --eval "EJSON.stringify(db.adminCommand('listDatabases'))"
-  register: database_list
-  tags:
-    - prep
-
-##### note: this is per database, not the cluster, might need have a method to check all roles in all databases, i think test db is default
-##### add user and pw
-# - name: Get all the roles in a database
+# - name: Create MongoDB admin user
 #   ansible.builtin.command: |
-#     mongosh "mongodb://localhost:27017/" --quiet --eval "EJSON.stringify(db.getRoles({ showBuiltinRoles: false }))"
+#     mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('admin').createUser({user: '{{ mongo_dba }}', pwd: '{{ mongo_dba_password }}', roles: [{role: 'root', db: 'admin'}]})"
 #   register: database_list
-#   tags:
-#     - prep
-
-- name: Display contents of database_list
-  debug:
-    msg: "{{ database_list.stdout }}"
+#   ignore_errors: true
 
 - name: Create MongoDB admin user
-  ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('admin').createUser({user: '{{ mongo_dba }}', pwd: '{{ mongo_dba_password }}', roles: [{role: 'dbOwner', db: 'admin'}]})"
-  register: database_list
-
-# - name: Create MongoDB admin user
-#   community.mongodb.mongodb_user:
-#     database: admin
-#     name: admin
-#     password: admin
-#     roles: dbOwner
-#     state: present
+  community.mongodb.mongodb_user:
+    database: admin
+    name: admin
+    password: admin
+    roles: root
+    state: present
 
 ##### same note as previous get
 - name: Get all the users in a database
@@ -64,14 +43,6 @@
 - name: Display contents of users_list
   debug:
     msg: "{{ users_list.stdout }}"
-
-
-##### CHANGE USER AND PW TO VARIABLES, this is a different method to add a user
-##### ALSO THIS NEEDS TO BE A BOOL TO SEE IF AN ADMIN ALREADY EXISTS
-# - name: Create MongoDB admin user
-#   ansible.builtin.command: |
-#     mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('test').createUser({user: 'admin', pwd: 'admin', roles: [{role: 'dbOwner', db: 'admin'}]})"
-#   register: database_list
 
 # get these and register as fact minus what the user said shouldnt be hardened
 # create some roles and users for testing
