@@ -79,15 +79,15 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
 
   USER_WRITE_COMMAND="db.testCollection.insertOne({x: 1})"
 
-  CREATE_USER = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{CREATE_USER_COMMAND}\""
+  RUN_CREATE_USER = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{CREATE_USER_COMMAND}\""
 
-  USER_WRITE = "mongosh mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test --quiet --eval \"#{USER_WRITE_COMMAND}\""
+  RUN_USER_WRITE = "mongosh mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?authMechanism=SCRAM-SHA-256 --quiet --eval \"#{USER_WRITE_COMMAND}\""
 
-  describe json({command: CREATE_USER}) do
+  describe json({command: RUN_CREATE_USER}) do
     its('ok') { should cmp 1 }
   end
 
-  describe json({command: USER_WRITE}) do
+  describe json({command: RUN_USER_WRITE}) do
     its('stderr') { should match /.+/ }
   end
 

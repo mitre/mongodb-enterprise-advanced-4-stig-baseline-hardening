@@ -104,19 +104,19 @@
 #     - SV-252141
 
 ##### DIRECTORY DOESNT EXIST
-# - name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
-#   ansible.builtin.shell: |
-#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ mongod_config_path }}
-#       chmod {{ mongo_permissions }} {{ mongod_config_path }}
-#       chown -R mongod:mongod {{ data_file_directory_path }}
-#       chmod {{ mongo_permissions }} {{ data_file_directory_path }}
-#       find {{ data_file_directory_path }}/* -type f | xargs  chmod {{ mongo_permissions }}
-#       find {{ data_file_directory_path }}/* -type d | xargs  chmod {{ mongo_permissions }}
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252142
+- name: "MEDIUM | SV-252142 | MongoDB must prevent unauthorized and unintended information transfer via shared system resources."
+  ansible.builtin.shell: |
+      chown {{ mongo_owner }}:{{ mongo_owner }} {{ mongod_config_path }}
+      chmod {{ mongo_permissions }} {{ mongod_config_path }}
+  # chown -R mongod:mongod {{ data_file_directory_path }}
+  # chmod {{ mongo_permissions }} {{ data_file_directory_path }}
+  # find {{ data_file_directory_path }}/* -type f | xargs  chmod {{ mongo_permissions }}
+  # find {{ data_file_directory_path }}/* -type d | xargs  chmod {{ mongo_permissions }}
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252142
 
 - name: "MEDIUM | SV-252143 | MongoDB and associated applications must reserve the use of dynamic code execution for situations that require it."
   yedit:
@@ -139,16 +139,16 @@
 #     - SV-252144
 
 ##### same ansible as 252149
-# - name: "MEDIUM | SV-252145 | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
-#   yedit:
-#       src: "{{ mongod_config_path }}"
-#       key: security.authorization
-#       value: enabled
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252145
+- name: "MEDIUM | SV-252145 | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
+  yedit:
+      src: "{{ mongod_config_path }}"
+      key: security.authorization
+      value: enabled      
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252145
 
 ##### ENTERPRISE, Added a PII tag, this only needs to be run if there will be PII in the db
 # - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
@@ -377,6 +377,7 @@
 #     - medium
 #     - SV-252174
 
+#####MANUAL 
 # - name: "MEDIUM | SV-252175 | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
 #   command: true
 #   ignore_errors: true
@@ -419,12 +420,27 @@
 #     - SV-252179
 
 # - name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
-#   command: true
+#   yedit:
+#     src: "{{ mongod_config_path }}"
+#     edits:
+#     - key: net.tls.mode
+#       value: requireTLS
+#     - key: net.tls.certificateKeyFile
+#       value: "{{ certificate_key_file_path }}"
+#     - key: net.tls.CAFile
+#       value: "{{ ca_file_path }}"
+#     - key: net.tls.allowInvalidCertificates
+#       value: false
+#     - key: net.tls.allowConnectionsWithoutCertificates
+#       value: false
+#     - key: net.tls.FIPSMode
+#       value: true
 #   ignore_errors: true
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252180
+#     - enterprise
 
 ##### MANUAL
 # - name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."

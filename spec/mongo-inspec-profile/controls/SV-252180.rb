@@ -47,4 +47,14 @@ Start/stop (restart) all mongod or mongos instances using the %MongoDB configura
   tag 'documentable'
   tag cci: ['CCI-002422']
   tag nist: ['SC-8 (2)']
+
+  describe mongodb_conf(input('mongod_config_path')) do
+    its(['net','tls','mode']){should eq "requireTLS"}
+    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_path')}
+    its(['net','tls','CAFile']){should match input('ca_file_path')}
+    its(['net','tls','allowInvalidCertificates']){should eq false}
+    its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
+    its(['net','tls','FIPSMode']){should eq true}
+
+  end
 end

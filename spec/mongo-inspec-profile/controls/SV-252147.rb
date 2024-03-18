@@ -45,7 +45,6 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
 
   describe mongodb_conf(input('mongod_config_path')) do
     its(['security','enableEncrypt']){should eq true}
-
     its(['kmip','serverName']){should match input('KMIP_server_host_name')}
     its(['kmip','port']){should match input('KMIP_server_port')}
     its(['kmip','ServerCAFile']){should match input('KMIP_server_ca_file')}

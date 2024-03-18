@@ -62,8 +62,9 @@ inputs:
 
   - name: mongo_permissions
     description: "File and directory permissions that should be granted to mongo"
-    type: numeric
-    value: 600
+    type: string
+    value: "600"
+    required: true
 
   - name: mongo_audit_directory_path
     description: "The path to the mongo audit directory"

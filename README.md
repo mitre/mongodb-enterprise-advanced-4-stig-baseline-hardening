@@ -37,6 +37,14 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
    packer build mongo-hardening.pkr.hcl
    ```
 
+4. **Run the Hardened Image**
+
+   Execute the following command to run the hardened Mongo image:
+
+   ```
+   docker run -d -p 27017:27017 -v mongodb_configdb:/data/configdb -v mongodb_db:/data/db mongo-hardened --config /etc/mongod.conf
+   ```
+
 ## Notes
 
 - You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library](https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
