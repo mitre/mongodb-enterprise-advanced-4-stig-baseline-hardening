@@ -1,0 +1,5 @@
+#rename to inputs.yml
+mongo_dba: "admin"
+mongo_dba_password: "admin"
+mongo_host: "localhost"
+mongo_port: "27017"

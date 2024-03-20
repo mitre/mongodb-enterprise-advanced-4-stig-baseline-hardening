@@ -11,6 +11,8 @@ mongo_dba_password: admin
 mongo_host: localhost
 mongo_port: 27017
 mongo_permissions: 600
+authentication_mechanism: 
+  - SCRAM-SHA-256
 #audit_log_destination | "file" or "syslog"
 audit_log_destination: "file"
 mongod_config_path: "/etc/mongod.conf"

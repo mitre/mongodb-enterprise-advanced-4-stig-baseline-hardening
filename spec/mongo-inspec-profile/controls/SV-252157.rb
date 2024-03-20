@@ -46,4 +46,13 @@ Edit the %MongoDB configuration file%, add these parameters, stop/start (restart
   tag 'documentable'
   tag cci: ['CCI-000764']
   tag nist: ['IA-2']
+
+  get_dbs = "db.adminCommand({ listDatabases: 1 })"
+  
+  run_get_dbs = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{get_dbs}\""
+
+  describe json({command: run_get_dbs}) do
+    its('ok') { should cmp 1 }
+  end
+
 end

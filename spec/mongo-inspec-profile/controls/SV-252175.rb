@@ -75,20 +75,39 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
   
-  CREATE_USER_COMMAND="EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
+  create_user_command="EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
 
-  USER_WRITE_COMMAND="db.testCollection.insertOne({x: 1})"
+  user_write_command="db.testCollection.insertOne({x: 1})"
 
-  RUN_CREATE_USER = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{CREATE_USER_COMMAND}\""
+  run_create_user = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{create_user_command}\""
 
-  RUN_USER_WRITE = "mongosh mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?authMechanism=SCRAM-SHA-256 --quiet --eval \"#{USER_WRITE_COMMAND}\""
+  run_user_write = "mongosh mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?authMechanism=SCRAM-SHA-256 --quiet --eval \"#{user_write_command}\""
 
-  describe json({command: RUN_CREATE_USER}) do
-    its('ok') { should cmp 1 }
+  create_user_output = json({command: run_create_user})
+
+  create_user_again = command( run_create_user)
+  
+  run_user_output = command(run_user_write)
+
+  describe.one do
+    describe 'Test user' do
+      it 'should be created' do 
+        expect(create_user_output.params['ok']).to eq(1)
+      end
+    end
+
+    describe 'Test user' do
+      it 'should be created' do 
+        expect(create_user_again.stderr).to match(/MongoServerError: User "myTester@test" already exists/)
+      end
+    end
+
   end
 
-  describe json({command: RUN_USER_WRITE}) do
-    its('stderr') { should match /.+/ }
-  end
+  describe 'Test user' do
+      it 'should not be able to write to database' do 
+        expect(run_user_output.stderr).to match(/MongoServerError: not authorized on test to execute command/)
+      end
+    end
 
 end
