@@ -281,7 +281,6 @@
 #     - medium
 #     - SV-252166
 
-##### SAME AS 252143?
 - name: "MEDIUM | SV-252167 | MongoDB must check the validity of all data inputs except those specifically identified by the organization."
   yedit:
       src: "{{ mongod_config_path }}"
@@ -377,7 +376,7 @@
 #     - medium
 #     - SV-252174
 
-#####MANUAL 
+##### MANUAL 
 # - name: "MEDIUM | SV-252175 | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
 #   command: true
 #   ignore_errors: true
@@ -412,14 +411,6 @@
 #     - SV-252178
 
 # - name: "MEDIUM | SV-252179 | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252179
-
-# - name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
 #   yedit:
 #     src: "{{ mongod_config_path }}"
 #     edits:
@@ -435,6 +426,29 @@
 #       value: false
 #     - key: net.tls.FIPSMode
 #       value: true
+#   command: true
+#   ignore_errors: true
+#   tags:
+#     - cat2
+#     - medium
+#     - SV-252179
+
+# - name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
+  # yedit:
+  #   src: "{{ mongod_config_path }}"
+  #   edits:
+  #   - key: net.tls.mode
+  #     value: requireTLS
+  #   - key: net.tls.certificateKeyFile
+  #     value: "{{ certificate_key_file_path }}"
+  #   - key: net.tls.CAFile
+  #     value: "{{ ca_file_path }}"
+  #   - key: net.tls.allowInvalidCertificates
+  #     value: false
+  #   - key: net.tls.allowConnectionsWithoutCertificates
+  #     value: false
+  #   - key: net.tls.FIPSMode
+  #     value: true
 #   ignore_errors: true
 #   tags:
 #     - cat2

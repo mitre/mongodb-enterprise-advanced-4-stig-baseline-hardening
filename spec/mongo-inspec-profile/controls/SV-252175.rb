@@ -85,8 +85,8 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
 
   create_user_output = json({command: run_create_user})
 
-  create_user_again = command( run_create_user)
-  
+  create_user_again = command(run_create_user)
+
   run_user_output = command(run_user_write)
 
   describe.one do

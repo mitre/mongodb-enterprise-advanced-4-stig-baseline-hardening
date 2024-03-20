@@ -48,8 +48,20 @@ Identify and remove any administrative roles and privileges from application use
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
+  check_command="db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.security.redactClientLogData"
+
+  run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{check_command}\""
+
+  check_output = command(run_check_command)
+
+  describe 'Client log data' do
+      it 'should be redacted' do 
+        expect(check_output.stdout).to match(/true/)
+      end
+    end
+  
   describe mongodb_conf(input('mongod_config_path')) do
     its(['security','redactClientLogData']){should eq true}
   end
-  
+
 end

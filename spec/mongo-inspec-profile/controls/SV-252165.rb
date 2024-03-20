@@ -43,4 +43,17 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag 'documentable'
   tag cci: ['CCI-001199']
   tag nist: ['SC-28']
+
+  check_command="db.serverStatus().encryptionAtRest.encryptionEnabled"
+
+  run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{check_command}\""
+
+  check_output = command(run_check_command)
+
+  describe 'Encrypted Storage Engine' do
+      it 'should be enabled' do 
+        expect(check_output.stdout).to match(/false/)
+      end
+    end
+
 end
