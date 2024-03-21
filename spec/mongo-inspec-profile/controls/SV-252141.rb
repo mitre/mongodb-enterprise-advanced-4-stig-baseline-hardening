@@ -48,7 +48,7 @@ Stop/start (restart) any or all mongod or mongos processes.'
   tag nist: ['SC-24', 'SC-24']
 
   describe mongodb_conf(input('mongod_config_path')) do
-          its(['storage','journal','enabled']){should eq true}
-      end
+    its(['storage','journal','enabled']){should eq true}
+  end
 
 end

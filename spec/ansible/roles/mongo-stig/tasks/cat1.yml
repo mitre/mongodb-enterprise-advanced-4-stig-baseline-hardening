@@ -33,7 +33,6 @@
 #     - SV-252146
 #     - enterprise
 
-##### DISABLED FOR EASIER TESTING
 - name: "HIGH | SV-252149 | MongoDB must integrate with an organization-level authentication/access mechanism providing account management and automation for all users, groups, roles, and any other principals."
   yedit:
       src: "{{ mongod_config_path }}"
@@ -73,25 +72,6 @@
 #     - high
 #     - SV-252158
 
-
-##### PART TWO OF THIS DOESNT EXIST IN MONGO 4+
-# - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
-#   blockinfile:
-#     path: "{{ mongod_config_path }}"
-#     marker: "#Rule ID SV-252159"
-#     prepend_newline: true
-#     insertafter: "EOF"
-#     block: |
-#       setParameter:
-#         authenticationMechanisms: SCRAM-SHA-256
-#     state: present
-#   ignore_errors: true
-#   tags:
-#     - cat1
-#     - high
-#     - SV-252159
-  
-##### CHANGES TO ENTERPRISE WITH GSSAPI AND PLAIN, ASKS FOR ALL OF THEM
 - name: "HIGH | SV-252159 | If passwords are used for authentication, MongoDB must store only hashed, salted representations of passwords."
   yedit:
       src: "{{ mongod_config_path }}"

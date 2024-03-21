@@ -51,9 +51,9 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   check_output = command(run_check_command)
 
   describe 'Encrypted Storage Engine' do
-      it 'should be enabled' do 
-        expect(check_output.stdout).to match(/false/)
-      end
+    it 'should be enabled' do 
+      expect(check_output.stdout).to match(/false/)
     end
+  end
 
 end

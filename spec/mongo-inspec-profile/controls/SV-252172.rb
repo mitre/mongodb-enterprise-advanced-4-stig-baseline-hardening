@@ -41,7 +41,7 @@ Allocate sufficient space to the storage volume hosting the file identified in t
   tag nist: ['AU-4']
 
   describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog', 'destination']) { should eq "syslog"}
-    end
+    its(['auditLog', 'destination']) { should eq "syslog"}
+  end
   
 end

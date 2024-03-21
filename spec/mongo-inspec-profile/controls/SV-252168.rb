@@ -54,10 +54,10 @@ Restart the MongoDB server from the operating system:
   check_output = command(run_check_command)
 
   describe 'Client log data' do
-      it 'should be redacted' do 
-        expect(check_output.stdout).to match(/true/)
-      end
+    it 'should be redacted' do 
+      expect(check_output.stdout).to match(/true/)
     end
+  end
 
   describe mongodb_conf(input('mongod_config_path')) do
     its(['security','redactClientLogData']){should eq true}

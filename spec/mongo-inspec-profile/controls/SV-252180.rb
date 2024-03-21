@@ -55,6 +55,6 @@ Start/stop (restart) all mongod or mongos instances using the %MongoDB configura
     its(['net','tls','allowInvalidCertificates']){should eq false}
     its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
     its(['net','tls','FIPSMode']){should eq true}
-
   end
+  
 end

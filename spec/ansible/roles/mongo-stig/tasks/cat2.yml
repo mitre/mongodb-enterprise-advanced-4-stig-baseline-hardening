@@ -202,6 +202,7 @@
 #     - medium
 #     - SV-252153
 
+##### MANUAL ANSIBLE
 # - name: "MEDIUM | SV-252154 | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
 #   command: true
 #   ignore_errors: true

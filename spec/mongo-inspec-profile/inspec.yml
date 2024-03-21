@@ -50,6 +50,22 @@ inputs:
     required: true
     sensitive: true
 
+  - name: mongo_superusers
+    description: "Authorized superuser accounts"
+    type: array
+    value:
+      - ""
+    required: true
+    sensitive: true
+
+  - name: mongo_dbs
+    description: "Authorized mongo databases"
+    type: array
+    value:
+      - ""
+    required: true
+    sensitive: true
+
   - name: mongod_config_path
     description: "The path to the mongod configuration file"
     type: string

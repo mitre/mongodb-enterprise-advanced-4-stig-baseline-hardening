@@ -32,12 +32,26 @@ https://docs.mongodb.com/v4.4/reference/command/revokeRolesFromUser/'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  #the beginning of something great
-  db_name = 'database'
-  command_string = "mongosh #{db_name} --quiet --eval 'db.getRoles()'"
+  check_command = "EJSON.stringify(db.getUsers())"
 
-  describe command(command_string) do
-    its('stdout') { should include 'dbOwner' }
+  input('mongo_dbs').each do |db_name|
+    run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"#{check_command}\""
+
+    # run the command and parse the output as json
+    users_output = json({command: run_check_command}).params
+
+    users_output['users'].each do |user|
+      # check if user is not a superuser
+      unless input('mongo_superusers').include?(user['user'])
+        # check each users role
+        describe "User #{user['_id']} in database #{db_name}" do
+          #collect all roles for user
+          subject { user['roles'].map { |role| role['role'] } }
+          it { should_not include 'dbOwner' }
+        end
+      end
+    end
   end
+
 
 end

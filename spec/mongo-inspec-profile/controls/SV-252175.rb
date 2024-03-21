@@ -101,13 +101,12 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
         expect(create_user_again.stderr).to match(/MongoServerError: User "myTester@test" already exists/)
       end
     end
-
   end
 
   describe 'Test user' do
-      it 'should not be able to write to database' do 
-        expect(run_user_output.stderr).to match(/MongoServerError: not authorized on test to execute command/)
-      end
+    it 'should not be able to write to database' do 
+      expect(run_user_output.stderr).to match(/MongoServerError: not authorized on test to execute command/)
     end
+  end
 
 end
