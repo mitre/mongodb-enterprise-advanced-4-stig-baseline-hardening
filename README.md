@@ -52,9 +52,10 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 - The `verify_threshold.sh` script will tag the generated image as "passing" if it exceeds the compliance threshold set in `threshold.yml`, and "failing" if it does not. A real hardening pipeline would instead do something like push an image that passes the threshold to a registry, and simply ignore it if it does not.
 
 - To run the inspec seperately
-
-```
-  inspec exec spec/mongo-inspec-profile/ -t docker://image_name --controls=SV-252154 --input-file=spec/mongo-inspec-profile/inputs.yml
-```
+  - Remove the `--controls` flag to run all inspec checks at once.
+  -
+  ```
+  inspec exec spec/mongo-inspec-profile/ -t docker://mongo_hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml
+  ```
 
 ---
