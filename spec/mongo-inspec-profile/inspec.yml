@@ -54,7 +54,15 @@ inputs:
     description: "Authorized superuser accounts"
     type: array
     value:
-      - ""
+      - "admin"
+    required: true
+    sensitive: true
+
+  - name: mongo_users
+    description: "Authorized user accounts"
+    type: array
+    value:
+      - "bruhburh"
     required: true
     sensitive: true
 

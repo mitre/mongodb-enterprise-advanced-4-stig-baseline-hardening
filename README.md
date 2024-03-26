@@ -50,6 +50,11 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 - You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library](https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
 
 - The `verify_threshold.sh` script will tag the generated image as "passing" if it exceeds the compliance threshold set in `threshold.yml`, and "failing" if it does not. A real hardening pipeline would instead do something like push an image that passes the threshold to a registry, and simply ignore it if it does not.
-  Certainly! Enhancing the professionalism and clarity of the README section on usage can greatly assist users in understanding and following the instructions. Here is a revised version that adheres to best practices:
+
+- To run the inspec seperately
+
+```
+  inspec exec spec/mongo-inspec-profile/ -t docker://image_name --controls=SV-252154 --input-file=spec/mongo-inspec-profile/inputs.yml
+```
 
 ---
