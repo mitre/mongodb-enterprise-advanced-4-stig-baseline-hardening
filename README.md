@@ -53,9 +53,8 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
 - To run the inspec seperately
   - Remove the `--controls` flag to run all inspec checks at once.
-  -
   ```
-  inspec exec spec/mongo-inspec-profile/ -t docker://mongo_hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml
+  inspec exec spec/mongo-inspec-profile/ -t docker://image_name --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml
   ```
 
 ---
