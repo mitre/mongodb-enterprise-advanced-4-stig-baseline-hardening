@@ -44,6 +44,13 @@
   debug:
     msg: "{{ users_list.stdout }}"
 
+- name: Get MongoDB version
+  ansible.builtin.command: |
+    mongosh "mongodb://localhost:27017/test" --quiet --eval "EJSON.stringify(db.version())"
+  register: mongodb_version
+  tags:
+    - prep
+
 # get these and register as fact minus what the user said shouldnt be hardened
 # create some roles and users for testing
 # json query filter

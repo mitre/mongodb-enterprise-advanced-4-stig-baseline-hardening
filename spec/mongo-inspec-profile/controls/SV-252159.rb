@@ -63,8 +63,12 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 
-  describe mongodb_conf(input('mongod_config_path')) do
-    its(['setParameter','authenticationMechanisms']){should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN','MONGODB-AWS',]}
+  auth_mechanisms = mongodb_conf(input('mongod_config_path')).params['setParameter']['authenticationMechanisms'].split(',')
+
+
+  describe "MongoDB authenticaion mechanisms" do
+    subject {auth_mechanisms}
+    it {should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN','MONGODB-AWS',]}
   end
 
   check_command = "db.getSiblingDB('admin').system.version.find({ '_id' : 'authSchema'}, {_id: 0})"
@@ -72,10 +76,12 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
   run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{check_command}\""
 
   check_output = command(run_check_command)
+  
+  current_version = check_output.stdout.match(/currentVersion: (?<version>\d)/)
 
   describe 'authSchemaVersion' do
     it 'should be atleast version 5' do 
-      expect(check_output.stdout).to match(/[ { currentVersion: 5 } ]/)
+      expect(current_version['version'].to_i).to be >= 5
     end
   end
 
