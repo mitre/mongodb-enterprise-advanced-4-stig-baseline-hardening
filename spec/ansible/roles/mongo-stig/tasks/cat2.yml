@@ -242,7 +242,6 @@
 #     - medium
 #     - SV-252157
 
-
 ##### manual??? this one is manual is postgres, but its also less specific 
 # - name: "MEDIUM | SV-252161 | MongoDB must map the PKI-authenticated identity to an associated user account."
 #   command: true
