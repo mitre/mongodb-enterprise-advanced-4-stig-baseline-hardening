@@ -43,23 +43,15 @@ https://docs.mongodb.com/v4.4/core/schema-validation/'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 
-  check_command = "db.col.find({\$where:'return true;'})"
+  check_command = "db.col.find({\\$where: 'return true;'})"
 
   run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{check_command}\""
 
   check_output = command(run_check_command)
 
-  describe command('mongosh mongodb://admin:admin@localhost:27017 --quiet --eval "db.col.find({\$where:\'return true;\'})"') do
-    its('stderr') { should match /MongoServerError: no globalScriptEngine in $where parsing/ }
-  end
-
-  describe command(run_check_command) do
-    its('stderr') {should match /MongoServerError: no globalScriptEngine in $where parsing/}
-  end
-
   describe 'Javascript' do
     it 'should be disabled' do 
-      expect(check_output.stderr).to match(/MongoServerError: no globalScriptEngine in $where parsing/)
+      expect(check_output.stderr).to match(/MongoServerError: no globalScriptEngine in \$where parsing/)
     end
   end
 
