@@ -48,7 +48,11 @@ Stop/start (restart) any or all mongod or mongos processes.'
   tag nist: ['SC-24', 'SC-24']
 
 
-  #set a var to the mongo_version
+  run_check_command = "mongosh mongodb://localhost:27017/test --quiet --eval \"EJSON.stringify(db.version())\""
+
+  check_output = json({command: run_check_command})
+
+  mongo_version = check_output.params.to_f
 
   only_if('Storage journal options are only possible to enable on MongoDB versions 6.1 or older', impact: 0.0) {
     (mongo_version) <= 6.1
@@ -57,6 +61,5 @@ Stop/start (restart) any or all mongod or mongos processes.'
   describe mongodb_conf(input('mongod_config_path')) do
     its(['storage','journal','enabled']){should eq true}
   end
-
 
 end
