@@ -12,13 +12,24 @@ depends: []
 inspec_version: null
 
 inputs:
+  # SV-252134, SV-252135, SV-252136, SV-252137, SV-252138, SV-252139, SV-252141, SV-252142, SV-252143
+  # SV-252145, SV-252146, SV-252147, SV-252148, SV-252149, SV-252156, SV-252159, SV-252160, SV-252164
+  # SV-252167, SV-252168, SV-252169, SV-252171, SV-252172, SV-252179, SV-252180
+  - name: mongod_config_path
+    description: "The path to the mongod configuration file"
+    type: string
+    value: "/etc/mongod.conf"
+    required: true
+    
+  # SV-252135, SV-252136, SV-252142, SV-252160
   - name: mongo_owner
     description: "The system user of the mongod process"
     type: string
     value: "root"
     required: true
     sensitive: true
-  
+
+  # SV-252135, SV-252136, SV-252142, SV-252160
   - name: mongo_group
     description: "The system group of the mongod process"
     type: string
@@ -26,30 +37,35 @@ inputs:
     required: true
     sensitive: true
 
+  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
   - name: mongo_dba
     description: "The mongo DBA user to access the test database"
     type: string
     required: true
     sensitive: true
 
+  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
   - name: mongo_dba_password
     description: "The password for the mongo DBA user"
     type: string
     required: true
     sensitive: true
   
+  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
   - name: mongo_host
     description: "The hostname or IP address used to connect to the database"
     type: string
     required: true
     sensitive: true
 
+  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
   - name: mongo_port
     description: "The port used to connect to the database"
     type: numeric
     required: true
     sensitive: true
 
+  # SV-252154
   - name: mongo_superusers
     description: "Authorized superuser accounts"
     type: array
@@ -66,6 +82,7 @@ inputs:
     required: true
     sensitive: true
 
+  # SV-252154
   - name: mongo_dbs
     description: "Authorized mongo databases"
     type: array
@@ -74,12 +91,7 @@ inputs:
     required: true
     sensitive: true
 
-  - name: mongod_config_path
-    description: "The path to the mongod configuration file"
-    type: string
-    value: "/etc/mongod.conf"
-    required: true
-
+  # SV-252135, SV-252136, SV-252142, SV-252160
   - name: mongo_permissions
     description: "File and directory permissions that should be granted to mongo"
     type: string
@@ -92,24 +104,28 @@ inputs:
     value: "/var/log/mongodb/audit"
     required: true
 
+  # SV-252134, SV-252171
   - name: mongo_audit_file_path
     description: "The path to the mongo audit file"
     type: string
     value: "/var/log/mongodb/audit/auditLog.bson"
     required: true
 
+  # SV-252139, SV-252160, SV-252179, SV-252180
   - name: certificate_key_file_path
     description: "The path to the mongo certificate key"
     type: string
     value: "/etc/ssl/mongodb.pem"
     required: true
 
+  # SV-252139, SV-252160, SV-252179, SV-252180
   - name: ca_file_path
     description: "The path to the mongo CA file"
     type: string
     value: "/etc/ssl/caToValidateClientCertificates.pem"
     required: true
 
+  # SV-252142
   - name: data_file_directory_path
     description: "The path to the mongo data file directory"
     type: string

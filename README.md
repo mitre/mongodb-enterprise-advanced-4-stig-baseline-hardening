@@ -4,10 +4,10 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
 ## Dependencies
 
-- [Docker](https://docs.docker.com/) - Container engine.
-- [Packer](https://developer.hashicorp.com/packer) - A container image builder tool.
-- [Ansible](https://docs.ansible.com/) - An orchestration tool that can target containers. Used as the provisioner to STIG-harden the container under Packer's direction.
-- Progress Chef's [InSpec](https://docs.chef.io/inspec/) testing framework.
+- [Docker](https://docs.docker.com/get-docker/) - Container engine.
+- [Packer](https://developer.hashicorp.com/packer/install) - A container image builder tool.
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) - An orchestration tool that can target containers. Used as the provisioner to STIG-harden the container under Packer's direction.
+- Progress Chef's [InSpec](https://docs.chef.io/inspec/install/) testing framework.
 - [SAF CLI](https://saf-cli.mitre.org) for validating the results of the InSpec scan against a defined threshold (e.g. "95% of tests pass", or "no high-severity failures")
 
 ## Usage

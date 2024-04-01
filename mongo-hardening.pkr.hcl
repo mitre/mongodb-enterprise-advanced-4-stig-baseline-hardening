@@ -15,12 +15,14 @@ variable "ansible_vars" {
   type = map(string)
   default = {
     "ansible_host"       = "default",
-    "ansible_connection" = "docker", # use docker socket instead of default SSH
+    # "ansible_connection" uses the docker socket instead of the default SSH connection.
+    "ansible_connection" = "docker",
     "python_version"     = "3.9"
   }
 }
 
-# the unhardened image we will use as in input
+
+# Specifies the unhardened image to be used as an input.
 variable "input_image" {
   type = map(string)
   default = {
@@ -29,7 +31,7 @@ variable "input_image" {
   }
 }
 
-# how we want to tag the hardened output image
+# Defines the naming convention for the hardened output image.
 variable "output_image" {
   type = map(string)
   default = {
@@ -82,7 +84,7 @@ build {
     ]
   }
 
-  #ansible needs python and pip to be installed on the target
+  # Ansible requires Python and pip to be installed on the target.
   // provisioner "shell" {
   //   inline = [
   //     // "apt-get update",
@@ -103,7 +105,7 @@ build {
   }
 
   ### SCAN
-  # use raw bash script to invoke scanning tools that don't have their own plugin
+  # Use raw bash script to invoke scanning tools that don't have their own plugin.
   // provisioner "shell-local" {
   //   environment_vars = [
   //     "CHEF_LICENSE=accept",
