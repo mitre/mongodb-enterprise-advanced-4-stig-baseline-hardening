@@ -104,7 +104,7 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   end
 
   describe 'Test user' do
-    it 'should not be able to write to database' do 
+    it 'should not be able to write to the database' do 
       expect(run_user_output.stderr).to match(/MongoServerError: not authorized on test to execute command/)
     end
   end
