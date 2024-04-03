@@ -62,7 +62,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 - To get into the inspec shell for deeper testing
 
   ```
-  inspec shell -t docker://mongo-hardened --depends . --input-file=inputs.yml
+  inspec shell -t docker://mongo-hardened --depends=spec/mongo-inspec-profile/ --input-file=spec/mongo-inspec-profile/inputs.yml
   ```
 
 ---

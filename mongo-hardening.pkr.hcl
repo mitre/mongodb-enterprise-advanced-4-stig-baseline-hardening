@@ -21,7 +21,6 @@ variable "ansible_vars" {
   }
 }
 
-
 # Specifies the unhardened image to be used as an input.
 variable "input_image" {
   type = map(string)
