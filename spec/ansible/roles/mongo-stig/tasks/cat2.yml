@@ -419,9 +419,9 @@
 #     - key: net.tls.mode
 #       value: requireTLS
 #     - key: net.tls.certificateKeyFile
-#       value: "{{ certificate_key_file_path }}"
+#       value: "{{ certificate_key_file_dest }}"
 #     - key: net.tls.CAFile
-#       value: "{{ ca_file_path }}"
+#       value: "{{ ca_file_dest }}"
 #     - key: net.tls.allowInvalidCertificates
 #       value: false
 #     - key: net.tls.allowConnectionsWithoutCertificates
@@ -442,9 +442,9 @@
   #   - key: net.tls.mode
   #     value: requireTLS
   #   - key: net.tls.certificateKeyFile
-  #     value: "{{ certificate_key_file_path }}"
+  #     value: "{{ certificate_key_file_dest }}"
   #   - key: net.tls.CAFile
-  #     value: "{{ ca_file_path }}"
+  #     value: "{{ ca_file_dest }}"
   #   - key: net.tls.allowInvalidCertificates
   #     value: false
   #   - key: net.tls.allowConnectionsWithoutCertificates

@@ -78,7 +78,7 @@ inputs:
     description: "Authorized user accounts"
     type: array
     value:
-      - "bruhburh"
+      - ""
     required: true
     sensitive: true
 
@@ -112,14 +112,14 @@ inputs:
     required: true
 
   # SV-252139, SV-252160, SV-252179, SV-252180
-  - name: certificate_key_file_path
+  - name: certificate_key_file_dest
     description: "The path to the mongo certificate key"
     type: string
     value: "/etc/ssl/mongodb.pem"
     required: true
 
   # SV-252139, SV-252160, SV-252179, SV-252180
-  - name: ca_file_path
+  - name: ca_file_dest
     description: "The path to the mongo CA file"
     type: string
     value: "/etc/ssl/caToValidateClientCertificates.pem"

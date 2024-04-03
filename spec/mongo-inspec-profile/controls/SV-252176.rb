@@ -143,10 +143,9 @@ https://docs.mongodb.com/v4.4/core/collection-level-access-control/#privileges-a
   run_order_find = "mongosh mongodb://myRoleTestUser:password1@#{input('mongo_host')}:#{input('mongo_port')}/products?authMechanism=SCRAM-SHA-256 --quiet --eval \"#{order_find_command}\""
   run_order_update = "mongosh mongodb://myRoleTestUser:password1@#{input('mongo_host')}:#{input('mongo_port')}/products?authMechanism=SCRAM-SHA-256 --quiet --eval \"#{order_update_command}\""
   
-
   create_user_output = json({command: run_create_user})
   create_user_again = command(run_create_user)
-
+    
   inventory_write_output = command(run_inventory_write)
   inventory_find_output = command(run_inventory_find)
   inventory_update_output = command(run_inventory_update)
@@ -168,7 +167,6 @@ https://docs.mongodb.com/v4.4/core/collection-level-access-control/#privileges-a
       end
     end
   end
-
 
   # Inventory commands 
   describe 'Test user' do

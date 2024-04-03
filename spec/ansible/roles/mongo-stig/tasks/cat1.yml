@@ -1,5 +1,4 @@
 ---
-##### DOES NOT WORK DUE TO MISSING FILE PATHS, disabled
 # - name: "HIGH | SV-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
 #   yedit:
 #     src: "{{ mongod_config_path }}"
@@ -7,9 +6,9 @@
 #     - key: net.tls.mode
 #       value: requireTLS
 #     - key: net.tls.certificateKeyFile
-#       value: "{{ certificate_key_file_path }}"
+#       value: "{{ certificate_key_file_dest }}"
 #     - key: net.tls.CAFile
-#       value: "{{ ca_file_path }}"
+#       value: "{{ ca_file_dest }}"
 #     - key: net.tls.allowInvalidCertificates
 #       value: false
 #     - key: net.tls.allowConnectionsWithoutCertificates
@@ -87,10 +86,10 @@
 ##### FILES DONT EXIST
 # - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
 #   ansible.builtin.shell: |
-#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_path }}
-#       chmod {{ mongo_permissions }} {{ certificate_key_file_path }}
-#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_path }}
-#       chmod {{ mongo_permissions }} {{ ca_file_path }}
+#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_dest }}
+#       chmod {{ mongo_permissions }} {{ certificate_key_file_dest }}
+#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_dest }}
+#       chmod {{ mongo_permissions }} {{ ca_file_dest }}
 #   ignore_errors: true
 #   tags:
 #     - cat1

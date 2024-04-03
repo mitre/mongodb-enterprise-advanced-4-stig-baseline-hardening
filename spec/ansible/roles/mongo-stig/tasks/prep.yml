@@ -7,7 +7,7 @@
   tags:
     - prep
 
-- name: Copy file with owner and permissions
+- name: Copy mongod.conf file to container
   ansible.builtin.copy:
     src: files/conf.template
     dest: "{{ mongod_config_path }}"
@@ -18,11 +18,21 @@
   tags:
     - prep
 
-# - name: Create MongoDB admin user
-#   ansible.builtin.command: |
-#     mongosh "mongodb://localhost:27017/" --quiet --eval "db.getSiblingDB('admin').createUser({user: '{{ mongo_dba }}', pwd: '{{ mongo_dba_password }}', roles: [{role: 'root', db: 'admin'}]})"
-#   register: database_list
-#   ignore_errors: true
+- name: Copy certificate key file to container
+  ansible.builtin.copy:
+    src: "{{ certificate_key_file_src }}"
+    dest: "{{ certificate_key_file_dest }}"
+    owner: "{{ mongo_owner }}"
+    group: "{{ mongo_group }}"
+    mode: "{{ mongo_permissions }}"
+
+- name: Copy certificate authority file to container
+  ansible.builtin.copy:
+    src: "{{ ca_file_src }}"
+    dest: "{{ ca_file_dest }}"
+    owner: "{{ mongo_owner }}"
+    group: "{{ mongo_group }}"
+    mode: "{{ mongo_permissions }}"
 
 - name: Create MongoDB admin user
   community.mongodb.mongodb_user:

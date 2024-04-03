@@ -48,8 +48,8 @@ chmod 600 /etc/ssl/caToValidateClientCertificates.pem'
 
   describe mongodb_conf(input('mongod_config_path')) do
     its(['net','tls','mode']){should eq "requireTLS"}
-    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_path')}
-    its(['net','tls','CAFile']){should match input('ca_file_path')}
+    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_dest')}
+    its(['net','tls','CAFile']){should match input('ca_file_dest')}
   end
 
   describe file(input('mongod_config_path')) do
@@ -59,14 +59,14 @@ chmod 600 /etc/ssl/caToValidateClientCertificates.pem'
     it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
 
-  describe file(input('certificate_key_file_path')) do
+  describe file(input('certificate_key_file_dest')) do
     it { should exist }
     it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }
     it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
 
-  describe file(input('ca_file_path')) do
+  describe file(input('ca_file_dest')) do
     it { should exist }
     it { should be_owned_by input('mongo_owner') }
     it { should be_grouped_into input('mongo_group') }

@@ -58,8 +58,8 @@ https://docs.mongodb.com/v4.4/tutorial/configure-ssl/'
 
   describe mongodb_conf(input('mongod_config_path')) do
     its(['net','tls','mode']){should eq "requireTLS"}
-    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_path')}
-    its(['net','tls','CAFile']){should match input('ca_file_path')}
+    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_dest')}
+    its(['net','tls','CAFile']){should match input('ca_file_dest')}
     its(['net','tls','allowInvalidCertificates']){should eq false}
     its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
   end
