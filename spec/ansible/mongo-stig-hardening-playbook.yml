@@ -4,7 +4,7 @@
   roles:
     - roles/prep # basic update and config tasks
     #- rhel8STIG # apply STIG requirement controls
-    - yedit
+    - mitre.yedit
     - mongo-stig # apply STIG requirement controls
   serial: 50
   user: 0

@@ -4,6 +4,7 @@ prep_conf: true
 mongostig_cat1: true
 mongostig_cat2: true
 mongostig_cat3: true 
+
 mongo_owner: root
 mongo_group: root
 mongo_dba: admin
@@ -13,17 +14,23 @@ mongo_port: 27017
 mongo_permissions: 600
 authentication_mechanism: 
   - SCRAM-SHA-256
-#audit_log_destination | "file" or "syslog"
-audit_log_destination: "file"
+
 mongod_config_path: "/etc/mongod.conf"
+
+#audit_log_destination choose "file" or "syslog"
+audit_log_destination: "file"
 mongo_audit_directory_path: "/var/log/mongodb/audit"
 mongo_audit_file_path: "/var/log/mongodb/audit/auditLog.bson"
+
 certificate_key_file_dest: "/etc/ssl/mongodb.pem"
 certificate_key_file_src: "../../../../certificates_pkcs7_v5_13_dod/dod_CAs.pem"
 ca_file_dest: "/etc/ssl/caToValidateClientCertificates.pem"
 ca_file_src: "../../../../certificates_pkcs7_v5_13_dod/dod_CAs.pem"
+
 data_file_directory_path: "/var/lib/mongo"
+
 max_incoming_connections: 800000
+
 KMIP_server_host_name: ""
 KMIP_server_port: ""
 KMIP_server_ca_file: ""

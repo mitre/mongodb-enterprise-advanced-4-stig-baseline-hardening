@@ -1,7 +1,7 @@
 galaxy_info:
   author: Sean Chacon Cai
   description: Applies MongoDB STIG
-  company: MITRE Corporation
+  company: The MITRE Corporation
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

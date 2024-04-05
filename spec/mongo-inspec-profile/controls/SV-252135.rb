@@ -102,7 +102,7 @@ Given the example above, the %MongoDB auditLog directory% is /var/log/mongodb/au
   tag nist: ['AU-9 a', 'AU-9 a', 'AU-9 a']
 
   describe.one do
-    describe directory(input('mongod_config_path')) do
+    describe file(input('mongod_config_path')) do
       it { should exist }
       it { should be_owned_by input('mongo_owner') }
       it { should be_grouped_into input('mongo_group') }

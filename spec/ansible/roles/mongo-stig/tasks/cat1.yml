@@ -83,18 +83,17 @@
     - SV-252159
     - enterprise
 
-##### FILES DONT EXIST
-# - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
-#   ansible.builtin.shell: |
-#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_dest }}
-#       chmod {{ mongo_permissions }} {{ certificate_key_file_dest }}
-#       chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_dest }}
-#       chmod {{ mongo_permissions }} {{ ca_file_dest }}
-#   ignore_errors: true
-#   tags:
-#     - cat1
-#     - high
-#     - SV-252160
+- name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
+  ansible.builtin.shell: |
+      chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_dest }}
+      chmod {{ mongo_permissions }} {{ certificate_key_file_dest }}
+      chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_dest }}
+      chmod {{ mongo_permissions }} {{ ca_file_dest }}
+  ignore_errors: true
+  tags:
+    - cat1
+    - high
+    - SV-252160
 
 ##### MANUAL
 # - name: "HIGH | SV-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
