@@ -1,5 +1,4 @@
 ---
-# defaults file for mongo-stig
 prep_conf: true
 mongostig_cat1: true
 mongostig_cat2: true
@@ -11,27 +10,27 @@ mongo_dba: admin
 mongo_dba_password: admin
 mongo_host: localhost
 mongo_port: 27017
-mongo_permissions: 600
+mongo_permissions: 0600
 authentication_mechanism: 
   - SCRAM-SHA-256
 
-mongod_config_path: "/etc/mongod.conf"
+mongod_config_path: /etc/mongod.conf
 
 #audit_log_destination choose "file" or "syslog"
-audit_log_destination: "file"
-mongo_audit_directory_path: "/var/log/mongodb/audit"
-mongo_audit_file_path: "/var/log/mongodb/audit/auditLog.bson"
+audit_log_destination: file
+mongo_audit_directory_path: /var/log/mongodb/audit/
+mongo_audit_file_path: /var/log/mongodb/audit/auditLog.bson
 
-certificate_key_file_dest: "/etc/ssl/mongodb.pem"
-certificate_key_file_src: "../../../../certificates_pkcs7_v5_13_dod/dod_CAs.pem"
-ca_file_dest: "/etc/ssl/caToValidateClientCertificates.pem"
-ca_file_src: "../../../../certificates_pkcs7_v5_13_dod/dod_CAs.pem"
+certificate_key_file_dest: /etc/ssl/mongodb.pem
+certificate_key_file_src: ../../../../certificates_pkcs7_v5_13_dod/dod_CAs.pem
+ca_file_dest: /etc/ssl/caToValidateClientCertificates.pem
+ca_file_src: ../../../../certificates_pkcs7_v5_13_dod/dod_CAs.pem
 
-data_file_directory_path: "/var/lib/mongo"
+data_file_directory_path: /var/lib/mongo/
 
 max_incoming_connections: 800000
 
-KMIP_server_host_name: ""
-KMIP_server_port: ""
-KMIP_server_ca_file: ""
-KMIP_client_certificate_file: ""
+KMIP_server_host_name: 
+KMIP_server_port: 
+KMIP_server_ca_file: 
+KMIP_client_certificate_file: 
