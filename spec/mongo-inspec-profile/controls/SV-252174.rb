@@ -63,4 +63,5 @@ There may be several resources in a role that contain these privileges and the r
   tag 'documentable'
   tag cci: ['CCI-001812']
   tag nist: ['CM-11 (2)']
+
 end

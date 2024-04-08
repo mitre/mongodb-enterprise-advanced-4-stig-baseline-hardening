@@ -54,16 +54,16 @@ For the operating system finding, refer to the appropriate operating system docu
   tag cci: ['CCI-002450', 'CCI-000803']
   tag nist: ['SC-13 b', 'IA-7']
 
-  MONGO_COMMAND="EJSON.stringify(db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.net.tls.FIPSMode)"
+  mongo_command="EJSON.stringify(db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.net.tls.FIPSMode)"
 
-  RUN_COMMAND = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{MONGO_COMMAND}\""
+  run_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{mongo_command}\""
 
   describe mongodb_conf(input('mongod_config_path')) do
     its(['net','tls','FIPSMode']){should eq true}
   end
   
   #####UNTESTED
-  describe json({command: RUN_COMMAND}) do
+  describe json({command: run_command}) do
     its('ok') { should cmp 1 }
   end
 end

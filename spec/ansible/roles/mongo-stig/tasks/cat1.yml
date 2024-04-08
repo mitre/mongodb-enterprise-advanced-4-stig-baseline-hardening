@@ -19,7 +19,6 @@
 #     - high
 #     - SV-252139
 
-##### ENTERPRISE ONLY, DISABLED FOR EASIER TESTING
 # - name: "HIGH | SV-252146 | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
 #   yedit:
 #       src: "{{ mongod_config_path }}"
@@ -85,9 +84,9 @@
 
 - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
   ansible.builtin.shell: |
-      chown {{ mongo_owner }}:{{ mongo_owner }} {{ certificate_key_file_dest }}
+      chown {{ mongo_owner }}:{{ mongo_group }} {{ certificate_key_file_dest }}
       chmod {{ mongo_permissions }} {{ certificate_key_file_dest }}
-      chown {{ mongo_owner }}:{{ mongo_owner }} {{ ca_file_dest }}
+      chown {{ mongo_owner }}:{{ mongo_group }} {{ ca_file_dest }}
       chmod {{ mongo_permissions }} {{ ca_file_dest }}
   ignore_errors: true
   tags:
@@ -104,7 +103,6 @@
 #     - high
 #     - SV-252162
 
-##### ENTERPRISE ONLY
 # - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
 #   command: true
 #   ignore_errors: true
