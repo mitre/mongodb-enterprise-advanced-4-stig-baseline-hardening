@@ -129,5 +129,5 @@ inputs:
   - name: data_file_directory_path
     description: "The path to the mongo data file directory"
     type: string
-    value: "/var/lib/mongo/"
+    value: "/data/db/"
     required: true

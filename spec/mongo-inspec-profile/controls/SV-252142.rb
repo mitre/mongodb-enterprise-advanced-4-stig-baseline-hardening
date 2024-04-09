@@ -70,20 +70,12 @@ find /var/lib/mongo/* -type d | xargs  chmod 700'
     it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
 
-  # ls -l /var/lib/mongo
-  ##### just the third entry in the check text is left
+  describe command("find #{input('data_file_directory_path')} -not -user #{input('mongo_owner')} -or -not -group #{input('mongo_group')}") do
+    its('stdout') { should be_empty }
+  end
 
-  # If the owner and group of  any file or sub-directory is not mongod, this is a finding.
+  describe command("find #{input('data_file_directory_path')} -type f -not -perm #{input('mongo_permissions')}") do
+    its('stdout') { should be_empty }
+  end
 
-  # If the permission of any file in the main directory (/var/lib/mongo) or sub-directory of (/var/lib/mongo) is more permissive than 600, this is a finding.
-
-  # If the permission of any sub-directory of (/var/lib/mongo) is more permissive than 700, this is a finding.
-
-  # describe directory(input('data_file_directory_path')) do
-  #   it { should exist }
-  #   it { should be_owned_by input('mongo_owner') }
-  #   it { should be_grouped_into input('mongo_group') }
-  #   it { should_not be_more_permissive_than(input('mongo_permissions')) }
-  # end
-  
 end
