@@ -83,11 +83,21 @@
     - enterprise
 
 - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB."
-  ansible.builtin.shell: |
-      chown {{ mongo_owner }}:{{ mongo_group }} {{ certificate_key_file_dest }}
-      chmod {{ mongo_permissions }} {{ certificate_key_file_dest }}
-      chown {{ mongo_owner }}:{{ mongo_group }} {{ ca_file_dest }}
-      chmod {{ mongo_permissions }} {{ ca_file_dest }}
+  block:
+    - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB. | Certificate Key File"
+      ansible.builtin.file: 
+        path: "{{ certificate_key_file_dest }}"
+        owner: "{{ mongo_owner }}"
+        group: "{{ mongo_group }}"
+        mode: "{{ mongo_permissions }}"
+
+    - name: "HIGH | SV-252160 | MongoDB must enforce authorized access to all PKI private keys stored/utilized by MongoDB. | CA File"
+      ansible.builtin.file: 
+        path: "{{ ca_file_dest }}"
+        owner: "{{ mongo_owner }}"
+        group: "{{ mongo_group }}"
+        mode: "{{ mongo_permissions }}"
+
   ignore_errors: true
   tags:
     - cat1
