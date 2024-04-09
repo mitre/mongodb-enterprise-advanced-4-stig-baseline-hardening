@@ -74,7 +74,7 @@ find /var/lib/mongo/* -type d | xargs  chmod 700'
     its('stdout') { should be_empty }
   end
 
-  describe command("find #{input('data_file_directory_path')} -type f -not -perm #{input('mongo_permissions')}") do
+  describe command("find #{input('data_file_directory_path')} -not -perm #{input('mongo_permissions')}") do
     its('stdout') { should be_empty }
   end
 
