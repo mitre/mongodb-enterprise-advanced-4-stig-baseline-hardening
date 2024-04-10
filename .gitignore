@@ -1,4 +1,4 @@
 reports/**
 inputs.yml
 local-test.yml
-certificates_pkcs7_v5_13_dod
+*.pem
