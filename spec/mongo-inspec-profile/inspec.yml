@@ -98,6 +98,7 @@ inputs:
     value: "600"
     required: true
 
+  # SV-252135
   - name: mongo_audit_directory_path
     description: "The path to the mongo audit directory"
     type: string

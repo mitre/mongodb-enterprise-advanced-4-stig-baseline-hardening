@@ -156,7 +156,6 @@
 #     - medium
 #     - SV-252144
 
-##### same ansible as 252149
 - name: "MEDIUM | SV-252145 | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
   yedit:
       src: "{{ mongod_config_path }}"
@@ -220,7 +219,7 @@
 #     - medium
 #     - SV-252153
 
-##### MANUAL ANSIBLE
+##### MANUAL
 # - name: "MEDIUM | SV-252154 | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
 #   command: true
 #   ignore_errors: true
@@ -278,17 +277,17 @@
 #     - medium
 #     - SV-252163
 
-##### NEEDS SOME FILE I DONT HAVE
-# - name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
-#   yedit:
-#     src: "{{ mongod_config_path }}"
-#     key: net.tls.mode
-#     value: requireTLS
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252164
+- name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
+  yedit:
+    src: "{{ mongod_config_path }}"
+    key: net.tls.mode
+    value: requireTLS
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252164
+    - enterprise
 
 ##### MANUAL
 # - name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
@@ -419,6 +418,7 @@
 #     - cat2
 #     - medium
 #     - SV-252177
+#     - enterprise
 
 # - name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
 #   command: true
@@ -427,6 +427,7 @@
 #     - cat2
 #     - medium
 #     - SV-252178
+#     - enterprise
 
 # - name: "MEDIUM | SV-252179 | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
 #   yedit:
@@ -449,23 +450,24 @@
 #     - cat2
 #     - medium
 #     - SV-252179
+#     - enterprise
 
 # - name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
-  # yedit:
-  #   src: "{{ mongod_config_path }}"
-  #   edits:
-  #   - key: net.tls.mode
-  #     value: requireTLS
-  #   - key: net.tls.certificateKeyFile
-  #     value: "{{ certificate_key_file_dest }}"
-  #   - key: net.tls.CAFile
-  #     value: "{{ ca_file_dest }}"
-  #   - key: net.tls.allowInvalidCertificates
-  #     value: false
-  #   - key: net.tls.allowConnectionsWithoutCertificates
-  #     value: false
-  #   - key: net.tls.FIPSMode
-  #     value: true
+    # yedit:
+    #   src: "{{ mongod_config_path }}"
+    #   edits:
+    #   - key: net.tls.mode
+    #     value: requireTLS
+    #   - key: net.tls.certificateKeyFile
+    #     value: "{{ certificate_key_file_dest }}"
+    #   - key: net.tls.CAFile
+    #     value: "{{ ca_file_dest }}"
+    #   - key: net.tls.allowInvalidCertificates
+    #     value: false
+    #   - key: net.tls.allowConnectionsWithoutCertificates
+    #     value: false
+    #   - key: net.tls.FIPSMode
+    #     value: true
 #   ignore_errors: true
 #   tags:
 #     - cat2

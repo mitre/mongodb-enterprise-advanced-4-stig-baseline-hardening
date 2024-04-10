@@ -18,6 +18,7 @@
     - cat1
     - high
     - SV-252139
+    - enterprise
 
 # - name: "HIGH | SV-252146 | MongoDB must use NIST FIPS 140-2 or 140-3 validated cryptographic modules for cryptographic operations."
 #   yedit:
@@ -41,6 +42,7 @@
     - cat1
     - high
     - SV-252149
+    - enterprise
 
 ##### MANUAL
 # - name: "HIGH | SV-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
@@ -103,6 +105,7 @@
     - cat1
     - high
     - SV-252160
+    - enterprise
 
 ##### MANUAL
 # - name: "HIGH | SV-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
