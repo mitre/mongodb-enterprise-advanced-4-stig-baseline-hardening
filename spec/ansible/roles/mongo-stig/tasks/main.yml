@@ -3,19 +3,24 @@
   ansible.builtin.import_tasks: prep.yml
   when: prep_conf
   tags:
-      - prep
+    - prep
 
-# tasks file for mongo-stig
+- name: Enable FIPS Mode
+  ansible.builtin.import_tasks: fips.yml
+  when: fips_mode
+  tags:
+    - fips
+
 - name: Include CAT I
   ansible.builtin.import_tasks: cat1.yml
   when: mongostig_cat1
   tags:
-      - CAT1
-      - high
+    - CAT1
+    - high
 
 - name: Include CAT II
   ansible.builtin.import_tasks: cat2.yml
   when: mongostig_cat2
   tags:
-      - CAT2
-      - medium
+    - CAT2
+    - medium

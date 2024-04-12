@@ -4,8 +4,6 @@
     path: "{{ mongod_config_path }}"
   register: conf
   changed_when: no
-  tags:
-    - prep
 
 - name: Copy mongod.conf file to container
   ansible.builtin.copy:
@@ -15,8 +13,6 @@
     group: "{{ mongo_group }}"
     mode: "{{ mongo_permissions }}"
   when: conf.stat.exists == false
-  tags:
-    - prep
 
 - name: Copy certificate key file to container
   ansible.builtin.copy:
@@ -47,8 +43,6 @@
   ansible.builtin.command: |
     mongosh "mongodb://localhost:27017/test" --quiet --eval "EJSON.stringify(db.getSiblingDB('admin').getUsers())"
   register: users_list
-  tags:
-    - prep
 
 - name: Display contents of users_list
   debug:
@@ -58,8 +52,6 @@
   ansible.builtin.command: |
     mongosh "mongodb://localhost:27017/test" --quiet --eval "db.version()"
   register: mongodb_version
-  tags:
-    - prep
 
 - name: Display contents of mongodb_version
   debug:

@@ -2,10 +2,10 @@
 - hosts:
     - localhost
   roles:
-    - roles/prep # basic update and config tasks
-    #- rhel8STIG # apply STIG requirement controls
+    - roles/prep
+    #- rhel8STIG
     - mitre.yedit
-    - mongo-stig # apply STIG requirement controls
+    - mongo-stig
   serial: 50
   user: 0
   vars:

@@ -1,0 +1,64 @@
+---
+- name: Download OpenSSL 3.0.0 tarball
+  get_url:
+    url: https://www.openssl.org/source/openssl-3.0.0.tar.gz
+    dest: /usr/local/src/openssl-3.0.0.tar.gz
+    validate_certs: no
+
+- name: Extract OpenSSL 3.0.0 tarball
+  ansible.builtin.unarchive:
+    src: /usr/local/src/openssl-3.0.0.tar.gz
+    dest: /usr/local/src/
+    remote_src: yes
+    creates: /usr/local/src/openssl-3.0.0 
+
+- name: Configure OpenSSL 3.0.0 with FIPS enabled
+  ansible.builtin.command: ./Configure enable-fips
+  args:
+    chdir: /usr/local/src/openssl-3.0.0
+
+- name: Build OpenSSL 3.0.0
+  ansible.builtin.make:
+    chdir: /usr/local/src/openssl-3.0.0
+    target: all 
+    
+- name: Download OpenSSL 3.1.0 tarball
+  ansible.builtin.get_url:
+    url: https://www.openssl.org/source/openssl-3.1.0.tar.gz
+    dest: /usr/local/src/openssl-3.1.0.tar.gz
+    validate_certs: no
+
+- name: Extract OpenSSL 3.1.0 tarball
+  ansible.builtin.unarchive:
+    src: /usr/local/src/openssl-3.1.0.tar.gz
+    dest: /usr/local/src/
+    remote_src: yes
+    creates: /usr/local/src/openssl-3.1.0
+
+- name: Configure OpenSSL 3.1.0 with FIPS enabled
+  ansible.builtin.command:
+    cmd: ./Configure enable-fips
+    chdir: /usr/local/src/openssl-3.1.0
+
+- name: Build OpenSSL 3.1.0
+  ansible.builtin.make:
+    chdir: /usr/local/src/openssl-3.1.0
+    target: all
+
+- name: Install OpenSSL 3.1.0
+  ansible.builtin.make:
+    chdir: /usr/local/src/openssl-3.1.0
+    target: install
+
+- name: Install OpenSSL 3.0.0 FIPS module
+  ansible.builtin.make:
+    chdir: /usr/local/src/openssl-3.0.0
+    target: install_fips
+
+- name: Copy openssl.cnf file to container
+  ansible.builtin.copy:
+    src: files/openssl.cnf
+    dest: /usr/local/ssl/openssl.cnf
+    owner: "{{ mongo_owner }}"
+    group: "{{ mongo_group }}"
+    mode: "{{ mongo_permissions }}"
