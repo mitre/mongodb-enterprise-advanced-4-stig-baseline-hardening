@@ -32,26 +32,33 @@ https://docs.mongodb.com/v4.4/reference/command/revokeRolesFromUser/'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  check_command = "EJSON.stringify(db.getUsers())"
+  get_users = "EJSON.stringify(db.getUsers())"
 
-  input('mongo_dbs').each do |db_name|
-    run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"#{check_command}\""
+  get_dbs = "EJSON.stringify(db.adminCommand('listDatabases'))"
+
+  run_get_dbs = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}?authSource=admin --quiet --eval \"#{get_dbs}\""
+
+  dbs_output = json({command: run_get_dbs}).params
+
+  # extract just the names of the databases
+  db_names = dbs_output["databases"].map { |db| db["name"] }
+
+  db_names.each do |db_name|
+    run_get_users = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"#{get_users}\""
 
     # run the command and parse the output as json
-    users_output = json({command: run_check_command}).params
+    users_output = json({command: run_get_users}).params
 
     users_output['users'].each do |user|
       # check if user is not a superuser
       unless input('mongo_superusers').include?(user['user'])
         # check each users role
-        describe "User #{user['_id']} in database #{db_name}" do
-          #collect all roles for user
+        describe "User roles of #{user['_id']}" do
+          # collect all roles for user
           subject { user['roles'].map { |role| role['role'] } }
           it { should_not include 'dbOwner' }
         end
       end
     end
   end
-
-
 end

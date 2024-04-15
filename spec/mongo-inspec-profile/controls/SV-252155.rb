@@ -43,4 +43,35 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
   tag 'documentable'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
+
+  get_roles = "EJSON.stringify(db.getRoles({rolesInfo: 1, showPrivileges:true, showBuiltinRoles: true}))"
+
+  get_dbs = "EJSON.stringify(db.adminCommand('listDatabases'))"
+
+  run_get_dbs = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}?authSource=admin --quiet --eval \"#{get_dbs}\""
+
+  dbs_output = json({command: run_get_dbs}).params
+
+  # extract just the names of the databases
+  db_names = dbs_output["databases"].map { |db| db["name"] }
+
+  db_names.each do |db_name|
+    run_get_roles = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"#{get_roles}\""
+
+    # run the command and parse the output as json
+    roles_output = json({command: run_get_roles}).params
+
+    # run_get_roles['users'].each do |user|
+    #   # check if user is not a superuser
+    #   unless input('mongo_superusers').include?(user['user'])
+    #     # check each users role
+    #     describe "User #{user['_id']} in database #{db_name}" do
+    #       # collect all roles for user
+    #       subject { user['roles'].map { |role| role['role'] } }
+    #       it { should_not include 'dbOwner' }
+    #     end
+    #   end
+    # end
+  end
+
 end

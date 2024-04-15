@@ -64,4 +64,48 @@ There may be several resources in a role that contain these privileges and the r
   tag cci: ['CCI-001812']
   tag nist: ['CM-11 (2)']
 
+  get_users = "EJSON.stringify(db.getUsers())"
+
+  get_dbs = "EJSON.stringify(db.adminCommand('listDatabases'))"
+
+  run_get_dbs = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}?authSource=admin --quiet --eval \"#{get_dbs}\""
+
+  dbs_output = json({command: run_get_dbs}).params
+
+  # extract just the names of the databases
+  db_names = dbs_output["databases"].map { |db| db["name"] }
+
+  db_names.each do |db_name|
+    run_get_users = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"#{get_users}\""
+
+    # run the command and parse the output as json
+    users_output = json({command: run_get_users}).params
+
+    users_output['users'].each do |user|
+      # check if user is not a superuser
+      unless input('mongo_superusers').include?(user['user'])
+        # collect all roles for user and wrap in single quotes
+        user_roles = user['roles'].map { |role| "'#{role['role']}'" }
+
+        user_roles.each do |role|
+          run_get_role = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"EJSON.stringify(db.getRole(#{role}, {showPrivileges: true}))\""
+          role_output = json({command: run_get_role}).params
+          all_actions = role_output["privileges"].map { |privilege| privilege["actions"] } +
+              role_output["inheritedPrivileges"].map { |privilege| privilege["actions"] }
+          all_actions.flatten!
+          
+          p "user", user
+          p "role", role
+          p all_actions
+          p '---------------------------------------------------------------------------------------------------'
+
+          describe "Role #{role} of user #{user['_id']} does not have privileges for 'createCollection' and 'changeStream', and" do
+            subject { all_actions }
+            it { should_not be_in ["createCollection", "changeStream"] }
+          end
+        end
+      end
+    end
+  end
+
 end

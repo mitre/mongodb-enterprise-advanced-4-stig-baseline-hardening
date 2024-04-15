@@ -68,7 +68,7 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
 
   describe "MongoDB authenticaion mechanisms" do
     subject {auth_mechanisms}
-    it {should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN','MONGODB-AWS',]}
+    it {should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN','MONGODB-AWS']}
   end
 
   check_command = "db.getSiblingDB('admin').system.version.find({ '_id' : 'authSchema'}, {_id: 0})"
