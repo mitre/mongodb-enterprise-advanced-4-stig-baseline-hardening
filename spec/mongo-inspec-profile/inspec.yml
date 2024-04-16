@@ -132,3 +132,17 @@ inputs:
     type: string
     value: "/data/db/"
     required: true
+
+  # SV-252147, SV-252165
+  - name: encryption_at_rest
+    description: "If any data is PII, classified or is deemed by the organization the need to be encrypted at rest"
+    type: boolean
+    value: false
+    required: true
+
+  # SV-252157
+  - name: enable_ldap
+    description: "LDAP is used for authentication and authorization"
+    type: boolean
+    value: false
+    required: true
