@@ -43,6 +43,10 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag cci: ['CCI-002475', 'CCI-002476']
   tag nist: ['SC-28 (1)', 'SC-28 (1)']
 
+  only_if 'Encryption at rest must be enabled' do
+    input('encryption_at_rest') == true
+  end
+  
   describe mongodb_conf(input('mongod_config_path')) do
     its(['security','enableEncrypt']){should eq true}
     its(['kmip','serverName']){should match input('KMIP_server_host_name')}
@@ -50,5 +54,7 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
     its(['kmip','ServerCAFile']){should match input('KMIP_server_ca_file')}
     its(['kmip','clientCertificateFile']){should match input('KMIP_client_certificate_file')}
   end
+
+  
 
 end

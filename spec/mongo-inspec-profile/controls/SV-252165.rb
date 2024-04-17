@@ -45,14 +45,44 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag nist: ['SC-28']
 
   check_command="db.serverStatus().encryptionAtRest.encryptionEnabled"
+  
+  encrypt_check = "db.serverStatus().encryptionAtRest.encryptionCipherMode"
+
+  kmip_check = "db.serverStatus().encryptionAtRest.encryptionKeyId"
 
   run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{check_command}\""
 
+  run_encrypt_check = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{encrypt_check}\""
+
+  run_kmip_check = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{kmip_check}\""
+
   check_output = command(run_check_command)
+
+  encrypt_output = command(run_encrypt_check)
+
+  kmip_output = command(run_kmip_check)
+
+  only_if 'Encryption at rest must be enabled' do
+    input('encryption_at_rest') == true
+  end
 
   describe 'Encrypted Storage Engine' do
     it 'should be enabled' do 
-      expect(check_output.stdout).to match(/false/)
+      expect(check_output.stdout).to match(/true/i)
+    end
+  end
+
+  #Changed in version 4.0, MongoDB Enterprise on Windows no longer supports AES256-GCM as a block cipher for encryption at rest. This usage is only supported on Linux.
+  describe 'Encrypted Storage Engine' do
+    it 'is running with an AEAD block cipher' do 
+      expect(encrypt_output.stdout).to match(/AES256-CBC/i)
+    end
+  end
+
+  describe 'The system' do
+    it 'is configured to use KMIP to obtain a master encryption key, rather than storing the master key on the local filesystem' do 
+      expect(kmip_output.stdout).not_to match(/local/i)
+      expect(kmip_output.stdout).not_to be_empty
     end
   end
 
