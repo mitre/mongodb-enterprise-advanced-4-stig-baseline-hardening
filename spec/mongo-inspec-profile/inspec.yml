@@ -141,7 +141,7 @@ inputs:
     required: true
 
   # SV-252157
-  - name: enable_ldap
+  - name: ldap_enabled
     description: "LDAP is used for authentication and authorization"
     type: boolean
     value: false

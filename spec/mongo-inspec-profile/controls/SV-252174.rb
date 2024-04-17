@@ -90,10 +90,11 @@ There may be several resources in a role that contain these privileges and the r
         user_roles.each do |role|
           run_get_role = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"EJSON.stringify(db.getRole(#{role}, {showPrivileges: true}))\""
           role_output = json({command: run_get_role}).params
+          
           all_actions = role_output["privileges"].map { |privilege| privilege["actions"] } +
               role_output["inheritedPrivileges"].map { |privilege| privilege["actions"] }
           all_actions.flatten!
-          
+
           p "user", user
           p "role", role
           p all_actions

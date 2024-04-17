@@ -55,4 +55,11 @@ Edit the %MongoDB configuration file%, add these parameters, stop/start (restart
     its('ok') { should cmp 1 }
   end
 
+  describe json({command: run_get_dbs}) do
+    only_if 'LDAP is being used for authenticaion/authorization' do
+      input('ldap_enabled') == true
+    end
+    its('ok') { should cmp 1 }
+  end
+
 end
