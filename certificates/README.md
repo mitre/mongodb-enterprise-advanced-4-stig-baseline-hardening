@@ -34,9 +34,9 @@ The `dod_CAs.pem` file is what is required for the `net.tls.CAFile` option in th
 
 ```yaml
 net:
-	tls:
-		mode: requireTLS
-		CAFile: /etc/ssl/CA_bundle.pem
+  tls:
+    mode: requireTLS
+    CAFile: /etc/ssl/CA_bundle.pem
 ```
 
 ### Alternative Configuration: One-Command Setup
@@ -88,9 +88,9 @@ This `mongodb.pem` file is what is being referenced in the MongoDB configuration
 
 ```yaml
 net:
-	tls:
-		mode: requireTLS
-		certificateKeyFile: /etc/ssl/mongodb.pem
+  tls:
+    mode: requireTLS
+    certificateKeyFile: /etc/ssl/mongodb.pem
 ```
 
 ### Step 5: Append Certificate to Trusted CA Bundle and Move PEM File
