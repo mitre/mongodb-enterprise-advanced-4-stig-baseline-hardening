@@ -24,7 +24,7 @@ mongo_audit_file_path: /var/log/mongodb/audit/auditLog.bson
 
 certificate_key_file_dest: /etc/ssl/mongodb.pem
 certificate_key_file_src: ../../../../certificates/mongodb.pem
-ca_file_dest: /etc/ssl/caToValidateClientCertificates.pem
+ca_file_dest: /etc/ssl/CA_bundle.pem
 ca_file_src: ../../../../certificates/dod_CAs.pem
 
 data_file_directory_path: /data/db/

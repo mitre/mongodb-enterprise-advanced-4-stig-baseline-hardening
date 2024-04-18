@@ -2,3 +2,6 @@ reports/**
 inputs.yml
 local-test.yml
 *.pem
+*.csr
+*.crt
+*.key
