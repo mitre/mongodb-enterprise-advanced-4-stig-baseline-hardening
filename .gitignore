@@ -1,6 +1,6 @@
 reports/**
 inputs.yml
-local-test.yml
+*.zip
 *.pem
 *.csr
 *.crt
