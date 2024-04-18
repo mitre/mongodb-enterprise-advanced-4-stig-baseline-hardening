@@ -11,24 +11,16 @@
 curl -L https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/zip/unclass-certificates_pkcs7_DoD.zip -o dod_certificates.zip
 ```
 
-### Step 2: Extract and Convert the Certificate
+### Step 2: Extract and Convert the Certificates
 
-Unzip the file and follow the README for detailed instructions or use the following command to convert the certificates:
+Unzip the file and follow the README for detailed instructions or use the following commands to unzip and convert the certificates:
 
 ```bash
 unzip dod_certificates.zip
 openssl pkcs7 -in certificates_pkcs7_v5_13_dod/certificates_pkcs7_v5_13_dod_der.p7b -inform der -print_certs -out certificates_pkcs7_v5_13_dod/dod_CAs.pem
 ```
 
-### Step 3: Place the Certificate
-
-Move the extracted `dod_CAs.pem` file to the `certificates` folder.
-
-```bash
-mv certificates_pkcs7_v5_13_dod/dod_CAs.pem certificates/
-```
-
-The `dod_CAs.pem` file is what is required for the `net.tls.CAFile` option in the MongoDB configuration.
+The `dod_CAs.pem` file is what is being referenced for the `net.tls.CAFile` option in the MongoDB configuration:
 
 **Note:** The file gets automatically renamed to `CA_bundle.pem` when the Ansible playbook gets run.
 
@@ -37,6 +29,14 @@ net:
   tls:
     mode: requireTLS
     CAFile: /etc/ssl/CA_bundle.pem
+```
+
+### Step 3: Place the Certificate
+
+Move the extracted `dod_CAs.pem` file to the `certificates` folder.
+
+```bash
+mv certificates_pkcs7_v5_13_dod/dod_CAs.pem certificates/
 ```
 
 ### Alternative Configuration: One-Command Setup
@@ -82,9 +82,9 @@ This command creates a self-signed X.509 certificate using the CSR and the priva
 cat mongodb-private.key mongodb-cert.crt > mongodb.pem
 ```
 
-This command concatenates the private key and the certificate into a single file called `mongodb.pem`, which MongoDB requires for its `net.tls.certificateKeyFile` configuration.
+This command concatenates the private key and the certificate into a single file called `mongodb.pem`.
 
-This `mongodb.pem` file is what is being referenced in the MongoDB configuration:
+The `mongodb.pem` file is what is being referenced for the `net.tls.certificateKeyFile` option in the MongoDB configuration:
 
 ```yaml
 net:
@@ -97,7 +97,7 @@ net:
 
 ```bash
 mv mongodb.pem mongodb-cert.crt certificates/
-cat mongodb-cert.crt >> dod_CAs.pem
+cat certificates/mongodb-cert.crt >> certificates/dod_CAs.pem
 ```
 
 Move the `mongodb.pem` and `mongodb-cert.crt` files to the `certificates` directory. Then, append the MongoDB certificate from `mongodb-cert.crt` to your list of trusted Certificate Authorities in `dod_CAs.pem`. This setup ensures that MongoDB utilizes the certificate for secure connections and that the system recognizes it as a trusted source.

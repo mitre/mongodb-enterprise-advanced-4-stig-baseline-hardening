@@ -38,7 +38,6 @@
     roles: root
     state: present
 
-##### same note as previous get
 - name: Get all the users in a database
   ansible.builtin.command: |
     mongosh "mongodb://localhost:27017/test" --quiet --eval "EJSON.stringify(db.getSiblingDB('admin').getUsers())"
@@ -56,11 +55,4 @@
 - name: Display contents of mongodb_version
   debug:
     msg: "{{ mongodb_version.stdout }}"
-
-# get these and register as fact minus what the user said shouldnt be hardened
-# create some roles and users for testing
-# json query filter
-# get databases command 
-# get roles
-# get users
-
+    
