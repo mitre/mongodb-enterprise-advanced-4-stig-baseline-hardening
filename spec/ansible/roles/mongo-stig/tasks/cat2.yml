@@ -277,17 +277,17 @@
 #     - medium
 #     - SV-252163
 
-# - name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
-#   yedit:
-#     src: "{{ mongod_config_path }}"
-#     key: net.tls.mode
-#     value: requireTLS
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252164
-#     - enterprise
+- name: "MEDIUM | SV-252164 | MongoDB must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values."
+  yedit:
+    src: "{{ mongod_config_path }}"
+    key: net.tls.mode
+    value: requireTLS
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252164
+    - enterprise
 
 ##### MANUAL
 # - name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."

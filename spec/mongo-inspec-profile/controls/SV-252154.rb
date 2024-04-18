@@ -36,7 +36,7 @@ https://docs.mongodb.com/v4.4/reference/command/revokeRolesFromUser/'
 
   get_dbs = "EJSON.stringify(db.adminCommand('listDatabases'))"
 
-  run_get_dbs = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}?authSource=admin --quiet --eval \"#{get_dbs}\""
+  run_get_dbs = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_dbs}\""
 
   dbs_output = json({command: run_get_dbs}).params
 
@@ -44,7 +44,7 @@ https://docs.mongodb.com/v4.4/reference/command/revokeRolesFromUser/'
   db_names = dbs_output["databases"].map { |db| db["name"] }
 
   db_names.each do |db_name|
-    run_get_users = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin --quiet --eval \"#{get_users}\""
+    run_get_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_users}\""
 
     # run the command and parse the output as json
     users_output = json({command: run_get_users}).params

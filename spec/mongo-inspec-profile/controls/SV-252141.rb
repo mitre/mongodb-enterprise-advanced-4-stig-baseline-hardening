@@ -47,8 +47,9 @@ Stop/start (restart) any or all mongod or mongos processes.'
   tag cci: ['CCI-001190', 'CCI-001665']
   tag nist: ['SC-24', 'SC-24']
 
+  check_command = "EJSON.stringify(db.version())"
 
-  run_check_command = "mongosh mongodb://localhost:27017/test --quiet --eval \"EJSON.stringify(db.version())\""
+  run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
   check_output = json({command: run_check_command})
 

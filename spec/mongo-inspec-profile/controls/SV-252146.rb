@@ -56,7 +56,7 @@ For the operating system finding, refer to the appropriate operating system docu
 
   mongo_command="EJSON.stringify(db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.net.tls.FIPSMode)"
 
-  run_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{mongo_command}\""
+  run_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{mongo_command}\""
 
   describe mongodb_conf(input('mongod_config_path')) do
     its(['net','tls','FIPSMode']){should eq true}

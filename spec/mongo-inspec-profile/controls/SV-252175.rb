@@ -79,9 +79,9 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
 
   user_write_command="db.testCollection.insertOne({x: 1})"
 
-  run_create_user = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{create_user_command}\""
+  run_create_user = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{create_user_command}\""
 
-  run_user_write = "mongosh mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?authMechanism=SCRAM-SHA-256 --quiet --eval \"#{user_write_command}\""
+  run_user_write = "mongosh \"mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{user_write_command}\""
 
   create_user_output = json({command: run_create_user})
 

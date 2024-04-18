@@ -73,7 +73,7 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
 
   check_command = "db.getSiblingDB('admin').system.version.find({ '_id' : 'authSchema'}, {_id: 0})"
 
-  run_check_command = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{check_command}\""
+  run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
   check_output = command(run_check_command)
   

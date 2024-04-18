@@ -49,7 +49,7 @@ Edit the %MongoDB configuration file%, add these parameters, stop/start (restart
 
   get_dbs = "db.adminCommand({ listDatabases: 1 })"
   
-  run_get_dbs = "mongosh mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')} --quiet --eval \"#{get_dbs}\""
+  run_get_dbs = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_dbs}\""
 
   describe json({command: run_get_dbs}) do
     its('ok') { should cmp 1 }

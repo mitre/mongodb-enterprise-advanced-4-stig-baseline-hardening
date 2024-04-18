@@ -65,6 +65,19 @@ inputs:
     required: true
     sensitive: true
 
+  - name: ca_file
+    description: "The path to the CA file"
+    type: string
+    required: true
+    sensitive: true
+
+  - name: certificate_key_file
+    description: "The path to the certificate key file"
+    type: string
+    required: true
+    sensitive: true
+
+
   # SV-252154
   - name: mongo_superusers
     description: "Authorized superuser accounts"

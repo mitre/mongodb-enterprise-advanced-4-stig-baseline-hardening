@@ -10,6 +10,7 @@
   when: fips_mode
   tags:
     - fips
+    - enterprise
 
 - name: Include CAT I
   ansible.builtin.import_tasks: cat1.yml
