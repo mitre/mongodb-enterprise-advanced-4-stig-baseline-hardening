@@ -37,46 +37,47 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
+  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: mongo_dba
     description: "The mongo DBA user to access the test database"
     type: string
     required: true
     sensitive: true
 
-  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
+  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: mongo_dba_password
     description: "The password for the mongo DBA user"
     type: string
     required: true
     sensitive: true
   
-  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
+  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: mongo_host
     description: "The hostname or IP address used to connect to the database"
     type: string
     required: true
     sensitive: true
 
-  # SV-252146, SV-252154, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252175
+  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: mongo_port
     description: "The port used to connect to the database"
     type: numeric
     required: true
     sensitive: true
 
+  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: ca_file
     description: "The path to the CA file"
     type: string
     required: true
     sensitive: true
 
+  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: certificate_key_file
     description: "The path to the certificate key file"
     type: string
     required: true
     sensitive: true
-
 
   # SV-252154
   - name: mongo_superusers
