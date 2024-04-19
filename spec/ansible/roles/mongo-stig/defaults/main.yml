@@ -1,9 +1,9 @@
 ---
 prep_conf: true
-fips_mode: false
+enterprise_edition: true
+fips_mode: true
 mongostig_cat1: true
 mongostig_cat2: true
-mongostig_cat3: true 
 
 mongo_owner: root
 mongo_group: root
@@ -17,7 +17,7 @@ authentication_mechanism:
 
 mongod_config_path: /etc/mongod.conf
 
-#audit_log_destination choose "file" or "syslog"
+# Set `audit_log_destination` to either "file" or "syslog"
 audit_log_destination: file
 mongo_audit_directory_path: /var/log/mongodb/audit/
 mongo_audit_file_path: /var/log/mongodb/audit/auditLog.bson

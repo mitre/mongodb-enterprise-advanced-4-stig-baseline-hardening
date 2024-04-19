@@ -5,6 +5,12 @@
     dest: /usr/local/src/openssl-3.0.0.tar.gz
     validate_certs: no
 
+- name: Download OpenSSL 3.1.0 tarball
+  ansible.builtin.get_url:
+    url: https://www.openssl.org/source/openssl-3.1.0.tar.gz
+    dest: /usr/local/src/openssl-3.1.0.tar.gz
+    validate_certs: no
+
 - name: Extract OpenSSL 3.0.0 tarball
   ansible.builtin.unarchive:
     src: /usr/local/src/openssl-3.0.0.tar.gz
@@ -21,12 +27,6 @@
   ansible.builtin.make:
     chdir: /usr/local/src/openssl-3.0.0
     target: all 
-    
-- name: Download OpenSSL 3.1.0 tarball
-  ansible.builtin.get_url:
-    url: https://www.openssl.org/source/openssl-3.1.0.tar.gz
-    dest: /usr/local/src/openssl-3.1.0.tar.gz
-    validate_certs: no
 
 - name: Extract OpenSSL 3.1.0 tarball
   ansible.builtin.unarchive:

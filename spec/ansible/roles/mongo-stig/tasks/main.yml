@@ -7,7 +7,7 @@
 
 - name: Enable FIPS Mode
   ansible.builtin.import_tasks: fips.yml
-  when: fips_mode
+  when: enterprise_edition and fips_mode
   tags:
     - fips
     - enterprise

@@ -32,7 +32,7 @@
         - key: auditLog.path
           value: "{{ mongo_audit_file_path }}"
       when: audit_log_destination == "file"
-
+  when: enterprise_edition
   ignore_errors: true
   tags:
     - cat2
@@ -48,7 +48,7 @@
       mode: "{{ mongo_permissions }}"
       state: directory
       recurse: yes
-  when: audit_log_destination == "file"
+  when: enterprise_edition and audit_log_destination == "file"
   ignore_errors: true
   tags:
     - cat2
@@ -183,6 +183,7 @@
 #     - key: kmip.clientCertificationFile
 #       value: "{{ KMIP_client_certificate_file }}"
 #   ignore_errors: true
+#   when: enterprise_edition
 #   tags:
 #     - cat2
 #     - medium
@@ -283,6 +284,7 @@
     key: net.tls.mode
     value: requireTLS
   ignore_errors: true
+  when: enterprise_edition and fips_mode
   tags:
     - cat2
     - medium
@@ -353,7 +355,7 @@
       value: "{{ mongo_audit_file_path }}"
     - key: auditLog.filter
       value: "'{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }'"
-  when: audit_log_destination == "file"
+  when: enterprise_edition and audit_log_destination == "file"
   ignore_errors: true
   tags:
     - cat2
@@ -369,6 +371,7 @@
 #     value: "{{ audit_log_destination}}"
 #   when: audit_log_destination == "syslog"
 #   ignore_errors: true
+#   when: enterprise_edition
 #   tags:
 #     - cat2
 #     - medium
@@ -379,6 +382,7 @@
 # - name: "MEDIUM | SV-252173 | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
 #   command: true
 #   ignore_errors: true
+#   when: enterprise_edition
 #   tags:
 #     - cat2
 #     - medium
@@ -414,6 +418,7 @@
 # - name: "MEDIUM | SV-252177 | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
 #   command: true
 #   ignore_errors: true
+#   when: enterprise_edition
 #   tags:
 #     - cat2
 #     - medium
@@ -423,57 +428,62 @@
 # - name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
 #   command: true
 #   ignore_errors: true
+#   when: enterprise_edition
 #   tags:
 #     - cat2
 #     - medium
 #     - SV-252178
 #     - enterprise
 
-# - name: "MEDIUM | SV-252179 | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
-#   yedit:
-#     src: "{{ mongod_config_path }}"
-#     edits:
-#     - key: net.tls.mode
-#       value: requireTLS
-#     - key: net.tls.certificateKeyFile
-#       value: "{{ certificate_key_file_dest }}"
-#     - key: net.tls.CAFile
-#       value: "{{ ca_file_dest }}"
-#     - key: net.tls.allowInvalidCertificates
-#       value: false
-#     - key: net.tls.allowConnectionsWithoutCertificates
-#       value: false
-#     - key: net.tls.FIPSMode
-#       value: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252179
-#     - enterprise
+- name: "MEDIUM | SV-252179 | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
+  yedit:
+    src: "{{ mongod_config_path }}"
+    edits:
+    - key: net.tls.mode
+      value: requireTLS
+    - key: net.tls.certificateKeyFile
+      value: "{{ certificate_key_file_dest }}"
+    - key: net.tls.CAFile
+      value: "{{ ca_file_dest }}"
+    - key: net.tls.allowInvalidCertificates
+      value: false
+    - key: net.tls.allowConnectionsWithoutCertificates
+      value: false
+    - key: net.tls.FIPSMode
+      value: true
+  when: enterprise_edition and fips_mode
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252179
+    - enterprise
+    - fips
 
-# - name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
-    # yedit:
-    #   src: "{{ mongod_config_path }}"
-    #   edits:
-    #   - key: net.tls.mode
-    #     value: requireTLS
-    #   - key: net.tls.certificateKeyFile
-    #     value: "{{ certificate_key_file_dest }}"
-    #   - key: net.tls.CAFile
-    #     value: "{{ ca_file_dest }}"
-    #   - key: net.tls.allowInvalidCertificates
-    #     value: false
-    #   - key: net.tls.allowConnectionsWithoutCertificates
-    #     value: false
-    #   - key: net.tls.FIPSMode
-    #     value: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252180
-#     - enterprise
+- name: "MEDIUM | SV-252180 | MongoDB must maintain the confidentiality and integrity of information during reception."
+  yedit:
+    src: "{{ mongod_config_path }}"
+    edits:
+    - key: net.tls.mode
+      value: requireTLS
+    - key: net.tls.certificateKeyFile
+      value: "{{ certificate_key_file_dest }}"
+    - key: net.tls.CAFile
+      value: "{{ ca_file_dest }}"
+    - key: net.tls.allowInvalidCertificates
+      value: false
+    - key: net.tls.allowConnectionsWithoutCertificates
+      value: false
+    - key: net.tls.FIPSMode
+      value: true
+  when: enterprise_edition and fips_mode
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252180
+    - enterprise
+    - fips
 
 ##### MANUAL
 # - name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."

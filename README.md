@@ -42,14 +42,14 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
    Execute the following command to run the hardened Mongo image:
 
    ```
-   docker run -d \                                                                     ─╯
-   --name mongo-hardened \
-   -p 27017:27017 \
-   -v mongodb_configdb:/data/configdb \
-   -v mongodb_db:/data/db \
-   -e PATH="/usr/local/src/openssl-3.1.0/apps:$PATH" \
-   -e LD_LIBRARY_PATH="LD_LIBRARY_PATH=/usr/local/src/openssl-3.1.0:$LD_LIBRARY_PATH" \
-   mongo-hardened --config /etc/mongod.conf
+   docker run -d \
+      --name mongo-hardened \
+      -p 27017:27017 \
+      -v mongodb_configdb:/data/configdb \
+      -v mongodb_db:/data/db \
+      -e PATH="/usr/local/src/openssl-3.1.0/apps:$PATH" \
+      -e LD_LIBRARY_PATH="/usr/local/src/openssl-3.1.0:$LD_LIBRARY_PATH" \
+      mongo-hardened --config /etc/mongod.conf
    ```
 
 ## Notes

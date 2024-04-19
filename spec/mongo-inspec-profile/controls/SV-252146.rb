@@ -62,8 +62,8 @@ For the operating system finding, refer to the appropriate operating system docu
     its(['net','tls','FIPSMode']){should eq true}
   end
   
-  #####UNTESTED
-  describe json({command: run_command}) do
-    its('ok') { should cmp 1 }
+  describe command(run_command) do
+    its('stdout') { should match /true/i }
   end
+  
 end
