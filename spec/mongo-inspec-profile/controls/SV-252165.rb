@@ -44,6 +44,10 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag cci: ['CCI-001199']
   tag nist: ['SC-28']
 
+  only_if 'Encryption at rest must be enabled' do
+    input('encryption_at_rest') == true
+  end
+
   check_command="db.serverStatus().encryptionAtRest.encryptionEnabled"
   
   encrypt_check = "db.serverStatus().encryptionAtRest.encryptionCipherMode"
@@ -61,10 +65,6 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   encrypt_output = command(run_encrypt_check)
 
   kmip_output = command(run_kmip_check)
-
-  only_if 'Encryption at rest must be enabled' do
-    input('encryption_at_rest') == true
-  end
 
   describe 'Encrypted Storage Engine' do
     it 'should be enabled' do 

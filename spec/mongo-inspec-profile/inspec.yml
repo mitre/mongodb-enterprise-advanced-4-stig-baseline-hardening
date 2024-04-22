@@ -138,7 +138,7 @@ inputs:
     value: "/var/log/mongodb/audit/"
     required: true
 
-  # SV-252134, SV-252171
+  # SV-252134, SV-252135, SV-252171
   - name: mongo_audit_file_path
     description: "The path to the mongo audit file"
     type: string

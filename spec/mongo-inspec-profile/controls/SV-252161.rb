@@ -91,4 +91,5 @@ To remove a user that is not authorized run the following command:
     skip 'If using LDAP for authentication, this is not applicable.'
     skip 'If the authenticated MongoDB user displayed does not have a user value equal to the x.509 certs Subject Name, this is a finding.'
   end
+  
 end

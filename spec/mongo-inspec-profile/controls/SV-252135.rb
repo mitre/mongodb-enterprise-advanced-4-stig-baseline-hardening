@@ -100,18 +100,35 @@ Given the example above, the %MongoDB auditLog directory% is /var/log/mongodb/au
   tag 'documentable'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a', 'AU-9 a', 'AU-9 a']
-
-  describe.one do
-    describe directory(input('mongo_audit_directory_path')) do
-      it { should be_directory}
-      it { should be_owned_by input('mongo_owner') }
-      it { should be_grouped_into input('mongo_group') }
-      it { should_not be_more_permissive_than(input('mongo_permissions')) }
-    end
-    
-    describe mongodb_conf(input('mongod_config_path')) do
-        its(['auditLog', 'destination']) { should eq "syslog"}
-      end
+  
+  describe mongodb_conf(input('mongod_config_path')) do
+    its(['auditLog','destination']){should eq "file"}
+    its(['auditLog','format']){should eq "BSON"}
+    its(['auditLog','path']){should match input('mongo_audit_file_path')}
   end
+
+  describe directory(input('mongo_audit_directory_path')) do
+    it { should be_directory }
+    it { should be_owned_by input('mongo_owner') }
+    it { should be_grouped_into input('mongo_group') }
+    it { should_not be_more_permissive_than(input('mongo_permissions')) }
+  end
+  
+  describe yaml(input('mongod_config_path')) do
+    its(['auditLog', 'destination']) { should eq "syslog"}
+  end
+
+  # describe.one do
+  #   describe directory(input('mongo_audit_directory_path')) do
+  #     it { should be_directory }
+  #     it { should be_owned_by input('mongo_owner') }
+  #     it { should be_grouped_into input('mongo_group') }
+  #     it { should_not be_more_permissive_than(input('mongo_permissions')) }
+  #   end
+
+  #   describe mongodb_conf(input('mongod_config_path')) do
+  #     its(['auditLog', 'destination']) { should eq "syslog"}
+  #   end
+  # end
 
 end

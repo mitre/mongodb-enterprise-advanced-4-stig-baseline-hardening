@@ -47,19 +47,32 @@ Edit the %MongoDB configuration file%, add these parameters, stop/start (restart
   tag cci: ['CCI-000764']
   tag nist: ['IA-2']
 
-  get_dbs = "db.adminCommand({ listDatabases: 1 })"
-  
-  run_get_dbs = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_dbs}\""
-
-  describe json({command: run_get_dbs}) do
-    its('ok') { should cmp 1 }
+  only_if 'This control applies only when LDAP is disabled' do
+    !input('ldap_enabled')
   end
 
-  describe json({command: run_get_dbs}) do
-    only_if 'LDAP is being used for authenticaion/authorization' do
-      input('ldap_enabled') == true
+  get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
+
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
+
+  system_users = json({command: run_get_system_users}).params
+
+  describe mongodb_conf(input('mongod_config_path')) do
+    its(['security','authorization']){should eq "enabled"}
+  end
+
+  system_users.each do |user|
+    user_id = user['_id']
+
+    describe "User #{user_id}" do
+      subject { user_id }
+      it 'should be in either mongo_superusers or mongo_users' do
+        list = [input('mongo_superusers'), input('mongo_users')].flatten
+        if !list.include?(subject)
+          fail "User #{subject} is not authorized as a superuser or regular user"
+        end
+      end
     end
-    its('ok') { should cmp 1 }
   end
-
+  
 end
