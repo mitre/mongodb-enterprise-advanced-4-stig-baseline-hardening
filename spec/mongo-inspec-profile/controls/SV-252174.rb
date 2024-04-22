@@ -68,7 +68,7 @@ There may be several resources in a role that contain these privileges and the r
 
   get_dbs = "EJSON.stringify(db.adminCommand('listDatabases'))"
 
-  run_get_dbs = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?authSource=admin&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_dbs}\""
+  run_get_dbs = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_dbs}\""
  
   dbs_output = json({command: run_get_dbs}).params
 
@@ -77,7 +77,7 @@ There may be several resources in a role that contain these privileges and the r
 
   db_names.each do |db_name|
     p "db_name", db_name
-    run_get_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_users}\""
+    run_get_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_users}\""
 
     # run the command and parse the output as json
     users_output = json({command: run_get_users}).params
@@ -86,7 +86,7 @@ There may be several resources in a role that contain these privileges and the r
       p "user", user
 
       # check if user is not a superuser
-      unless input('mongo_superusers').include?(user['user'])
+      unless input('mongo_superusers').include?(user['_id'])
 
         # collect all roles for user and wrap in single quotes
         user_roles = user['roles'].map { |role| "#{role['role']}" }
@@ -94,7 +94,7 @@ There may be several resources in a role that contain these privileges and the r
         user_roles.each do |role|
           p "role", role
 
-          run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=admin&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
+          run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
 
           role_output = json({command: run_get_role}).params
           

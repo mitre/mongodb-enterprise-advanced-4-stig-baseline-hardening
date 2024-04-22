@@ -65,6 +65,13 @@ inputs:
     required: true
     sensitive: true
 
+  # SV-252155, SV-252174
+  - name: auth_source
+    description: "The database used to authorize users"
+    type: string
+    required: true
+    sensitive: true
+
   # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: ca_file
     description: "The path to the CA file"
@@ -79,20 +86,32 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252154
+  # SV-252154, SV-252155
   - name: mongo_superusers
     description: "Authorized superuser accounts"
     type: array
     value:
-      - "admin"
+      - "admin.admin"
     required: true
     sensitive: true
 
+  # SV-252154, SV-252155
   - name: mongo_users
-    description: "Authorized user accounts"
+    description: "Authorized user accounts in the format of database.user"
     type: array
     value:
-      - ""
+      - "test.myTester"
+      - "products.myRoleTestUser"
+    required: true
+    sensitive: true
+  
+  # SV-252155
+  - name: mongo_roles
+    description: "Authorized roles for MongoDB in the format of database.role"
+    type: array
+    value:
+      - "admin.root"
+      - "products.myTestRole"
     required: true
     sensitive: true
 

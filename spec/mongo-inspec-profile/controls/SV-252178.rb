@@ -23,4 +23,11 @@ If there is any issuer present in the certificate that is not a DoD approved cer
   tag 'documentable'
   tag cci: ['CCI-002470']
   tag nist: ['SC-23 (5)']
+
+  run_check_command = "openssl x509 -in /etc/ssl/CA_bundle.pem -text | grep -i issuer"
+
+  describe command(run_check_command) do
+    its('stdout'){should match /Issuer: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA/i}
+  end
+
 end

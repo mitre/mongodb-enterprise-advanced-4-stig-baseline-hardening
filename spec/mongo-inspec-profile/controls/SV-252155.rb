@@ -44,34 +44,42 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  get_roles = "EJSON.stringify(db.getRoles({rolesInfo: 1, showPrivileges:true, showBuiltinRoles: true}))"
+  get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
 
-  get_dbs = "EJSON.stringify(db.adminCommand('listDatabases'))"
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
 
-  run_get_dbs = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_dbs}\""
+  system_users = json({command: run_get_system_users}).params
 
-  dbs_output = json({command: run_get_dbs}).params
+  system_users.each do |user|
+    user_id = user['_id']
 
-  # extract just the names of the databases
-  db_names = dbs_output["databases"].map { |db| db["name"] }
+    describe "User #{user_id}" do
+      subject { user_id }
+      it 'should be in either mongo_superusers or mongo_users' do
+        list = [input('mongo_superusers'), input('mongo_users')].flatten
+        if !list.include?(subject)
+          fail "User #{subject} is not authorized as a superuser or regular user"
+        end
+      end
+    end
+  end
 
-  db_names.each do |db_name|
-    run_get_roles = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_roles}\""
+  system_users.each do |user|
+    user_id = user['_id']
+    db_name = user['db']
+    user_roles = user['roles'].map { |role| "#{role['role']}" }
+    db_roles = user_roles.map { |role| "#{db_name}.#{role}" }
 
-    # run the command and parse the output as json
-    roles_output = json({command: run_get_roles}).params
-
-    # run_get_roles['users'].each do |user|
-    #   # check if user is not a superuser
-    #   unless input('mongo_superusers').include?(user['user'])
-    #     # check each users role
-    #     describe "User #{user['_id']} in database #{db_name}" do
-    #       # collect all roles for user
-    #       subject { user['roles'].map { |role| role['role'] } }
-    #       it { should_not include 'dbOwner' }
-    #     end
-    #   end
-    # end
+    db_roles.each do |role|
+      describe "Role #{role}" do
+        subject { role }
+        it 'should be in authorized in mongo_roles' do
+          if !input('mongo_roles').include?(subject)
+            fail "Role #{role} is not authorized as a role"
+          end
+        end
+      end
+    end
   end
 
 end
