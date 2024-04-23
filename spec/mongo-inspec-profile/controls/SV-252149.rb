@@ -51,5 +51,11 @@ https://docs.mongodb.com/v4.4/core/security-ldap-external/#configuration'
   describe mongodb_conf(input('mongod_config_path')) do
     its(['security','authorization']){should eq "enabled"}
   end
+
+  if input('ldap_enabled')
+    describe mongodb_conf(input('mongod_config_path')) do
+      its(['security', 'ldap', 'servers']) { should match /ldap/i }
+    end
+  end
     
 end

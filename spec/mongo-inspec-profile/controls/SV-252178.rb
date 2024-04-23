@@ -27,7 +27,7 @@ If there is any issuer present in the certificate that is not a DoD approved cer
   run_check_command = "openssl x509 -in /etc/ssl/CA_bundle.pem -text | grep -i issuer"
 
   describe command(run_check_command) do
-    its('stdout'){should match /Issuer: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA/i}
+    its('stdout'){should match /Issuer: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA/}
   end
 
 end

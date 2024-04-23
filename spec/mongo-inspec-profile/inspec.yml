@@ -115,6 +115,16 @@ inputs:
     required: true
     sensitive: true
 
+  # SV-252140, SV-252163
+  - name: inappropriate_mongo_privileges
+    description: "Inappropriate priveleges for all roles in MongoDB"
+    type: array
+    value:
+      - "changeStream"
+      - "createCollections"
+    required: true
+    sensitive: true
+
   # SV-252154
   - name: mongo_dbs
     description: "Authorized mongo databases"

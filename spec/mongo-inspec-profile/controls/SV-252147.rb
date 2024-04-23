@@ -44,7 +44,7 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag nist: ['SC-28 (1)', 'SC-28 (1)']
 
   only_if 'Encryption at rest must be enabled' do
-    input('encryption_at_rest') == true
+    input('encryption_at_rest')
   end
   
   describe mongodb_conf(input('mongod_config_path')) do
@@ -54,7 +54,5 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
     its(['kmip','ServerCAFile']){should match input('KMIP_server_ca_file')}
     its(['kmip','clientCertificateFile']){should match input('KMIP_client_certificate_file')}
   end
-
-  
 
 end

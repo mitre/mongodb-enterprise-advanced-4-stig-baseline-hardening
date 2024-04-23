@@ -45,7 +45,7 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   tag nist: ['SC-28']
 
   only_if 'Encryption at rest must be enabled' do
-    input('encryption_at_rest') == true
+    input('encryption_at_rest')
   end
 
   check_command="db.serverStatus().encryptionAtRest.encryptionEnabled"
