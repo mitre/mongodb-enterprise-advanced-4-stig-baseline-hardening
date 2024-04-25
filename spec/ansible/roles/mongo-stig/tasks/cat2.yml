@@ -354,7 +354,7 @@
     - key: auditLog.path
       value: "{{ mongo_audit_file_path }}"
     - key: auditLog.filter
-      value: "'{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }'"
+      value: "{{ mongo_filter }}"
   when: enterprise_edition and audit_log_destination == "file"
   ignore_errors: true
   tags:
@@ -425,6 +425,7 @@
 #     - SV-252177
 #     - enterprise
 
+##### MANUAL
 # - name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
 #   command: true
 #   ignore_errors: true
@@ -494,6 +495,7 @@
 #     - medium
 #     - SV-252181
 
+##### MANUAL
 # - name: "MEDIUM | SV-252182 | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
 #   command: true
 #   ignore_errors: true

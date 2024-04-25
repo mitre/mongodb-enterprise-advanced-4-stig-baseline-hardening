@@ -73,7 +73,7 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
     db_roles.each do |role|
       describe "Role #{role}" do
         subject { role }
-        it 'should be in authorized in mongo_roles' do
+        it 'should be authorized in mongo_roles' do
           if !input('mongo_roles').include?(subject)
             fail "Role #{role} is not authorized as a role"
           end

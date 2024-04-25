@@ -101,34 +101,30 @@ Given the example above, the %MongoDB auditLog directory% is /var/log/mongodb/au
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a', 'AU-9 a', 'AU-9 a']
   
-  describe mongodb_conf(input('mongod_config_path')) do
-    its(['auditLog','destination']){should eq "file"}
-    its(['auditLog','format']){should eq "BSON"}
-    its(['auditLog','path']){should match input('mongo_audit_file_path')}
-  end
+  mongo_owner = input('mongo_owner')
+  mongo_group = input('mongo_group')
+  mongo_permissions = input('mongo_permissions')
+  conf = mongodb_conf(input('mongod_config_path')) 
+  mongo_audit_file_path = input('mongo_audit_file_path')
+  mongo_audit_directory_path = input('mongo_audit_directory_path')
+  mongodb_audit_logs_params = conf.params['auditLog']
 
-  describe directory(input('mongo_audit_directory_path')) do
-    it { should be_directory }
-    it { should be_owned_by input('mongo_owner') }
-    it { should be_grouped_into input('mongo_group') }
-    it { should_not be_more_permissive_than(input('mongo_permissions')) }
-  end
-  
-  describe yaml(input('mongod_config_path')) do
-    its(['auditLog', 'destination']) { should eq "syslog"}
-  end
+  if mongodb_audit_logs_params['destination'] == 'file'
+    describe "Audit Log" do
+      it "should be configured correctly" do
+        expect(mongodb_audit_logs_params['destination']).to eq('file')
+        expect(mongodb_audit_logs_params['format']).to eq('BSON')
+        expect(mongodb_audit_logs_params['path']).to eq(mongo_audit_file_path)
+        expect(directory(mongo_audit_directory_path).owner).to eq(mongo_owner)
+        expect(directory(mongo_audit_directory_path).group).to eq(mongo_group)
+        expect(directory(mongo_audit_directory_path)).to_not be_more_permissive_than(mongo_permissions)
+      end
+    end
 
-  # describe.one do
-  #   describe directory(input('mongo_audit_directory_path')) do
-  #     it { should be_directory }
-  #     it { should be_owned_by input('mongo_owner') }
-  #     it { should be_grouped_into input('mongo_group') }
-  #     it { should_not be_more_permissive_than(input('mongo_permissions')) }
-  #   end
-
-  #   describe mongodb_conf(input('mongod_config_path')) do
-  #     its(['auditLog', 'destination']) { should eq "syslog"}
-  #   end
-  # end
+  else
+    describe mongodb_conf(input('mongod_config_path')) do
+      its(['auditLog', 'destination']) { should eq "syslog"}
+    end
+  end
 
 end

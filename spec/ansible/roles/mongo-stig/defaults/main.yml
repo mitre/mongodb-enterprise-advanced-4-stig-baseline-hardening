@@ -31,6 +31,8 @@ data_file_directory_path: /data/db/
 
 max_incoming_connections: 800000
 
+mongo_filter: "'{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }'"
+
 KMIP_server_host_name: 
 KMIP_server_port: 
 KMIP_server_ca_file: 

@@ -72,6 +72,13 @@ inputs:
     required: true
     sensitive: true
 
+  - name: mongo_filter
+    description: "The filter used in authLog"
+    type: string
+    value: "{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }"
+    required: true
+    sensitive: true
+
   # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
   - name: ca_file
     description: "The path to the CA file"
@@ -138,7 +145,7 @@ inputs:
   - name: mongo_permissions
     description: "File and directory permissions that should be granted to mongo"
     type: string
-    value: "600"
+    value: "0600"
     required: true
 
   # SV-252135
@@ -189,3 +196,16 @@ inputs:
     type: boolean
     value: false
     required: true
+
+  - name: mongo_version
+    description: "The edition of MongoDB in use"
+    type: string
+    value: "7.0.5"
+    required: true
+
+  - name: mongo_edition
+    description: "The edition of MongoDB in use"
+    type: string
+    value: mongodb-enterprise-server
+    required: true
+  
