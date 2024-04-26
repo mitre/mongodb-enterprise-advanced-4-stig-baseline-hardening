@@ -123,7 +123,7 @@
 # - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
 #   command: true
 #   ignore_errors: true
-#   when: enterprise_edition
+#   when: enterprise_edition && encryption_at_rest
 #   tags:
 #     - cat1
 #     - high

@@ -86,10 +86,12 @@ https://docs.mongodb.com/v4.4/tutorial/configure-audit-filters/'
       its(['auditLog','format']){should eq "BSON"}
       its(['auditLog','path']){should match mongo_audit_file_path }
       its(['auditLog','filter']){should match mongo_filter }
+      its(['setParameter', 'auditAuthorizationSuccess']) { should eq true }
     end
 
     describe mongodb_conf(input('mongod_config_path')) do
       its(['auditLog', 'destination']) { should eq "syslog"}
+      its(['setParameter', 'auditAuthorizationSuccess']) { should eq true }
     end
   end
   

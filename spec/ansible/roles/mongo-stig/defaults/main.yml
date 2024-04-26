@@ -4,6 +4,8 @@ enterprise_edition: true
 fips_mode: true
 mongostig_cat1: true
 mongostig_cat2: true
+# If any data is PII, classified or is deemed by the organization the need to be encrypted at rest. For KMIP.
+encryption_at_rest: false
 
 mongo_owner: root
 mongo_group: root
