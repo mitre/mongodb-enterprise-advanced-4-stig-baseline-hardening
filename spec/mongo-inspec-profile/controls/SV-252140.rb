@@ -67,7 +67,7 @@ To grant a role to a user run the following:
 
   get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
 
-  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
 
   system_users = json({command: run_get_system_users}).params
 
@@ -80,7 +80,7 @@ To grant a role to a user run the following:
       db_roles = user_roles.map { |role| "#{db_name}.#{role}" }
 
       user_roles.each do |role|
-        run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input'auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
+        run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
 
         role_output = json({command: run_get_role}).params
 

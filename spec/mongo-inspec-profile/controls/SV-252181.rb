@@ -61,4 +61,9 @@ https://docs.mongodb.com/v4.4/core/schema-validation/'
   tag 'documentable'
   tag cci: ['CCI-002754']
   tag nist: ['SI-10 (3)']
+
+  describe 'When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives.' do
+    skip 'For all collections information received, check if the options sub-document contains a validator. If the options sub-document does not contain a validator, this is a finding.'
+  end
+  
 end

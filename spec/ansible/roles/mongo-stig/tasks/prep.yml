@@ -40,12 +40,12 @@
 
 - name: Get all the users in a database
   ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/test" --quiet --eval "EJSON.stringify(db.getSiblingDB('admin').getUsers())"
-  register: users_list
+    mongosh "mongodb://localhost:27017/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
+  register: user_list
 
-- name: Display contents of users_list
+- name: Display contents of user_list
   debug:
-    msg: "{{ users_list.stdout }}"
+    msg: "{{ user_list.stdout }}"
 
 - name: Get MongoDB version
   ansible.builtin.command: |

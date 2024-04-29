@@ -4,7 +4,7 @@ enterprise_edition: true
 fips_mode: true
 mongostig_cat1: true
 mongostig_cat2: true
-# If any data is PII, classified or is deemed by the organization the need to be encrypted at rest. For KMIP.
+# If any data is PII, classified or is deemed by the organization the need to be encrypted at rest. Set to true if using KMIP.
 encryption_at_rest: false
 
 mongo_owner: root
@@ -13,7 +13,12 @@ mongo_dba: admin
 mongo_dba_password: admin
 mongo_host: localhost
 mongo_port: 27017
+mongo_auth_source: admin
 mongo_permissions: 0600
+mongo_users:
+  - "admin.admin"
+  - "test.myTester"
+  - "products.myRoleTestUser"
 authentication_mechanism: 
   - SCRAM-SHA-256
 

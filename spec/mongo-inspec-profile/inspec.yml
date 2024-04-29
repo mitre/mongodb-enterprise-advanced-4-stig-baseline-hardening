@@ -66,7 +66,7 @@ inputs:
     sensitive: true
 
   # SV-252155, SV-252174
-  - name: auth_source
+  - name: mongo_auth_source
     description: "The database used to authorize users"
     type: string
     required: true
@@ -93,7 +93,7 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252154, SV-252155
+  # SV-252154, SV-252155, SV-252157
   - name: mongo_superusers
     description: "Authorized superuser accounts"
     type: array
@@ -102,7 +102,7 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252154, SV-252155
+  # SV-252154, SV-252155, SV-252157
   - name: mongo_users
     description: "Authorized user accounts in the format of database.user"
     type: array
