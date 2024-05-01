@@ -171,7 +171,6 @@
     - medium
     - SV-252145
 
-##### ENTERPRISE, Added a PII tag, this only needs to be run if there will be PII in the db
 - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
   yedit:
     src: "{{ mongod_config_path }}"
@@ -187,7 +186,7 @@
     - key: kmip.clientCertificationFile
       value: "{{ KMIP_client_certificate_file }}"
   ignore_errors: true
-  when: enterprise_edition && encryption_at_rest
+  when: enterprise_edition and encryption_at_rest
   tags:
     - cat2
     - medium
@@ -252,17 +251,70 @@
     - medium
     - SV-252156
 
-##### IS THIS ALSO NOT 252149 and 252145 BUT WITH A MANUAL CHECK???
-# - name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
-#   yedit:
-#       src: "{{ mongod_config_path }}"
-#       key: security.authorization
-#       value: enabled
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252157
+- name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
+  vars:
+    non_mongo_users: []
+    user_names: []
+    db_names: []
+  block:
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration"
+      yedit:
+        src: "{{ mongod_config_path }}"
+        key: security.authorization
+        value: enabled
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Extract _id fields from MongoDB user data" 
+      set_fact:
+        user_ids: "{{ user_ids | default([]) + [item._id] }}"
+      loop: "{{ user_list.stdout }}"
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Display all _id fields"
+      debug:
+        var: user_ids
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Filter out users not in mongo_users" 
+      set_fact:
+        non_mongo_users: "{{ non_mongo_users + [item] }}"
+      loop: "{{ user_ids }}"
+      when: item not in mongo_users
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Check if non_mongo_users is empty"
+      set_fact:
+        non_mongo_users_exist: "{{ non_mongo_users | length > 0 }}"
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Display all non_mongo_users fields"  
+      debug:
+        var: non_mongo_users
+      when: non_mongo_users_exist
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Split each db.user in non_mongo_users"
+      set_fact:
+        user_names: "{{ user_names + [item.split('.')[1]] }}"
+        db_names: "{{ db_names + [item.split('.')[0]] }}"
+      loop: "{{ non_mongo_users }}"
+      when: non_mongo_users_exist
+
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Print user names and corresponding database names" 
+      debug:
+        msg: "User: {{ user_names[index] }}, Database: {{ db_names[index] }}"
+      loop: "{{ range(0, user_names|length) }}"
+      loop_control:
+        loop_var: index
+      when: non_mongo_users_exist
+      
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Drop non_mongo_users" 
+      ansible.builtin.command: |
+        mongosh "mongodb://localhost:27017/{{ db_names[index] }}" --quiet --eval "EJSON.stringify(db.dropUser('{{ user_names[index] }}', {w: 'majority', wtimeout: 5000}))"
+      loop: "{{ range(0, user_names|length) }}"
+      loop_control:
+        loop_var: index
+      when: non_mongo_users_exist
+
+  ignore_errors: false
+  tags:
+    - cat2
+    - medium
+    - SV-252157
 
 ##### manual??? this one is manual is postgres, but its also less specific 
 # - name: "MEDIUM | SV-252161 | MongoDB must map the PKI-authenticated identity to an associated user account."

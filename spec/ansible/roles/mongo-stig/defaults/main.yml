@@ -19,6 +19,10 @@ mongo_users:
   - "admin.admin"
   - "test.myTester"
   - "products.myRoleTestUser"
+  - "loler.myTester"
+  - "loler.bruhburh"
+  - "imhere.bruhburh"
+
 authentication_mechanism: 
   - SCRAM-SHA-256
 

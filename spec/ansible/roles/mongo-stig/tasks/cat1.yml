@@ -1,66 +1,4 @@
 ---
-- name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
-  block:
-    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration"
-      yedit:
-        src: "{{ mongod_config_path }}"
-        key: security.authorization
-        value: enabled
-
-    - name: Extract _id fields from MongoDB user data
-      set_fact:
-        user_ids: "{{ user_ids | default([]) + [item._id] }}"
-      loop: "{{ user_list.stdout }}"
-
-    - name: Display all _id fields
-      debug:
-        var: user_ids
-
-    - name: Filter out users not in mongo_users
-      set_fact:
-        non_mongo_users: "{{ non_mongo_users | default([]) + [item] }}"
-      loop: "{{ user_ids }}"
-      when: item not in mongo_users
-
-    - name: Display all non_mongo_users fields
-      debug:
-        var: non_mongo_users
-
-
-  ignore_errors: false
-  tags:
-    - cat2
-    - medium
-    - SV-252157
-
-# - name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
-#   block:
-#     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration"
-#       yedit:
-#         src: "{{ mongod_config_path }}"
-#         key: security.authorization
-#         value: enabled
-
-#     - name: Fetch list of databases
-#       community.mongodb.mongodb_shell:
-#         login_user: "{{ mongo_dba }}"
-#         login_password: "{{ mongo_dba_password }}"
-#         login_database: "{{ mongo_auth_source }}"
-#         login_host: "{{ mongo_host }}"
-#         login_port: "{{ mongo_port }}"
-#         eval: "db.adminCommand({ listDatabases: 1 })"
-#       register: db_list
-
-#     - name: Display the fetched databases
-#       debug:
-#         var: db_list.transformed_output.databases
-
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252157
-
 - name: "HIGH | SV-252139 | If passwords are used for authentication, MongoDB must transmit only encrypted representations of passwords."
   yedit:
     src: "{{ mongod_config_path }}"
@@ -185,7 +123,7 @@
 # - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
 #   command: true
 #   ignore_errors: true
-#   when: enterprise_edition && encryption_at_rest
+#   when: enterprise_edition and encryption_at_rest
 #   tags:
 #     - cat1
 #     - high
