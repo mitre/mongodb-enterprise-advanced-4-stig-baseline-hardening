@@ -4,8 +4,9 @@ enterprise_edition: true
 fips_mode: true
 mongostig_cat1: true
 mongostig_cat2: true
-# If any data is PII, classified or is deemed by the organization the need to be encrypted at rest. Set to true if using KMIP.
+# If any data is PII, classified or is deemed by the organization the need to be encrypted at rest.
 encryption_at_rest: false
+kmip_enabled: false
 
 mongo_owner: root
 mongo_group: root
@@ -44,7 +45,10 @@ max_incoming_connections: 800000
 
 mongo_filter: "'{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }'"
 
+encryption_cipher_mode: AES256-GCM
 KMIP_server_host_name: 
 KMIP_server_port: 
 KMIP_server_ca_file: 
 KMIP_client_certificate_file: 
+
+security_encryption_key_file: 

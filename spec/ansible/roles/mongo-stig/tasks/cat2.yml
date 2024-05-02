@@ -172,19 +172,36 @@
     - SV-252145
 
 - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components."
-  yedit:
-    src: "{{ mongod_config_path }}"
-    edits:
-    - key: security.enableEncryption
-      value: true
-    - key: kmip.serverName
-      value: "{{ KMIP_server_host_name }}"
-    - key: kmip.port
-      value: "{{ KMIP_server_port }}"
-    - key: kimp.ServerCAFile
-      value: "{{ KMIP_server_ca_file }}"
-    - key: kmip.clientCertificationFile
-      value: "{{ KMIP_client_certificate_file }}"
+  block: 
+  - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components. | KMIP Enabled"
+    yedit:
+      src: "{{ mongod_config_path }}"
+      edits:
+      - key: net.tls.FIPSMode
+        value: true
+      - key: security.enableEncryption
+        value: true
+      - key: kmip.serverName
+        value: "{{ KMIP_server_host_name }}"
+      - key: kmip.port
+        value: "{{ KMIP_server_port }}"
+      - key: kimp.ServerCAFile
+        value: "{{ KMIP_server_ca_file }}"
+      - key: kmip.clientCertificationFile
+        value: "{{ KMIP_client_certificate_file }}"
+      when: kmip_enabled
+
+  - name: "MEDIUM | SV-252147 | MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components. | Local Encryption Key File"
+    yedit:
+      src: "{{ mongod_config_path }}"
+      edits:
+      - key: net.tls.FIPSMode
+        value: true
+      - key: security.enableEncryption
+        value: true
+      - key: security.encryptionKeyFile
+        value: "{{ security_encryption_key_file }}"
+      when: not kmip_enabled
   ignore_errors: true
   when: enterprise_edition and encryption_at_rest
   tags:

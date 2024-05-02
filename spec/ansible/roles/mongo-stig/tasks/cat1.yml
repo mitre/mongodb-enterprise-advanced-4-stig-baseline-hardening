@@ -120,15 +120,48 @@
 #     - high
 #     - SV-252162
 
-# - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
-#   command: true
-#   ignore_errors: true
-#   when: enterprise_edition and encryption_at_rest
-#   tags:
-#     - cat1
-#     - high
-#     - SV-252165
-#     - enterprise
+- name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest."
+  block: 
+  - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest. | KMIP Enabled"
+    yedit:
+      src: "{{ mongod_config_path }}"
+      edits:
+      - key: net.tls.FIPSMode
+        value: true
+      - key: security.encryptionCipherMode
+        value: "{{ encryption_cipher_mode }}"
+      - key: security.enableEncryption
+        value: true
+      - key: kmip.serverName
+        value: "{{ KMIP_server_host_name }}"
+      - key: kmip.port
+        value: "{{ KMIP_server_port }}"
+      - key: kimp.ServerCAFile
+        value: "{{ KMIP_server_ca_file }}"
+      - key: kmip.clientCertificationFile
+        value: "{{ KMIP_client_certificate_file }}"
+      when: kmip_enabled
+
+  - name: "HIGH | SV-252165 | MongoDB must protect the confidentiality and integrity of all information at rest. | Local Encryption Key File"    
+    yedit:
+      src: "{{ mongod_config_path }}"
+      edits:
+      - key: net.tls.FIPSMode
+        value: true
+      - key: security.enableEncryption
+        value: true
+      - key: security.encryptionCipherMode
+        value: "{{ encryption_cipher_mode }}"
+      - key: security.encryptionKeyFile
+        value: "{{ security_encryption_key_file }}"
+      when: not kmip_enabled
+  ignore_errors: true
+  when: enterprise_edition and encryption_at_rest
+  tags:
+    - cat1
+    - high
+    - SV-252165
+    - enterprise
 
 ##### MANUAL
 # - name: "HIGH | SV-252184 | MongoDB products must be a version supported by the vendor."
