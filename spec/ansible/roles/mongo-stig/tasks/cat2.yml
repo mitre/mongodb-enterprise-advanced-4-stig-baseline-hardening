@@ -151,14 +151,15 @@
     - medium
     - SV-252143
 
-##### MANUAL
-# - name: "MEDIUM | SV-252144 | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252144
+- name: "MEDIUM | SV-252144 | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252144."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252144
+    - manual
 
 - name: "MEDIUM | SV-252145 | MongoDB must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
   yedit:
@@ -222,32 +223,35 @@
     - medium
     - SV-252148
 
-##### MANUAL
-# - name: "MEDIUM | SV-252151 | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252151
+- name: "MEDIUM | SV-252151 | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252151."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252151
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252153 | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252153
+- name: "MEDIUM | SV-252153 | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252153."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252153
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252154 | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252154
+- name: "MEDIUM | SV-252154 | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252154."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252154
+    - manual
 
 # - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users."
 #   command: true
@@ -289,11 +293,19 @@
       debug:
         var: user_ids
 
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Combine users and super users"
+      set_fact:
+        all_mongo_users: "{{ mongo_super_users + mongo_users}}"
+      
+    - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Display all all_mongo_users"
+      debug:
+        var: all_mongo_users
+
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Filter out users not in mongo_users" 
       set_fact:
         non_mongo_users: "{{ non_mongo_users + [item] }}"
       loop: "{{ user_ids }}"
-      when: item not in mongo_users
+      when: item not in all_mongo_users
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Check if non_mongo_users is empty"
       set_fact:
@@ -333,16 +345,16 @@
     - medium
     - SV-252157
 
-##### manual??? this one is manual is postgres, but its also less specific 
-# - name: "MEDIUM | SV-252161 | MongoDB must map the PKI-authenticated identity to an associated user account."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252161
+- name: "MEDIUM | SV-252161 | MongoDB must map the PKI-authenticated identity to an associated user account."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252161."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252161
+    - manual
 
-##### in postgres the wording is the same but it seems like they check super users, but i dont think this one is checking for that? https://github.com/mitre/crunchy-data-postgresql-stig-baseline/blob/ca4a37b5179926d0e2b076d48125524b0faa0c3a/controls/V-233524.rb#L8
 # - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
 #   command: true
 #   ignore_errors: true
@@ -364,14 +376,15 @@
     - SV-252164
     - enterprise
 
-##### MANUAL
-# - name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252166
+- name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252166."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252166
+    - manual
 
 - name: "MEDIUM | SV-252167 | MongoDB must check the validity of all data inputs except those specifically identified by the organization."
   yedit:
@@ -406,15 +419,15 @@
     - medium
     - SV-252169
 
-
-##### MANUAL
-# - name: "MEDIUM | SV-252170 | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252170
+- name: "MEDIUM | SV-252170 | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252170."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252170
+    - manual
 
 - name: "MEDIUM | SV-252171 | MongoDB must utilize centralized management of the content captured in audit records generated by all components of MongoDB."
   block:
@@ -453,31 +466,29 @@
     - SV-252171
     - enterprise
 
-##### MANUAL
-# - name: "MEDIUM | SV-252172 | MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements."
-#   yedit:
-#     src: "{{ mongod_config_path }}"
-#     key: auditLog.destination
-#     value: "{{ audit_log_destination}}"
-#   when: audit_log_destination == "syslog"
-#   ignore_errors: true
-#   when: enterprise_edition
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252172
-#     - enterprise
+- name: "MEDIUM | SV-252172 | MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252170."
+  ignore_errors: true
+  when: enterprise_edition
+  tags:
+    - cat2
+    - medium
+    - SV-252172
+    - enterprise
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252173 | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
-#   command: true
-#   ignore_errors: true
-#   when: enterprise_edition
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252173
-#     - enterprise
+- name: "MEDIUM | SV-252173 | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252173."
+  ignore_errors: true
+  when: enterprise_edition
+  tags:
+    - cat2
+    - medium
+    - SV-252173
+    - enterprise
+    - manual
 
 # - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status."
 #   command: true
@@ -487,44 +498,50 @@
 #     - medium
 #     - SV-252174
 
-##### MANUAL 
-# - name: "MEDIUM | SV-252175 | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252175
+- name: "MEDIUM | SV-252175 | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252175."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252175
+    - manual
 
-# - name: "MEDIUM | SV-252176 | MongoDB must require users to reauthenticate when organization-defined circumstances or situations require reauthentication."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252176
+- name: "MEDIUM | SV-252176 | MongoDB must require users to reauthenticate when organization-defined circumstances or situations require reauthentication."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252176."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252176
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252177 | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
-#   command: true
-#   ignore_errors: true
-#   when: enterprise_edition
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252177
-#     - enterprise
+- name: "MEDIUM | SV-252177 | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252177."
+  ignore_errors: true
+  when: enterprise_edition
+  tags:
+    - cat2
+    - medium
+    - SV-252177
+    - enterprise
+    - manual
+    
 
-##### MANUAL
-# - name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
-#   command: true
-#   ignore_errors: true
-#   when: enterprise_edition
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252178
-#     - enterprise
+- name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252178."
+  ignore_errors: true
+  when: enterprise_edition
+  tags:
+    - cat2
+    - medium
+    - SV-252178
+    - enterprise
+    - manual
 
 - name: "MEDIUM | SV-252179 | MongoDB must maintain the confidentiality and integrity of information during preparation for transmission."
   yedit:
@@ -576,41 +593,45 @@
     - enterprise
     - fips
 
-##### MANUAL
-# - name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252181
+- name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252181."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252181
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252182 | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252182
+- name: "MEDIUM | SV-252182 | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252182."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252182
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252183 | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
-#   command: true  
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252183
+- name: "MEDIUM | SV-252183 | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252183."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252183
+    - manual
 
-##### MANUAL
-# - name: "MEDIUM | SV-252185 | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
-#   command: true 
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252185
+- name: "MEDIUM | SV-252185 | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
+  debug:
+    msg: "Consult the STIG documentation to manually address and verify compliance for SV-252185."
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252185
+    - manual
 
 - name: Print the contents of mongod.conf
   command: cat "{{ mongod_config_path }}"

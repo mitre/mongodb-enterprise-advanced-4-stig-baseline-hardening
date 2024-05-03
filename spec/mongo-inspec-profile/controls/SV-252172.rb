@@ -40,14 +40,9 @@ Allocate sufficient space to the storage volume hosting the file identified in t
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
-  describe.one do
-    describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog', 'destination']) { should eq "syslog"}
-    end
-
-    describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog', 'destination']) { should eq "file"}
-    end
+  describe 'MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements.' do
+    skip 'If the auditLog entry is missing, or the destination does not reflect the intended application location, this is a finding. '
+    skip 'Investigate whether there have been any incidents where MongoDB ran out of audit log space since the last time the space was allocated or other corrective measures were taken. If there have been incidents where MongoDB ran out of audit log space, this is a finding.'
   end
   
 end
