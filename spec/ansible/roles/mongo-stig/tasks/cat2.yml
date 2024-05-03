@@ -97,13 +97,61 @@
     - medium
     - SV-252138
 
-# - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252140
+- name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
+  vars:
+    reg_mongo_users: []
+    user_names: []
+    db_names: []
+  block:
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract _id fields from MongoDB user data" 
+      set_fact:
+        user_ids: "{{ user_ids | default([]) + [item._id] }}"
+      loop: "{{ user_list.stdout }}"
+
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Display all _id fields"
+      debug:
+        var: user_ids
+
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Filter out users not in mongo_users" 
+      set_fact:
+        reg_mongo_users: "{{ reg_mongo_users + [item] }}"
+      loop: "{{ user_ids }}"
+      when: item in mongo_users
+
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Split each db.user in non_mongo_users"
+      set_fact:
+        user_names: "{{ user_names + [item.split('.')[1]] }}"
+        db_names: "{{ db_names + [item.split('.')[0]] }}"
+      loop: "{{ reg_mongo_users }}"
+
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Print user names and corresponding database names" 
+      debug:
+        msg: "User: {{ user_names[index] }}, Database: {{ db_names[index] }}"
+      loop: "{{ range(0, user_names|length) }}"
+      loop_control:
+        loop_var: index
+      
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Drop non_mongo_users" 
+      ansible.builtin.command: |
+        mongosh "mongodb://localhost:27017/{{ db_names[index] }}" --quiet --eval "db.getUser('{{ user_names[index] }}')"
+      loop: "{{ range(0, user_names|length) }}"
+      loop_control:
+        loop_var: index
+      register: command_output  # Register the output of each loop iteration
+
+    - name: Extract stdout from each command execution
+      set_fact:
+        users_data: "{{ command_output.results | map(attribute='stdout') | list }}"
+
+    - name: Debug print extracted stdout from all command executions
+      debug:
+        msg: "{{ users_data }}"
+      
+  ignore_errors: true
+  tags:
+    - cat2
+    - medium
+    - SV-252140
 
 - name: "MEDIUM | SV-252141 | MongoDB must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
   yedit:

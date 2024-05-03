@@ -16,6 +16,8 @@ mongo_host: localhost
 mongo_port: 27017
 mongo_auth_source: admin
 mongo_permissions: 0600
+mongo_admin_roles:
+  - "root"
 mongo_super_users:
   - "admin.admin"
 mongo_users:
