@@ -12,9 +12,10 @@ depends: []
 inspec_version: null
 
 inputs:
-  # SV-252134, SV-252135, SV-252136, SV-252137, SV-252138, SV-252139, SV-252141, SV-252142, SV-252143
-  # SV-252145, SV-252146, SV-252147, SV-252148, SV-252149, SV-252156, SV-252159, SV-252160, SV-252164
-  # SV-252167, SV-252168, SV-252169, SV-252171, SV-252172, SV-252179, SV-252180
+  # SV-252134, SV-252135, SV-252136, SV-252137, SV-252138, SV-252139, SV-252141, SV-252142, 
+  # SV-252143, SV-252145, SV-252146, SV-252147, SV-252148, SV-252149, SV-252156, SV-252157, 
+  # SV-252159, SV-252160, SV-252164, SV-252167, SV-252168, SV-252169, SV-252171, SV-252179, 
+  # SV-252180
   - name: mongod_config_path
     description: "The path to the mongod configuration file"
     type: string
@@ -37,41 +38,46 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
+  # SV-252140, SV-252141, SV-252146, SV-252154, SV-252155, SV-252157, SV-252159, SV-252163,
+  # SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176, SV-252182
   - name: mongo_dba
     description: "The mongo DBA user to access the test database"
     type: string
     required: true
     sensitive: true
 
-  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
+  # SV-252140, SV-252141, SV-252146, SV-252154, SV-252155, SV-252157, SV-252159, SV-252163,
+  # SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176, SV-252182
   - name: mongo_dba_password
     description: "The password for the mongo DBA user"
     type: string
     required: true
     sensitive: true
   
-  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
+  # SV-252140, SV-252141, SV-252146, SV-252154, SV-252155, SV-252157, SV-252159, SV-252163,
+  # SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176, SV-252182
   - name: mongo_host
     description: "The hostname or IP address used to connect to the database"
     type: string
     required: true
     sensitive: true
 
-  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
+  # SV-252140, SV-252141, SV-252146, SV-252154, SV-252155, SV-252157, SV-252159, SV-252163,
+  # SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176, SV-252182
   - name: mongo_port
     description: "The port used to connect to the database"
     type: numeric
     required: true
     sensitive: true
 
-  # SV-252155, SV-252174
+  # SV-252140, SV-252155, SV-252157, SV-252163, SV-252174
   - name: mongo_auth_source
     description: "The database used to authorize users"
     type: string
     required: true
     sensitive: true
 
+  # SV-252134, SV-252171
   - name: mongo_filter
     description: "The filter used in authLog"
     type: string
@@ -79,21 +85,25 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
+  # SV-252139, SV-252140, SV-252141, SV-252146, SV-252147, SV-252154, SV-252155, SV-252157, 
+  # SV-252159, SV-252160, SV-252163, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, 
+  # SV-252175, SV-252176, SV-252179, SV-252180, SV-252182
   - name: ca_file
     description: "The path to the CA file"
     type: string
     required: true
     sensitive: true
 
-  # SV-252141, SV-252146, SV-252154,SV-252155, SV-252157, SV-252159, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, SV-252175, SV-252176
+  # SV-252139, SV-252140, SV-252141, SV-252146, SV-252147, SV-252154, SV-252155, SV-252157, 
+  # SV-252159, SV-252160, SV-252163, SV-252165, SV-252167, SV-252168, SV-252169, SV-252174, 
+  # SV-252175, SV-252176, SV-252179, SV-252180, SV-252182
   - name: certificate_key_file
     description: "The path to the certificate key file"
     type: string
     required: true
     sensitive: true
 
-  # SV-252154, SV-252155, SV-252157
+  # SV-252140, SV-252154, SV-252155, SV-252157, SV-252163, SV-252174
   - name: mongo_superusers
     description: "Authorized superuser accounts"
     type: array
@@ -102,7 +112,7 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252154, SV-252155, SV-252157
+  # SV-252155, SV-252157
   - name: mongo_users
     description: "Authorized user accounts in the format of database.user"
     type: array
@@ -129,15 +139,6 @@ inputs:
     value:
       - "changeStream"
       - "createCollections"
-    required: true
-    sensitive: true
-
-  # SV-252154
-  - name: mongo_dbs
-    description: "Authorized mongo databases"
-    type: array
-    value:
-      - ""
     required: true
     sensitive: true
 
@@ -190,19 +191,21 @@ inputs:
     value: false
     required: true
 
-  # SV-252157
+  # SV-252149, SV-252157
   - name: ldap_enabled
     description: "LDAP is used for authentication and authorization"
     type: boolean
     value: false
     required: true
 
+  # SV-252141, SV-252182
   - name: mongo_version
     description: "The edition of MongoDB in use"
     type: string
     value: "7.0.5"
     required: true
 
+  # SV-252182
   - name: mongo_edition
     description: "The edition of MongoDB in use"
     type: string
