@@ -176,7 +176,6 @@
     - SV-252184
     - manual
     
-
 - name: Print the contents of mongod.conf
   command: cat "{{ mongod_config_path }}"
   register: mongod_conf_content

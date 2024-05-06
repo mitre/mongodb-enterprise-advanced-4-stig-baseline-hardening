@@ -32,9 +32,9 @@
 
 - name: Create MongoDB admin user
   community.mongodb.mongodb_user:
-    database: admin
-    name: admin
-    password: admin
+    database: "{{ mongo_auth_source }}"
+    name: "{{ mongo_dba }}"
+    password: "{{ mongo_dba_password }}"
     roles: root
     state: present
 
