@@ -70,7 +70,7 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252140, SV-252155, SV-252157, SV-252163, SV-252174
+  # SV-252140,SV-252154, SV-252155, SV-252157, SV-252163, SV-252174
   - name: mongo_auth_source
     description: "The database used to authorize users"
     type: string
@@ -174,7 +174,7 @@ inputs:
   - name: ca_file_dest
     description: "The path to the mongo CA file"
     type: string
-    value: "/etc/ssl/caToValidateClientCertificates.pem"
+    value: "/etc/ssl/CA_bundle.pem"
     required: true
 
   # SV-252142
