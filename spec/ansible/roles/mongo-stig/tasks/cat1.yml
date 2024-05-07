@@ -176,10 +176,3 @@
     - SV-252184
     - manual
     
-- name: Print the contents of mongod.conf
-  command: cat "{{ mongod_config_path }}"
-  register: mongod_conf_content
-
-- name: Display contents of mongod.conf
-  debug:
-    msg: "{{ mongod_conf_content.stdout }}"

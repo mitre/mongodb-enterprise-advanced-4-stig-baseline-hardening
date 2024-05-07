@@ -9,7 +9,7 @@
   serial: 50
   user: 0
   vars:
-    fips_mode: false
+    fips_mode: true
     enterprise_edition: true
     rhel8stig_bootloader_password_hash: "changethispassword"
     rhel_08_040123: false

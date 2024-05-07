@@ -129,6 +129,7 @@ inputs:
     value:
       - "admin.root"
       - "products.myTestRole"
+      - "test.read"
     required: true
     sensitive: true
 
