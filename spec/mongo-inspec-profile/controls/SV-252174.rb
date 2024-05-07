@@ -89,7 +89,7 @@ There may be several resources in a role that contain these privileges and the r
 
         describe "Role '#{role}' of user #{user['_id']} does not have privileges for 'createCollection' and 'changeStream', and" do
           subject { all_actions }
-          it { should_not be_in ["createCollection", "changeStream"] }
+          it { should_not be_in input('inappropriate_mongo_privileges') }
         end
       end
     end
