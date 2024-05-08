@@ -23,6 +23,10 @@ mongo_super_users:
 mongo_users:
   - "test.myTester"
   - "products.myRoleTestUser"
+inappropriate_mongo_privileges:
+  - "changeStream"
+  - "createCollection"
+  - "find"
 
 authentication_mechanism: 
   - SCRAM-SHA-256

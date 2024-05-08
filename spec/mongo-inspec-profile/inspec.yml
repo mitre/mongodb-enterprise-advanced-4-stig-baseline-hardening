@@ -133,13 +133,13 @@ inputs:
     required: true
     sensitive: true
 
-  # SV-252140, SV-252163
+  # SV-252140, SV-252163, SV-252174
   - name: inappropriate_mongo_privileges
     description: "Inappropriate priveleges for all roles in MongoDB"
     type: array
     value:
       - "changeStream"
-      - "createCollections"
+      - "createCollection"
     required: true
     sensitive: true
 

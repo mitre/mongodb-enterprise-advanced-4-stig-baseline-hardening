@@ -3,6 +3,7 @@
   apt:
     name: '*'
     state: latest
+
 - name: Install required packages
   apt:
     name:
@@ -11,6 +12,7 @@
       - bc 
       - wget
     state: latest
+
 - name: Install required packages via pip
   pip:
     name:

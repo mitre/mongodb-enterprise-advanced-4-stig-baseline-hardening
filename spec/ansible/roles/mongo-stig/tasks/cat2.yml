@@ -144,7 +144,7 @@
         loop_var: index
       register: command_output
 
-    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract stdout from each command execution" 
+    - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract stdout from command execution" 
       set_fact:
         users_data: "{{ command_output.results | map(attribute='stdout') | list }}"
 
@@ -342,13 +342,6 @@
     - SV-252154
     - manual
 
-# - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252155
 - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users."
   vars:
     reg_mongo_users_155: []
@@ -396,7 +389,7 @@
         loop_var: index
       register: command_output
 
-    - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Extract stdout from each command execution" 
+    - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Extract stdout from command execution" 
       set_fact:
         users_data: "{{ command_output.results | map(attribute='stdout') | list }}"
 
@@ -534,13 +527,6 @@
     - SV-252161
     - manual
 
-# - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
-#   command: true
-#   ignore_errors: true
-#   tags:
-#     - cat2
-#     - medium
-#     - SV-252163
 - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)."
   vars:
     reg_mongo_users_163: []
@@ -588,7 +574,7 @@
         loop_var: index
       register: command_output
 
-    - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract stdout from each command execution" 
+    - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract stdout from command execution" 
       set_fact:
         users_data: "{{ command_output.results | map(attribute='stdout') | list }}"
 
@@ -767,95 +753,160 @@
 
 - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status."
   vars:
-    reg_mongo_users_174: []
-    user_ids_174: []
-    user_names_174: []
+    db_list_174: []
     db_names_174: []
-    databases_174: []
     users_174: []
     roles_174: []
-    id_map_174: []
+    db_role_resource: {}
+    role_details_174: []
+    resource_list_174: []
+    updated_resource_list_174: []
+    dbs_filtered_174: []
+    roles_filtered_174: []
   block:
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract _id fields from MongoDB user data" 
-      set_fact:
-        user_ids_174: "{{ user_ids_174 + [item._id] }}"
-      loop: "{{ user_list.stdout }}"
-
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Display all _id fields"
-      debug:
-        var: user_ids_174
-
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Filter out users not in mongo_users" 
-      set_fact:
-        reg_mongo_users_174: "{{ reg_mongo_users_174 + [item] }}"
-      loop: "{{ user_ids_174 }}"
-      when: item in mongo_users
-
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Split each db.user in non_mongo_users"
-      set_fact:
-        user_names_174: "{{ user_names_174 + [item.split('.')[1]] }}"
-        db_names_174: "{{ db_names_174 + [item.split('.')[0]] }}"
-      loop: "{{ reg_mongo_users_174 }}"
-
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Print user names and corresponding database names" 
-      debug:
-        msg: "User: {{ user_names_174[index] }}, Database: {{ db_names_174[index] }}"
-      loop: "{{ range(0, user_names_174|length) }}"
-      loop_control:
-        loop_var: index
-      
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Get users" 
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Get list of databases"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ db_names_174[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_174[index] }}'))"
-      loop: "{{ range(0, user_names_174|length) }}"
+        mongosh "mongodb://localhost:27017/admin" --quiet --eval "EJSON.stringify(db.adminCommand({listDatabases: 1}))"
+      register: db_list_174
+    
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract stdout from each command execution" 
+      set_fact:
+        users_174: "{{ db_list_174.stdout | from_json }}"
+
+    - name: 'out db_list_174'
+      debug:
+        var: users_174
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract database names into a list" 
+      set_fact:
+        db_names_174: "{{ users_174.databases | map(attribute='name') | list }}"
+
+    - name: Display the list of database names
+      debug:
+        var: db_names_174
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Get list of roles"
+      ansible.builtin.command: |
+        mongosh "mongodb://localhost:27017/{{ db_names_174[index] }}" --quiet --eval "EJSON.stringify(db.getRoles({rolesInfo: 1,showPrivileges: true}))"
+      loop: "{{ range(0, db_names_174|length) }}"
       loop_control:
         loop_var: index
       register: command_output
 
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract stdout from each command execution" 
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract stdout from command execution"
       set_fact:
-        users_data: "{{ command_output.results | map(attribute='stdout') | list }}"
+        roles_174: "{{ command_output.results | map(attribute='stdout') | map('from_json') | list }}"
 
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Convert users_data into a dictionary" 
-      set_fact:
-        users_dict: "{{ users_data | map('from_json') | list }}"
-
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract _id and roles" 
-      set_fact:
-        id_map_174: "{{ id_map_174 | combine({ item['_id']: item['roles'] }) }}"
-      loop: "{{ users_dict }}"
-      loop_control:
-        label: "{{ item }}"
-
-    - name: print id_map
+    - name: 'out roles_174'
       debug:
-        var: id_map_174
+        var: roles_174
 
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract users with inappropriate roles"
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Iterating through the roles, append the details to a list"
       set_fact:
-        users_174: "{{ users_174 + [item.key.split('.')[1]] }}"
-        databases_174: "{{ databases_174 + [item.key.split('.')[0]] }}"
-        roles_174: "{{ roles_174 + filtered_roles }}"
-      loop: "{{ id_map_174 | dict2items }}"
-      vars:
-        role_items: "{{ item.value }}"
-        filtered_roles: "{{ role_items | selectattr('role', 'in', mongo_admin_roles) | map(attribute='role') | list }}"
-      when: filtered_roles | length > 0
+        role_details_174: "{{ role_details_174 + [item.1] }}"
+      loop: "{{ roles_174 | subelements('roles') }}"
+      
+    - name: Display all gathered role details
+      debug:
+        msg: "{{ role_details_174 }}"
 
-    - name: Output the lists
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Append the privileges of each role to a list"
+      set_fact:
+        resource_list_174: "{{ resource_list_174 + item.privileges }}"
+      loop: "{{ role_details_174 }}"
+      when: "'privileges' in item"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Append the inherited privileges of each role to a list"
+      set_fact:
+        resource_list_174: "{{ resource_list_174 + item.inheritedPrivileges }}"
+      loop: "{{ role_details_174 }}"
+      when: "'inheritedPrivileges' in item"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Process role details and store results based on privileges"
+      set_fact:
+        filtered_role_details_privileges: >-
+          {%- set results = [] -%}
+          {%- for role_iter in role_details_174 -%}
+          {%- if 'privileges' in role_iter -%}
+          {%- for privilege in role_iter['privileges'] -%}
+          {%- set filtered_actions = privilege.actions | intersect(inappropriate_mongo_privileges) -%}
+          {%- if filtered_actions | length > 0 -%}
+          {%- set _ = results.append({
+            "db": role_iter.db,
+            "role": role_iter.role,
+          }) -%}
+          {%- endif -%}
+          {%- endfor -%}
+          {%- endif -%}
+          {%- endfor -%}
+          {{ results }}
+
+    - name: Display filtered role details
+      debug:
+        msg: "{{ filtered_role_details_privileges }}"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Add to dbs_filtered_174 and roles_filtered_174 from filtered results based off of privileges"
+      set_fact:
+        dbs_filtered_174: "{{ dbs_filtered_174 + [item.db] }}"
+        roles_filtered_174: "{{ roles_filtered_174 + [item.role] }}"
+      loop: "{{ filtered_role_details_privileges }}"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Process role details and store results based on inherited privileges"
+      set_fact:
+        filtered_role_details_inherited: >-
+          {%- set results = [] -%}
+          {%- for role_iter in role_details_174 -%}
+          {%- if 'inheritedPrivileges' in role_iter -%}
+          {%- for privilege in role_iter['inheritedPrivileges'] -%}
+          {%- set filtered_actions = privilege.actions | intersect(inappropriate_mongo_privileges) -%}
+          {%- if filtered_actions | length > 0 -%}
+          {%- set _ = results.append({
+            "db": role_iter.db,
+            "role": role_iter.role,
+          }) -%}
+          {%- endif -%}
+          {%- endfor -%}
+          {%- endif -%}
+          {%- endfor -%}
+          {{ results }}
+
+    - name: Display filtered role details
+      debug:
+        msg: "{{ filtered_role_details_inherited }}"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Add to dbs_filtered_174 and roles_filtered_174 from filtered results based off of inherited privileges"
+      set_fact:
+        dbs_filtered_174: "{{ dbs_filtered_174 + [item.db] }}"
+        roles_filtered_174: "{{ roles_filtered_174 + [item.role] }}"
+      loop: "{{ filtered_role_details_inherited }}"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Replace each action key in the dictionary with the actions from inappropriate_mongo_privileges"
+      set_fact:
+        updated_resource_list_174: "{{ updated_resource_list_174 + [item | combine({'actions': inappropriate_mongo_privileges}, recursive=true)] }}"
+      loop: "{{ resource_list_174 }}"
+
+    - name: Display updated lists resource_list_174
       debug:
         msg:
-          - "Users: {{ users_174 }}"
-          - "Databases: {{ databases_174 }}"
-          - "Roles: {{ roles_174 }}"
+          updated_resource_list_174: "{{ updated_resource_list_174 }}"
 
-    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Revoke roles"
+    - name: Display updated lists dbs_filtered_174
+      debug:
+        msg:
+          dbs_filtered_174: "{{ dbs_filtered_174 }}"
+
+    - name: Display updated lists roles_filtered_174
+      debug:
+        msg:
+          roles_filtered_174: "{{ roles_filtered_174 }}"
+
+    - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Revoke inappropriate privileges from each role"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ databases_174[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_174[index]}}', ['{{ roles_174[index] }}']))"
-      loop: "{{ range(0, users_174|length) }}"
+        mongosh "mongodb://localhost:27017/{{ dbs_filtered_174[index] }}" --quiet --eval "db.revokePrivilegesFromRole('{{ roles_filtered_174[index] }}', [{{ updated_resource_list_174[index] }}])"
+      loop: "{{ range(0, dbs_filtered_174|length) }}"
       loop_control:
         loop_var: index
-      
+
   ignore_errors: true
   tags:
     - cat2
