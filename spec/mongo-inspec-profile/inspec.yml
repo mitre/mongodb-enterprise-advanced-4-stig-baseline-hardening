@@ -8,7 +8,9 @@ summary: null
 description: null
 version: 1.0.0
 supports: []
-depends: []
+depends: 
+  - name: mongodb-enterprise-advanced-4-stig-baseline
+    git:  https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline.git
 inspec_version: null
 
 inputs:

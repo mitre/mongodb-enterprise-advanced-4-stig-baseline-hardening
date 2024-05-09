@@ -1,0 +1,1 @@
+include_controls 'mongodb-enterprise-advanced-4-stig-baseline'

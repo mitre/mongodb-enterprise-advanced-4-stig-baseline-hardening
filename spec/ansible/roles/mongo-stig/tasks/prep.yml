@@ -43,16 +43,7 @@
     mongosh "mongodb://localhost:27017/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
   register: user_list
 
-- name: Display contents of user_list
-  ansible.builtin.debug:
-    msg: "{{ user_list.stdout }}"
-
 - name: Get MongoDB version
   ansible.builtin.command: |
     mongosh "mongodb://localhost:27017/test" --quiet --eval "db.version()"
   register: mongodb_version
-
-- name: Display contents of mongodb_version
-  ansible.builtin.debug:
-    msg: "{{ mongodb_version.stdout }}"
-    
