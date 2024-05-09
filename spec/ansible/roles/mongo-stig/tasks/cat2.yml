@@ -114,7 +114,7 @@
       loop: "{{ user_list.stdout }}"
 
     - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Display all _id fields"
-      debug:
+      ansible.builtin.debug:
         var: user_ids_140
 
     - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Filter out users not in mongo_users" 
@@ -130,7 +130,7 @@
       loop: "{{ reg_mongo_users_140 }}"
 
     - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Print user names and corresponding database names" 
-      debug:
+      ansible.builtin.debug:
         msg: "User: {{ user_names_140[index] }}, Database: {{ db_names_140[index] }}"
       loop: "{{ range(0, user_names_140|length) }}"
       loop_control:
@@ -160,7 +160,7 @@
         label: "{{ item }}"
 
     - name: print id_map
-      debug:
+      ansible.builtin.debug:
         var: id_map_140
 
     - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract users with inappropriate roles"
@@ -175,7 +175,7 @@
       when: filtered_roles | length > 0
 
     - name: Output the lists
-      debug:
+      ansible.builtin.debug:
         msg:
           - "Users: {{ users_140 }}"
           - "Databases: {{ databases_140 }}"
@@ -241,7 +241,7 @@
     - SV-252143
 
 - name: "MEDIUM | SV-252144 | MongoDB must associate organization-defined types of security labels having organization-defined security label values with information in storage and transmission."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252144."
   ignore_errors: true
   tags:
@@ -313,7 +313,7 @@
     - SV-252148
 
 - name: "MEDIUM | SV-252151 | MongoDB must limit privileges to change software modules, to include stored procedures, functions and triggers, and links to software external to MongoDB."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252151."
   ignore_errors: true
   tags:
@@ -323,7 +323,7 @@
     - manual
 
 - name: "MEDIUM | SV-252153 | Database software, including DBMS configuration files, must be stored in dedicated directories, or DASD pools, separate from the host OS and other applications."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252153."
   ignore_errors: true
   tags:
@@ -333,7 +333,7 @@
     - manual
 
 - name: "MEDIUM | SV-252154 | Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252154."
   ignore_errors: true
   tags:
@@ -359,7 +359,7 @@
       loop: "{{ user_list.stdout }}"
 
     - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Display all _id fields"
-      debug:
+      ansible.builtin.debug:
         var: user_ids_155
 
     - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Filter out users not in mongo_users" 
@@ -375,7 +375,7 @@
       loop: "{{ reg_mongo_users_155 }}"
 
     - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Print user names and corresponding database names" 
-      debug:
+      ansible.builtin.debug:
         msg: "User: {{ user_names_155[index] }}, Database: {{ db_names_155[index] }}"
       loop: "{{ range(0, user_names_155|length) }}"
       loop_control:
@@ -405,7 +405,7 @@
         label: "{{ item }}"
 
     - name: print id_map
-      debug:
+      ansible.builtin.debug:
         var: id_map_155
 
     - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Extract users with inappropriate roles"
@@ -420,7 +420,7 @@
       when: filtered_roles | length > 0
 
     - name: Output the lists
-      debug:
+      ansible.builtin.debug:
         msg:
           - "Users: {{ users_155 }}"
           - "Databases: {{ databases_155 }}"
@@ -470,7 +470,7 @@
       loop: "{{ user_list.stdout }}"
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Display all _id fields"
-      debug:
+      ansible.builtin.debug:
         var: user_ids_157
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Combine users and super users"
@@ -478,7 +478,7 @@
         all_mongo_users: "{{ mongo_super_users + mongo_users}}"
       
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Display all all_mongo_users"
-      debug:
+      ansible.builtin.debug:
         var: all_mongo_users
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Filter out users not in mongo_users" 
@@ -488,7 +488,7 @@
       when: item not in all_mongo_users
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Display all non_mongo_users fields"  
-      debug:
+      ansible.builtin.debug:
         var: non_mongo_users
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Split each db.user in non_mongo_users"
@@ -498,7 +498,7 @@
       loop: "{{ non_mongo_users }}"
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Print user names and corresponding database names" 
-      debug:
+      ansible.builtin.debug:
         msg: "User: {{ user_names_157[index] }}, Database: {{ db_names_157[index] }}"
       loop: "{{ range(0, user_names_157|length) }}"
       loop_control:
@@ -518,7 +518,7 @@
     - SV-252157
 
 - name: "MEDIUM | SV-252161 | MongoDB must map the PKI-authenticated identity to an associated user account."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252161."
   ignore_errors: true
   tags:
@@ -544,7 +544,7 @@
       loop: "{{ user_list.stdout }}"
 
     - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Display all _id fields"
-      debug:
+      ansible.builtin.debug:
         var: user_ids_163
 
     - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Filter out users not in mongo_users" 
@@ -560,7 +560,7 @@
       loop: "{{ reg_mongo_users_163 }}"
 
     - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Print user names and corresponding database names" 
-      debug:
+      ansible.builtin.debug:
         msg: "User: {{ user_names_163[index] }}, Database: {{ db_names_163[index] }}"
       loop: "{{ range(0, user_names_163|length) }}"
       loop_control:
@@ -590,7 +590,7 @@
         label: "{{ item }}"
 
     - name: print id_map
-      debug:
+      ansible.builtin.debug:
         var: id_map_163
 
     - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Extract users with inappropriate roles"
@@ -605,7 +605,7 @@
       when: filtered_roles | length > 0
 
     - name: Output the lists
-      debug:
+      ansible.builtin.debug:
         msg:
           - "Users: {{ users_163 }}"
           - "Databases: {{ databases_163 }}"
@@ -638,7 +638,7 @@
     - enterprise
 
 - name: "MEDIUM | SV-252166 | Database contents must be protected from unauthorized and unintended information transfer by enforcement of a data-transfer policy."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252166."
   ignore_errors: true
   tags:
@@ -681,7 +681,7 @@
     - SV-252169
 
 - name: "MEDIUM | SV-252170 | MongoDB must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252170."
   ignore_errors: true
   tags:
@@ -728,7 +728,7 @@
     - enterprise
 
 - name: "MEDIUM | SV-252172 | MongoDB must allocate audit record storage capacity in accordance with site audit record storage requirements."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252170."
   ignore_errors: true
   when: enterprise_edition
@@ -740,7 +740,7 @@
     - manual
 
 - name: "MEDIUM | SV-252173 | MongoDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252173."
   ignore_errors: true
   when: enterprise_edition
@@ -774,7 +774,7 @@
         users_174: "{{ db_list_174.stdout | from_json }}"
 
     - name: 'out db_list_174'
-      debug:
+      ansible.builtin.debug:
         var: users_174
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract database names into a list" 
@@ -782,7 +782,7 @@
         db_names_174: "{{ users_174.databases | map(attribute='name') | list }}"
 
     - name: Display the list of database names
-      debug:
+      ansible.builtin.debug:
         var: db_names_174
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Get list of roles"
@@ -798,7 +798,7 @@
         roles_174: "{{ command_output.results | map(attribute='stdout') | map('from_json') | list }}"
 
     - name: 'out roles_174'
-      debug:
+      ansible.builtin.debug:
         var: roles_174
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Iterating through the roles, append the details to a list"
@@ -807,7 +807,7 @@
       loop: "{{ roles_174 | subelements('roles') }}"
       
     - name: Display all gathered role details
-      debug:
+      ansible.builtin.debug:
         msg: "{{ role_details_174 }}"
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Append the privileges of each role to a list"
@@ -842,7 +842,7 @@
           {{ results }}
 
     - name: Display filtered role details
-      debug:
+      ansible.builtin.debug:
         msg: "{{ filtered_role_details_privileges }}"
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Add to dbs_filtered_174 and roles_filtered_174 from filtered results based off of privileges"
@@ -871,7 +871,7 @@
           {{ results }}
 
     - name: Display filtered role details
-      debug:
+      ansible.builtin.debug:
         msg: "{{ filtered_role_details_inherited }}"
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Add to dbs_filtered_174 and roles_filtered_174 from filtered results based off of inherited privileges"
@@ -886,17 +886,17 @@
       loop: "{{ resource_list_174 }}"
 
     - name: Display updated lists resource_list_174
-      debug:
+      ansible.builtin.debug:
         msg:
           updated_resource_list_174: "{{ updated_resource_list_174 }}"
 
     - name: Display updated lists dbs_filtered_174
-      debug:
+      ansible.builtin.debug:
         msg:
           dbs_filtered_174: "{{ dbs_filtered_174 }}"
 
     - name: Display updated lists roles_filtered_174
-      debug:
+      ansible.builtin.debug:
         msg:
           roles_filtered_174: "{{ roles_filtered_174 }}"
 
@@ -915,7 +915,7 @@
 
 
 - name: "MEDIUM | SV-252175 | MongoDB must enforce access restrictions associated with changes to the configuration of MongoDB or database(s)."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252175."
   ignore_errors: true
   tags:
@@ -925,7 +925,7 @@
     - manual
 
 - name: "MEDIUM | SV-252176 | MongoDB must require users to reauthenticate when organization-defined circumstances or situations require reauthentication."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252176."
   ignore_errors: true
   tags:
@@ -935,7 +935,7 @@
     - manual
 
 - name: "MEDIUM | SV-252177 | MongoDB must prohibit the use of cached authenticators after an organization-defined time period."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252177."
   ignore_errors: true
   when: enterprise_edition
@@ -948,7 +948,7 @@
     
 
 - name: "MEDIUM | SV-252178 | MongoDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252178."
   ignore_errors: true
   when: enterprise_edition
@@ -1010,7 +1010,7 @@
     - fips
 
 - name: "MEDIUM | SV-252181 | When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252181."
   ignore_errors: true
   tags:
@@ -1020,7 +1020,7 @@
     - manual
 
 - name: "MEDIUM | SV-252182 | When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252182."
   ignore_errors: true
   tags:
@@ -1030,7 +1030,7 @@
     - manual
 
 - name: "MEDIUM | SV-252183 | Security-relevant software updates to MongoDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252183."
   ignore_errors: true
   tags:
@@ -1040,7 +1040,7 @@
     - manual
 
 - name: "MEDIUM | SV-252185 | MongoDB must be configured in accordance with the security configuration settings based on DoD security configuration and implementation guidance, including STIGs, NSA configuration guides, CTOs, DTMs, and IAVMs."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252185."
   ignore_errors: true
   tags:

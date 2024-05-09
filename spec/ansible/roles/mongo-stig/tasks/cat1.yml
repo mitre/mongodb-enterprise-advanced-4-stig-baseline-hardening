@@ -49,7 +49,7 @@
     - enterprise
 
 - name: "HIGH | SV-252150 | MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252170."
   ignore_errors: true
   tags:
@@ -59,7 +59,7 @@
     - manual
 
 - name: "HIGH | SV-252152 | MongoDB software installation account must be restricted to authorized users."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252152."
   ignore_errors: true
   tags:
@@ -69,7 +69,7 @@
     - manual
 
 - name: "HIGH | SV-252158 | If passwords are used for authentication, MongoDB must implement LDAP or Kerberos for authentication to enforce the DoD standards for password complexity and lifetime."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252158."
   ignore_errors: true
   tags:
@@ -114,7 +114,7 @@
     - enterprise
 
 - name: "HIGH | SV-252162 | MongoDB must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252162."
   ignore_errors: true
   tags:
@@ -167,7 +167,7 @@
     - enterprise
 
 - name: "HIGH | SV-252184 | MongoDB products must be a version supported by the vendor."
-  debug:
+  ansible.builtin.debug:
     msg: "Consult the STIG documentation to manually address and verify compliance for SV-252184."
   ignore_errors: true
   tags:
@@ -175,4 +175,3 @@
     - high
     - SV-252184
     - manual
-    

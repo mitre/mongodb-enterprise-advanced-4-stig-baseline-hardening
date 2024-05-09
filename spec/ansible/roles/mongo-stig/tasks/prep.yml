@@ -44,7 +44,7 @@
   register: user_list
 
 - name: Display contents of user_list
-  debug:
+  ansible.builtin.debug:
     msg: "{{ user_list.stdout }}"
 
 - name: Get MongoDB version
@@ -53,6 +53,6 @@
   register: mongodb_version
 
 - name: Display contents of mongodb_version
-  debug:
+  ansible.builtin.debug:
     msg: "{{ mongodb_version.stdout }}"
     

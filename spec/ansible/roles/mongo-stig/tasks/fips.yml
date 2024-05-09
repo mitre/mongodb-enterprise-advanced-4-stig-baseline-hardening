@@ -4,12 +4,20 @@
     url: https://www.openssl.org/source/openssl-3.0.0.tar.gz
     dest: /usr/local/src/openssl-3.0.0.tar.gz
     validate_certs: no
+  register: result_300
+  until: not result_300.failed
+  retries: 10
+  delay: 10
 
 - name: Download OpenSSL 3.1.0 tarball
   ansible.builtin.get_url:
     url: https://www.openssl.org/source/openssl-3.1.0.tar.gz
     dest: /usr/local/src/openssl-3.1.0.tar.gz
     validate_certs: no
+  register: result_310
+  until: not result_310.failed
+  retries: 10
+  delay: 10
 
 - name: Extract OpenSSL 3.0.0 tarball
   ansible.builtin.unarchive:

@@ -75,19 +75,25 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
   
-  create_user_command="EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
+  create_user_command = "EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
 
-  user_write_command="db.testCollection.insertOne({x: 1})"
+  user_write_command = "db.testCollection.insertOne({x: 1})"
+  
+  drop_user_command = "EJSON.stringify(db.getSiblingDB('test').dropUser('myTester'))"
 
   run_create_user = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{create_user_command}\""
 
   run_user_write = "mongosh \"mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{user_write_command}\""
+
+  run_drop_user = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{drop_user_command}\""
 
   create_user_output = json({command: run_create_user})
 
   create_user_again = command(run_create_user)
 
   run_user_output = command(run_user_write)
+
+  # drop_user_output = json({command: run_drop_user})
 
   describe.one do
     describe 'Test user' do
@@ -108,5 +114,11 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
       expect(run_user_output.stderr).to match(/MongoServerError: not authorized on test to execute command/)
     end
   end
+
+  # describe 'Test user' do
+  #     it 'should be dropped from the database' do 
+  #       expect(drop_user_output.params['ok']).to eq(1)
+  #     end
+  #   end
 
 end
