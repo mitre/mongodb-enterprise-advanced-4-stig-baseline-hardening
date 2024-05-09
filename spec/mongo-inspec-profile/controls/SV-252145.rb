@@ -11,7 +11,7 @@ The policy is bound by the information system boundary. Once the information is 
 '
   desc 'check', 'Review the MongoDB Configuration file (default location: /etc/mongod.conf).
 
-If the file does not contain the following entry, this is a finding. 
+If the file does not contain the following entry, this is a finding.
 
 security:
     authorization: enabled'
@@ -56,7 +56,6 @@ https://docs.mongodb.com/v4.4/reference/command/createRole/'
   tag nist: ['AC-3 (4)', 'AC-6 (10)']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','authorization']){should eq "enabled"}
+    its(['security', 'authorization']) { should eq 'enabled' }
   end
-    
 end

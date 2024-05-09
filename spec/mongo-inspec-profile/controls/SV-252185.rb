@@ -3,12 +3,12 @@ control 'SV-252185' do
   desc 'Configuring MongoDB to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DoD that reflects the most restrictive security posture consistent with operational requirements.
 
 In addition to this SRG, sources of guidance on security and information assurance exist. These include NSA configuration guides, CTOs, DTMs, and IAVMs. MongoDB must be configured in compliance with guidance from all such relevant sources.'
-  desc 'check', 'Assessing the system against the STIG configurations and guidance of the current document is the check for this requirement. 
+  desc 'check', 'Assessing the system against the STIG configurations and guidance of the current document is the check for this requirement.
 
 If the MongoDB is not configured in accordance with the security configuration settings of this document, this is a finding.'
   desc 'fix', 'Configure MongoDB in accordance with security configuration settings and guidance of this STIG document to meet the configurations required by the STIG, NSA configuration guidelines, CTOs, DTMs, and IAVMs.
 
-It is recommended that MongoDB Enterprise be installed and upgraded though the use of a package manager (YUM/RPM RedHat) where it meets the organizational or site-specific policy: 
+It is recommended that MongoDB Enterprise be installed and upgraded though the use of a package manager (YUM/RPM RedHat) where it meets the organizational or site-specific policy:
 https://docs.mongodb.com/v4.4/tutorial/install-mongodb-enterprise-on-red-hat/'
   impact 0.5
   ref 'DPMS Target MongoDB Enterprise Advanced 4.x'
@@ -27,5 +27,4 @@ https://docs.mongodb.com/v4.4/tutorial/install-mongodb-enterprise-on-red-hat/'
     skip 'Configure MongoDB in accordance with security configuration settings and guidance of this STIG document to meet the configurations required by the STIG, NSA configuration guidelines, CTOs, DTMs, and IAVMs.'
     skip 'If the MongoDB is not configured in accordance with the security configuration settings of this document, this is a finding.'
   end
-
 end

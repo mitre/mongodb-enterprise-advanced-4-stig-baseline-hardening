@@ -3,7 +3,7 @@ control 'SV-252142' do
   desc 'The purpose of this control is to prevent information, including encrypted representations of information, produced by the actions of a prior user/role (or the actions of a process acting on behalf of a prior user/role) from being available to any current user/role (or current process) that obtains access to a shared system resource (e.g., registers, main memory, secondary storage) after the resource has been released back to the information system. Control of information in shared resources is also referred to as object reuse.
 
 '
-  desc 'check', 'By default, the MongoDB official installation packages restrict user and group ownership and read/write permissions on the underlying data files and critical configuration files from other operating system users. 
+  desc 'check', 'By default, the MongoDB official installation packages restrict user and group ownership and read/write permissions on the underlying data files and critical configuration files from other operating system users.
 
 In addition, process and memory isolation is used by default. System administrators should also consider if whole database encryption would be an effective control on an application basis.
 
@@ -30,12 +30,12 @@ If the permission of any file in the main directory (/var/lib/mongo) or sub-dire
 If the permission of any sub-directory of (/var/lib/mongo) is more permissive than 700, this is a finding.'
   desc 'fix', 'Correct the permission to the files and/or directories that are in violation.
 
-%MongoDB configuration file% (default location /etc/mongod.conf): 
+%MongoDB configuration file% (default location /etc/mongod.conf):
 
 chown mongod:mongod /etc/mongod.conf
 chmod 600 /etc/mongod.conf
 
-MongoDB datafiles and directories (default location /var/lib/mongo): 
+MongoDB datafiles and directories (default location /var/lib/mongo):
 
 chown -R mongod:mongod /var/lib/mongo
 chmod 755 /var/lib/mongo
@@ -77,5 +77,4 @@ find /var/lib/mongo/* -type d | xargs  chmod 700'
   describe command("find #{input('data_file_directory_path')} -not -perm #{input('mongo_permissions')}") do
     its('stdout') { should be_empty }
   end
-
 end

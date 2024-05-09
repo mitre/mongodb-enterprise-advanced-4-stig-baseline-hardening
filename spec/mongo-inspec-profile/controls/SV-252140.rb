@@ -7,7 +7,7 @@ Non-organizational users must be uniquely identified and authenticated for all a
 Accordingly, a risk assessment is used in determining the authentication needs of the organization.
 
 Scalability, practicality, and security are simultaneously considered in balancing the need to ensure ease of use for access to federal information and information systems with the need to protect and adequately mitigate risk to organizational operations, organizational assets, individuals, other organizations, and the Nation.'
-  desc 'check', "MongoDB grants access to data and commands through role-based authorization and provides built-in roles that provide the different levels of access commonly needed in a database system. Additionally, user-defined roles can be created. 
+  desc 'check', "MongoDB grants access to data and commands through role-based authorization and provides built-in roles that provide the different levels of access commonly needed in a database system. Additionally, user-defined roles can be created.
 
 Check a user's role to ensure correct privileges for the function:
 
@@ -22,35 +22,35 @@ For each database in the system, identify the user's roles for the database:
 
 The server will return a document with the all users in the data and their associated roles.
 
-View a roles' privileges: 
+View a roles' privileges:
 
 For each database, identify the privileges granted by a role:
 
  use database
  db.getRole( %rolename%, { showPrivileges: true } )
 
-The server will return a document with the privileges and inheritedPrivileges arrays. 
+The server will return a document with the privileges and inheritedPrivileges arrays.
 
-The privileges returned document lists the privileges directly specified by the role and excludes those privileges inherited from other roles. 
+The privileges returned document lists the privileges directly specified by the role and excludes those privileges inherited from other roles.
 
 The inheritedPrivileges returned document lists all privileges granted by this role, both directly specified and inherited. If the role does not inherit from other roles, the two fields are the same.
 
 If a user has a role with inappropriate privileges, this is a finding."
   desc 'fix', "Administrators using MongoDB should document the appropriate privileges for various roles appropriate to the application.
 
-For each database, identify the user's roles for the database. 
+For each database, identify the user's roles for the database.
 
  use database
  db.getUser(%username%)
 
 The server will return a document with the user's roles.
 
-To revoke a user's role from a database, run the following:  
+To revoke a user's role from a database, run the following:
 
  db.revokeRolesFromUser( %username%, [ roles ], { writeConcern } )
 
 To grant a role to a user run the following:
- 
+
  db.grantRolesToUser( %username%, [ roles ], { writeConcern } )"
   impact 0.5
   ref 'DPMS Target MongoDB Enterprise Advanced 4.x'
@@ -65,35 +65,33 @@ To grant a role to a user run the following:
   tag cci: ['CCI-001082']
   tag nist: ['SC-2']
 
-  get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
+  get_system_users = 'EJSON.stringify(db.system.users.find().toArray())'
 
-  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input 'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
 
-  system_users = json({command: run_get_system_users}).params
-  
+  system_users = json({ command: run_get_system_users }).params
+
   system_users.each do |user|
     user_id = user['_id']
-    unless input('mongo_superusers').include?(user_id)
+    next if input('mongo_superusers').include?(user_id)
 
-      db_name = user['db']
-      user_roles = user['roles'].map { |role| "#{role['role']}" }
-      db_roles = user_roles.map { |role| "#{db_name}.#{role}" }
+    db_name = user['db']
+    user_roles = user['roles'].map { |role| (role['role']).to_s }
+    user_roles.map { |role| "#{db_name}.#{role}" }
 
-      user_roles.each do |role|
-        run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
+    user_roles.each do |role|
+      run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input 'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
 
-        role_output = json({command: run_get_role}).params
+      role_output = json({ command: run_get_role }).params
 
-        all_actions = role_output["privileges"].map { |privilege| privilege["actions"] } +
-                role_output["inheritedPrivileges"].map { |privilege| privilege["actions"] }
-        all_actions.flatten!
+      all_actions = role_output['privileges'].map { |privilege| privilege['actions'] } +
+                    role_output['inheritedPrivileges'].map { |privilege| privilege['actions'] }
+      all_actions.flatten!
 
-        describe "Role '#{role}' of user #{user['_id']} has the proper privileges" do
-          subject { all_actions }
-          it { should_not be_in input('inappropriate_mongo_privileges') }
-        end
+      describe "Role '#{role}' of user #{user['_id']} has the proper privileges" do
+        subject { all_actions }
+        it { should_not be_in input('inappropriate_mongo_privileges') }
       end
     end
   end
-
 end

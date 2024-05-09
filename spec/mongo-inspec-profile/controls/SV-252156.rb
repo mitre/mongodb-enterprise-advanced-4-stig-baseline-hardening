@@ -40,7 +40,6 @@ Are set to false as shown below:
   tag nist: ['CM-7 a']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['net','http']){should be nil}
+    its(['net', 'http']) { should be nil }
   end
-  
 end

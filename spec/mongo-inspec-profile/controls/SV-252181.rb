@@ -13,7 +13,7 @@ As an example, as a user with the dbAdminAnyDatabase role, execute the following
  use database
  db.getCollectionInfos()
 
-Where database is the name of the database on which validator rules are to be inspected. This returns an array of documents containing all collections information within the database. 
+Where database is the name of the database on which validator rules are to be inspected. This returns an array of documents containing all collections information within the database.
 
 For all collections information received, check if the options sub-document contains a validator.
 
@@ -41,11 +41,11 @@ Example below shows a finding:
                 }
         }
 ]'
-  desc 'fix', 'Document validation can be added at the time of creation of a new collection. 
+  desc 'fix', 'Document validation can be added at the time of creation of a new collection.
 
-Existing collections can also be modified with document validation rules. 
+Existing collections can also be modified with document validation rules.
 
-Use the validator option to create or update a collection with the desired validation rules. 
+Use the validator option to create or update a collection with the desired validation rules.
 
 See Schema Validation documentation for details:
 https://docs.mongodb.com/v4.4/core/schema-validation/'
@@ -65,5 +65,4 @@ https://docs.mongodb.com/v4.4/core/schema-validation/'
   describe 'When invalid inputs are received, MongoDB must behave in a predictable and documented manner that reflects organizational and system objectives.' do
     skip 'For all collections information received, check if the options sub-document contains a validator. If the options sub-document does not contain a validator, this is a finding.'
   end
-  
 end

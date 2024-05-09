@@ -5,7 +5,7 @@ control 'SV-252149' do
 
 security:
   authorization: enabled
- 
+
 If this parameter is not present, this is a finding.
 
 If using organization-mandated authorization, verify that the MongoDB configuration file (default location: /etc/mongod.conf) contains the following to ensure LDAP auth is enabled as well:
@@ -49,13 +49,12 @@ https://docs.mongodb.com/v4.4/core/security-ldap-external/#configuration'
   tag nist: ['AC-2 (1)']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','authorization']){should eq "enabled"}
+    its(['security', 'authorization']) { should eq 'enabled' }
   end
 
   if input('ldap_enabled')
     describe mongodb_conf(input('mongod_config_path')) do
-      its(['security', 'ldap', 'servers']) { should match /ldap/i }
+      its(['security', 'ldap', 'servers']) { should match(/ldap/i) }
     end
   end
-    
 end

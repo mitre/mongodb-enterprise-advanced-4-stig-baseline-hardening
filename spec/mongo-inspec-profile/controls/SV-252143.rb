@@ -7,9 +7,9 @@ The principal protection against code injection is not to use dynamic execution 
 This calls for inspection of application source code, which will require collaboration with the application developers. It is recognized that in many cases, the database administrator (DBA) is organizationally separate from the application developers, and may have limited, if any, access to source code. Nevertheless, protections of this type are so important to the secure operation of databases that they must not be ignored. At a minimum, the DBA must attempt to obtain assurances from the development organization that this issue has been addressed, and must document what has been discovered.
 
 '
-  desc 'check', 'MongoDB operations permit arbitrary JavaScript expressions to be run directly on the server. 
+  desc 'check', 'MongoDB operations permit arbitrary JavaScript expressions to be run directly on the server.
 
-If the following parameter is not present or not set as show below in the MongoDB configuration file (default location: /etc/mongod.conf), this is a finding. 
+If the following parameter is not present or not set as show below in the MongoDB configuration file (default location: /etc/mongod.conf), this is a finding.
 
 security:
    javascriptEnabled: false'
@@ -34,7 +34,6 @@ security:
   tag nist: ['SI-10']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','javascriptEnabled']){should eq false}
+    its(['security', 'javascriptEnabled']) { should eq false }
   end
-
 end

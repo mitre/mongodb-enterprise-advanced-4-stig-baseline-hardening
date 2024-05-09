@@ -53,7 +53,7 @@ This setting will record the following operations: schema (DDL),  replica set an
 
 To capture all operations in the audit, enable the audit system to log authorization successes by adding the following line to  the /etc/mongod.conf file:
 
-setParameter: 
+setParameter:
     auditAuthorizationSuccess: true
 
 Stop/start (restart) the mongod or mongos instance using this configuration.
@@ -82,17 +82,16 @@ https://docs.mongodb.com/v4.4/tutorial/configure-audit-filters/'
 
   describe.one do
     describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog','destination']){should eq "file"}
-      its(['auditLog','format']){should eq "BSON"}
-      its(['auditLog','path']){should match mongo_audit_file_path }
-      its(['auditLog','filter']){should match mongo_filter }
+      its(['auditLog', 'destination']) { should eq 'file' }
+      its(['auditLog', 'format']) { should eq 'BSON' }
+      its(['auditLog', 'path']) { should match mongo_audit_file_path }
+      its(['auditLog', 'filter']) { should match mongo_filter }
       its(['setParameter', 'auditAuthorizationSuccess']) { should eq true }
     end
 
     describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog', 'destination']) { should eq "syslog"}
+      its(['auditLog', 'destination']) { should eq 'syslog' }
       its(['setParameter', 'auditAuthorizationSuccess']) { should eq true }
     end
   end
-  
 end

@@ -21,7 +21,7 @@ Verify that the MongoDB configuration file (default location: /etc/mongod.conf) 
 
 security:
   authorization: enabled
- 
+
 If this parameter is not present, this is a finding.'
   desc 'fix', 'For any user not a member of an appropriate organization and has access to a database in the system, run the following command:
 
@@ -30,7 +30,7 @@ If this parameter is not present, this is a finding.'
 
 If the %MongoDB configuration file% (default location: /etc/mongod.conf) does not contain
 
-security: 
+security:
   authorization: enabled
 
 Edit the %MongoDB configuration file%, add these parameters, stop/start (restart) any mongod or mongos process using this %MongoDB configuration file%.'
@@ -51,14 +51,14 @@ Edit the %MongoDB configuration file%, add these parameters, stop/start (restart
     !input('ldap_enabled')
   end
 
-  get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
+  get_system_users = 'EJSON.stringify(db.system.users.find().toArray())'
 
-  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input 'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
 
-  system_users = json({command: run_get_system_users}).params
+  system_users = json({ command: run_get_system_users }).params
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','authorization']){should eq "enabled"}
+    its(['security', 'authorization']) { should eq 'enabled' }
   end
 
   system_users.each do |user|
@@ -68,11 +68,8 @@ Edit the %MongoDB configuration file%, add these parameters, stop/start (restart
       subject { user_id }
       it 'should be in either mongo_superusers or mongo_users' do
         list = [input('mongo_superusers'), input('mongo_users')].flatten
-        if !list.include?(subject)
-          fail "User #{subject} is not authorized as a superuser or regular user"
-        end
+        raise "User #{subject} is not authorized as a superuser or regular user" unless list.include?(subject)
       end
     end
   end
-  
 end

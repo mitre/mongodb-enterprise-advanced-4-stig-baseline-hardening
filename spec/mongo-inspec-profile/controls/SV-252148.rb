@@ -6,22 +6,22 @@ control 'SV-252148' do
 Verify that the MongoDB configuration file (default location: /etc/mongod.conf) contains the following:
 
 net:
-  maxIncomingConnections:  %int%      
+  maxIncomingConnections:  %int%
 
 If this parameter is not present, or the OS is not utilized to limit connections, this is a finding.'
   desc 'fix', 'MongoDB can limit the total number of connections served by mongod process by setting the following in the MongoDB configuration file (default location: /etc/mongod.conf)
 
 net:
-  maxIncomingConnections:  %int%      
+  maxIncomingConnections:  %int%
 
 See the following documentation:
 https://docs.mongodb.com/v4.4/reference/configuration-options/
 
-Products outside of MongoDB can be used to monitor database sessions and limit the maximum number of connections that can be made. 
+Products outside of MongoDB can be used to monitor database sessions and limit the maximum number of connections that can be made.
 
-Alternatively most UNIX-like operating systems, including Linux and macOS, provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis. 
+Alternatively most UNIX-like operating systems, including Linux and macOS, provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis.
 
-These ulimits prevent single users from using too many system resources. 
+These ulimits prevent single users from using too many system resources.
 
 The following is the MongoDB documentation regarding these user limits: https://docs.mongodb.com/v4.4/reference/ulimit/'
   impact 0.5
@@ -40,5 +40,4 @@ The following is the MongoDB documentation regarding these user limits: https://
   describe mongodb_conf(input('mongod_config_path')) do
     its(['net', 'maxIncomingConnections']) { should be_a_kind_of(Integer) }
   end
-
 end

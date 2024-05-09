@@ -38,26 +38,26 @@ If the operation does not fail, this is a finding.'
 
 https://docs.mongodb.com/v4.4/reference/configuration-options/.
 
-If authorization is enabled, review the following to list existing user permissions. 
- 
-https://docs.mongodb.com/v4.4/reference/privilege-actions/ 
+If authorization is enabled, review the following to list existing user permissions.
+
+https://docs.mongodb.com/v4.4/reference/privilege-actions/
 
 Connect to MongoDB.
 
-For each database (show dbs), identify the user's roles for the database.  
+For each database (show dbs), identify the user's roles for the database.
 
- use database 
- db.getUser(%username%) 
+ use database
+ db.getUser(%username%)
 
-The server will return a document with the user's roles.  
+The server will return a document with the user's roles.
 
-To revoke a user's role from a database, use the method below: 
+To revoke a user's role from a database, use the method below:
 
  db.revokeRolesFromUser( %username%, [ roles ], { writeConcern } )
 
 https://docs.mongodb.com/v4.4/reference/method/db.revokeRolesFromUser/
- 
-To grant a role to a user, use the method below: 
+
+To grant a role to a user, use the method below:
 
  db.grantRolesToUser( %username%, [ roles ], { writeConcern } )
 
@@ -74,20 +74,16 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
   tag 'documentable'
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
-  
+
   create_user_command = "EJSON.stringify(db.getSiblingDB('test').createUser({user: 'myTester', pwd: 'password', roles: [{role: 'read', db: 'test'}]}))"
 
-  user_write_command = "db.testCollection.insertOne({x: 1})"
-  
-  drop_user_command = "EJSON.stringify(db.getSiblingDB('test').dropUser('myTester'))"
+  user_write_command = 'db.testCollection.insertOne({x: 1})'
 
   run_create_user = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{create_user_command}\""
 
   run_user_write = "mongosh \"mongodb://myTester:password@#{input('mongo_host')}:#{input('mongo_port')}/test?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{user_write_command}\""
 
-  run_drop_user = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{drop_user_command}\""
-
-  create_user_output = json({command: run_create_user})
+  create_user_output = json({ command: run_create_user })
 
   create_user_again = command(run_create_user)
 
@@ -97,28 +93,27 @@ https://docs.mongodb.com/v4.4/reference/method/db.grantRolesToUser/"
 
   describe.one do
     describe 'Test user' do
-      it 'should be created' do 
+      it 'should be created' do
         expect(create_user_output.params['ok']).to eq(1)
       end
     end
 
     describe 'Test user' do
-      it 'should be created' do 
+      it 'should be created' do
         expect(create_user_again.stderr).to match(/MongoServerError: User "myTester@test" already exists/)
       end
     end
   end
 
   describe 'Test user' do
-    it 'should not be able to write to the database' do 
+    it 'should not be able to write to the database' do
       expect(run_user_output.stderr).to match(/MongoServerError: not authorized on test to execute command/)
     end
   end
 
   # describe 'Test user' do
-  #     it 'should be dropped from the database' do 
+  #     it 'should be dropped from the database' do
   #       expect(drop_user_output.params['ok']).to eq(1)
   #     end
   #   end
-
 end

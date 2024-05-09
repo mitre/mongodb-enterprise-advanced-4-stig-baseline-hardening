@@ -30,7 +30,7 @@ Example output being:
 If the authenticated MongoDB user displayed does not have a user value equal to the x.509 certs Subject Name, this is a finding.'
   desc 'fix', 'Add x.509 Certificate subject as an authorized user.
 
-To authenticate with a client certificate, first add the value of the subject from the client certificate as a MongoDB user. 
+To authenticate with a client certificate, first add the value of the subject from the client certificate as a MongoDB user.
 
 Each unique x.509 client certificate corresponds to a single MongoDB user; meaning it cannot use a single-client certificate to authenticate more than one MongoDB user.
 
@@ -62,11 +62,11 @@ For example, in the mongo shell, to add the user with both the readWrite role in
   }
 )
 
-In the above example, to add the user with the readWrite role in the test database, the role specification document specified test in the db field. 
+In the above example, to add the user with the readWrite role in the test database, the role specification document specified test in the db field.
 
 To add userAdminAnyDatabase role for the user, the above example specified admin in the db field.
 
-Note: Some roles are defined only in the admin database, including: clusterAdmin, readAnyDatabase, readWriteAnyDatabase, dbAdminAnyDatabase, and userAdminAnyDatabase. 
+Note: Some roles are defined only in the admin database, including: clusterAdmin, readAnyDatabase, readWriteAnyDatabase, dbAdminAnyDatabase, and userAdminAnyDatabase.
 
 To add a user with these roles, specify admin in the db field. See Manage Users and Roles for details on adding a user with roles.
 
@@ -91,5 +91,4 @@ To remove a user that is not authorized run the following command:
     skip 'If using LDAP for authentication, this is not applicable.'
     skip 'If the authenticated MongoDB user displayed does not have a user value equal to the x.509 certs Subject Name, this is a finding.'
   end
-  
 end

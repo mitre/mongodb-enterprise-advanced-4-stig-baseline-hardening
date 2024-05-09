@@ -16,7 +16,7 @@ If MongoDB is not configured for SCRAM-SHA1, MONGODB-CR, or LDAP authentication,
 
 Information on configuring MongoDB for one of these authentication mechanisms be found here:
 
-LDAP/Active Directory: 
+LDAP/Active Directory:
 https://docs.mongodb.com/v4.4/tutorial/authenticate-nativeldap-activedirectory/
 
 Kerberos:
@@ -39,5 +39,4 @@ https://docs.mongodb.com/v4.4/tutorial/control-access-to-mongodb-with-kerberos-a
     skip 'If MongoDB is using Kerberos authentication where Kerberos is configured to enforce password complexity and lifetime, this is not a finding.'
     skip 'If MongoDB is not configured for SCRAM-SHA1, MONGODB-CR, or LDAP authentication, this is a finding.'
   end
-
 end

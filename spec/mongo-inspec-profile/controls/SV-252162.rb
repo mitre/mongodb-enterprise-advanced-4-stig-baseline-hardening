@@ -13,16 +13,16 @@ Displaying asterisks when a user types in a password or a smart card PIN is an e
 This calls for review of applications, which will require collaboration with the application developers. It is recognized that in many cases, the database administrator (DBA) is organizationally separate from the application developers, and may have limited, if any, access to source code. Nevertheless, protections of this type are so important to the secure operation of databases that they must not be ignored. At a minimum, the DBA must attempt to obtain assurances from the development organization that this issue has been addressed, and must document what has been discovered.'
   desc 'check', 'Restrict the environment to tools which meet this requirement.
 
-For the MongoDB command-line tools mongo shell, mongodump, mongorestore, mongoimport, mongoexport, which cannot be configured not to obfuscate a plain-text password, and any other essential tool with the same limitation; verify that the system documentation explains the need for the tool, who uses it, and any relevant mitigations and that AO approval has been obtained. 
+For the MongoDB command-line tools mongo shell, mongodump, mongorestore, mongoimport, mongoexport, which cannot be configured not to obfuscate a plain-text password, and any other essential tool with the same limitation; verify that the system documentation explains the need for the tool, who uses it, and any relevant mitigations and that AO approval has been obtained.
 
 If it is not documented, this is a finding.
 
-Request evidence that all users of MongoDB command-line tools are trained in the use of the -p option/plain-text password option and how to keep the password protected from unauthorized viewing/capture, and that they adhere to this practice. 
+Request evidence that all users of MongoDB command-line tools are trained in the use of the -p option/plain-text password option and how to keep the password protected from unauthorized viewing/capture, and that they adhere to this practice.
 
 If evidence of training does not exist, this is a finding.'
-  desc 'fix', 'For the mongo shell, mongodump, mongorestore, mongoimport, mongoexport, which can accept a plain-text password, and any other essential tool with the same limitation: 
+  desc 'fix', 'For the mongo shell, mongodump, mongorestore, mongoimport, mongoexport, which can accept a plain-text password, and any other essential tool with the same limitation:
 
-Document the need for it, who uses it, and any relevant mitigations, and obtain AO approval. 
+Document the need for it, who uses it, and any relevant mitigations, and obtain AO approval.
 
 Train all users of the tool in the nature of using the plain-text password option and in how to keep the password protected from unauthorized viewing/capture and document they have been trained.'
   impact 0.7
@@ -42,5 +42,4 @@ Train all users of the tool in the nature of using the plain-text password optio
     skip 'For the MongoDB command-line tools mongo shell, mongodump, mongorestore, mongoimport, mongoexport, which cannot be configured not to obfuscate a plain-text password, and any other essential tool with the same limitation; verify that the system documentation explains the need for the tool, who uses it, and any relevant mitigations and that AO approval has been obtained. If it is not documented, this is a finding.'
     skip 'Request evidence that all users of MongoDB command-line tools are trained in the use of the -p option/plain-text password option and how to keep the password protected from unauthorized viewing/capture, and that they adhere to this practice. If evidence of training does not exist, this is a finding.'
   end
-
 end

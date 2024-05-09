@@ -15,14 +15,14 @@ Abort refers to stopping a program or function before it has finished naturally.
 '
   desc 'check', 'Journaling is enabled by default.
 
-With journaling enabled, if mongod stops unexpectedly, the program can recover everything written to the journal. 
+With journaling enabled, if mongod stops unexpectedly, the program can recover everything written to the journal.
 
 MongoDB will re-apply the write operations on restart and maintain a consistent state.
- 
+
 To validate the mongod configuration, run the following command:
 
  db.getSiblingDB("admin").runCommand({getCmdLineOpts: 1}).parsed.storage.journal
-   
+
 If it returns { enabled : false } or no output, this is a finding.'
   desc 'fix', 'Modify the mongod startup command-line options by removing the --nojournal option.
 
@@ -47,20 +47,19 @@ Stop/start (restart) any or all mongod or mongos processes.'
   tag cci: ['CCI-001190', 'CCI-001665']
   tag nist: ['SC-24', 'SC-24']
 
-  check_command = "EJSON.stringify(db.version())"
+  check_command = 'EJSON.stringify(db.version())'
 
   run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
-  check_output = json({command: run_check_command})
+  check_output = json({ command: run_check_command })
 
   mongo_version = check_output.params.to_f
 
   only_if('Storage journal options are only possible to enable on MongoDB versions 6.1 or older', impact: 0.0) {
-    (mongo_version) <= 6.1
+    mongo_version <= 6.1
   }
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['storage','journal','enabled']){should eq true}
+    its(['storage', 'journal', 'enabled']) { should eq true }
   end
-
 end

@@ -11,10 +11,10 @@ Identify all database software components. Review the version and release inform
 
 To determine the current running MongoDB server version, run the following command from the Mongo Shell:
 
-db.version() 
+db.version()
 
 Access the MongoDB website (https://www.mongodb.com/support-policy/lifecycles) or use other means to verify if the currently running MongoDB server version is still supported.
- 
+
 If the DBMS or any of the software components are not supported by MongoDB, this is a finding.'
   desc 'fix', 'Remove or decommission all unsupported software products.
 
@@ -37,5 +37,4 @@ Upgrade unsupported DBMS or unsupported components to a supported version of the
     skip 'Remove or decommission all unsupported software products.'
     skip 'Upgrade unsupported DBMS or unsupported components to a supported version of the product.'
   end
-
 end

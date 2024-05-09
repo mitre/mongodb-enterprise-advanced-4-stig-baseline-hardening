@@ -4,7 +4,7 @@ control 'SV-252177' do
   desc 'check', 'If MongoDB is configured to authenticate using SASL and LDAP check the saslauthd command line options in the system boot script that starts saslauthd (the location will be dependent on the specific Linux operating system and boot script layout and naming conventions).
 
 If the "-t" option is not set for the "saslauthd" process in the system boot script, this is a finding.'
-  desc 'fix', "With MongoDB configured using SASL LDAP authentication and on certain Linux distributions, saslauthd starts with the caching of authentication credentials enabled. 
+  desc 'fix', "With MongoDB configured using SASL LDAP authentication and on certain Linux distributions, saslauthd starts with the caching of authentication credentials enabled.
 
 Until restarted or until the cache expires, saslauthd will not contact the LDAP server to re-authenticate users in its authentication cache. This allows saslauthd to successfully authenticate users in its cache, even in the LDAP server is down or if the cached users' credentials are revoked.
 

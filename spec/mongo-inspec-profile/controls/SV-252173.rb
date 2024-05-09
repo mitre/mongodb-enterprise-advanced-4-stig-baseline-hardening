@@ -37,5 +37,4 @@ Configure the required alert in the monitoring software to send an alert where s
     skip 'If appropriate support staff are not notified immediately upon storage volume utilization reaching 75%, this is a finding'
     skip 'Verify that MongoDB Ops Manager or other organization approved monitoring software is installed.'
   end
-
 end

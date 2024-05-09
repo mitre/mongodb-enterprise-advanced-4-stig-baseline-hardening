@@ -25,7 +25,7 @@ db.system.users.find()
 
 Analyze the output and if any roles or users have unauthorized access, this is a finding. This will vary on an application basis.'
   desc 'fix', 'Use the following commands to remove unauthorized access to a MongoDB database.
- 
+
 db.revokePrivilegesFromRole()
 db. revokeRolesFromUser()
 
@@ -44,11 +44,11 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
+  get_system_users = 'EJSON.stringify(db.system.users.find().toArray())'
 
-  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input 'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
 
-  system_users = json({command: run_get_system_users}).params
+  system_users = json({ command: run_get_system_users }).params
 
   system_users.each do |user|
     user_id = user['_id']
@@ -57,29 +57,22 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
       subject { user_id }
       it 'should be in either mongo_superusers or mongo_users' do
         list = [input('mongo_superusers'), input('mongo_users')].flatten
-        if !list.include?(subject)
-          fail "User #{subject} is not authorized as a superuser or regular user"
-        end
+        raise "User #{subject} is not authorized as a superuser or regular user" unless list.include?(subject)
       end
     end
-  end
 
-  system_users.each do |user|
-    user_id = user['_id']
+    user['_id']
     db_name = user['db']
-    user_roles = user['roles'].map { |role| "#{role['role']}" }
+    user_roles = user['roles'].map { |role| (role['role']).to_s }
     db_roles = user_roles.map { |role| "#{db_name}.#{role}" }
 
     db_roles.each do |role|
       describe "Role #{role}" do
         subject { role }
         it 'should be authorized in mongo_roles' do
-          if !input('mongo_roles').include?(subject)
-            fail "Role #{role} is not authorized as a role"
-          end
+          raise "Role #{role} is not authorized as a role" unless input('mongo_roles').include?(subject)
         end
       end
     end
   end
-
 end

@@ -5,9 +5,9 @@ control 'SV-252179' do
 Use of this requirement will be limited to situations where the data owner has a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process.
 
 When transmitting data, MongoDB, associated applications, and infrastructure must leverage transmission protection mechanisms.'
-  desc 'check', 'Review the system information/specification for information indicating a strict requirement for data integrity and confidentiality when data is being prepared to be transmitted. 
+  desc 'check', 'Review the system information/specification for information indicating a strict requirement for data integrity and confidentiality when data is being prepared to be transmitted.
 
-If such information is absent therein, this is not a finding. 
+If such information is absent therein, this is not a finding.
 
 If such information is present, inspect the MongoDB configuration file (default location: /etc/mongod.conf) for the following entries:
 
@@ -54,12 +54,11 @@ Start/stop (restart) all mongod or mongos instances using the %MongoDB configura
   tag nist: ['SC-8 (2)']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['net','tls','mode']){should eq "requireTLS"}
-    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_dest')}
-    its(['net','tls','CAFile']){should match input('ca_file_dest')}
-    its(['net','tls','allowInvalidCertificates']){should eq false}
-    its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
-    its(['net','tls','FIPSMode']){should eq true}
+    its(['net', 'tls', 'mode']) { should eq 'requireTLS' }
+    its(['net', 'tls', 'certificateKeyFile']) { should match input('certificate_key_file_dest') }
+    its(['net', 'tls', 'CAFile']) { should match input('ca_file_dest') }
+    its(['net', 'tls', 'allowInvalidCertificates']) { should eq false }
+    its(['net', 'tls', 'allowConnectionsWithoutCertificates']) { should eq false }
+    its(['net', 'tls', 'FIPSMode']) { should eq true }
   end
-  
 end

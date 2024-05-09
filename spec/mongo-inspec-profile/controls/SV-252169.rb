@@ -9,18 +9,18 @@ It is important that detailed error messages be visible only to those who are au
 Administrative users authorized to review detailed error messages typically are the ISSO, ISSM, SA, and DBA. Other individuals or roles may be specified according to organization-specific needs, with appropriate approval.
 
 This calls for inspection of application source code, which will require collaboration with the application developers. It is recognized that in many cases, the database administrator (DBA) is organizationally separate from the application developers, and may have limited, if any, access to source code. Nevertheless, protections of this type are so important to the secure operation of databases that they must not be ignored. At a minimum, the DBA must attempt to obtain assurances from the development organization that this issue has been addressed, and must document what has been discovered.)
-  desc 'check', 'A mongod or mongos running with security.redactClientLogData:true redacts any message accompanying a given log event before logging. 
+  desc 'check', 'A mongod or mongos running with security.redactClientLogData:true redacts any message accompanying a given log event before logging.
 
-This prevents the mongod or mongos from writing potentially sensitive data stored on the database to the diagnostic log. Metadata such as error or operation codes, line numbers, and source file names are still visible in the logs. 
+This prevents the mongod or mongos from writing potentially sensitive data stored on the database to the diagnostic log. Metadata such as error or operation codes, line numbers, and source file names are still visible in the logs.
 
 To identify the level of information being displayed in the MongoDB logfiles run the following command:
  db.getSiblingDB("admin").runCommand({getCmdLineOpts: 1}).parsed.security.redactClientLogData
 
 If the command does not return true this is a finding.
 
-The MongoDB command getLog is an administrative command that will return the most recent 1024 logged mongod events. 
+The MongoDB command getLog is an administrative command that will return the most recent 1024 logged mongod events.
 
-Ensure that application users are not authorized to execute this command. 
+Ensure that application users are not authorized to execute this command.
 
 To validate this run the following command on the name of the application user to see actions its permitted to perform on the cluster resource:
 
@@ -31,7 +31,7 @@ If getLog appears in the list of actions, this is a finding.'
 
 security:
   redactClientLogData: true
-  
+
 Stop/start (restart) any mongod or mongos using the %MongoDB configuration file%.
 
 Identify and remove any administrative roles and privileges from application users.'
@@ -48,20 +48,19 @@ Identify and remove any administrative roles and privileges from application use
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
-  check_command="db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.security.redactClientLogData"
+  check_command = "db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.security.redactClientLogData"
 
   run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
   check_output = command(run_check_command)
 
   describe 'Client log data' do
-    it 'should be redacted' do 
+    it 'should be redacted' do
       expect(check_output.stdout).to match(/true/)
     end
   end
-  
-  describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','redactClientLogData']){should eq true}
-  end
 
+  describe mongodb_conf(input('mongod_config_path')) do
+    its(['security', 'redactClientLogData']) { should eq true }
+  end
 end

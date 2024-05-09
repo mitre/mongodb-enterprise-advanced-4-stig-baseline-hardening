@@ -17,7 +17,7 @@ Note: The  user running the  commands shown below  must have privileges with lis
 In the MongoDB shell, as an authenticated user,  run the following command to list all user sessions
 
 use config
-db.system.sessions.aggregate( [  { $listSessions: { allUsers: true } } 
+db.system.sessions.aggregate( [  { $listSessions: { allUsers: true } }
 
 Reference: https://docs.mongodb.com/v4.4/reference/operator/aggregation/listSessions/
 

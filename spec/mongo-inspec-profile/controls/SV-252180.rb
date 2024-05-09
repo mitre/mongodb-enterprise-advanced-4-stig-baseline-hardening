@@ -19,7 +19,7 @@ net:
     FIPSMode: true
 
 If net.tls.mode is not set to requireTLS, this is a finding.'
-  desc 'fix', 'Obtain a certificate from a valid DoD certificate authority to be used for encrypted data transmission. 
+  desc 'fix', 'Obtain a certificate from a valid DoD certificate authority to be used for encrypted data transmission.
 
 Modify the %MongoDB configuration file% with TLS configuration options such as:
 
@@ -49,12 +49,11 @@ Start/stop (restart) all mongod or mongos instances using the %MongoDB configura
   tag nist: ['SC-8 (2)']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['net','tls','mode']){should eq "requireTLS"}
-    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_dest')}
-    its(['net','tls','CAFile']){should match input('ca_file_dest')}
-    its(['net','tls','allowInvalidCertificates']){should eq false}
-    its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
-    its(['net','tls','FIPSMode']){should eq true}
+    its(['net', 'tls', 'mode']) { should eq 'requireTLS' }
+    its(['net', 'tls', 'certificateKeyFile']) { should match input('certificate_key_file_dest') }
+    its(['net', 'tls', 'CAFile']) { should match input('ca_file_dest') }
+    its(['net', 'tls', 'allowInvalidCertificates']) { should eq false }
+    its(['net', 'tls', 'allowConnectionsWithoutCertificates']) { should eq false }
+    its(['net', 'tls', 'FIPSMode']) { should eq true }
   end
-  
 end

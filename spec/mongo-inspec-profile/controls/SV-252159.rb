@@ -5,7 +5,7 @@ control 'SV-252159' do
 Authentication based on User ID and Password may be used only when it is not possible to employ a PKI certificate, and requires AO approval.
 
 In such cases, database passwords stored in clear text, using reversible encryption, or using unsalted hashes would be vulnerable to unauthorized disclosure. Database passwords must always be in the form of one-way, salted hashes when stored internally or externally to MongoDB.'
-  desc 'check', 'MongoDB supports several authentication mechanisms, some of which store credentials on the MongoDB server. 
+  desc 'check', 'MongoDB supports several authentication mechanisms, some of which store credentials on the MongoDB server.
 
 If these mechanisms are in use, MongoDBs authSchemaVersion in the admin.system.version collection must be set to 5.
 
@@ -14,7 +14,7 @@ If these mechanisms are in use, MongoDBs authSchemaVersion in the admin.system.v
 The MongoDB Configuration file should contain the similar to the following entry:
 
 setParameter:
-  authenticationMechanisms: SCRAM-SHA-256 
+  authenticationMechanisms: SCRAM-SHA-256
 
 If the config file does not contain an authenticationMechanisms entry, this is a finding.
 
@@ -65,10 +65,9 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
 
   auth_mechanisms = mongodb_conf(input('mongod_config_path')).params['setParameter']['authenticationMechanisms'].split(',')
 
-
-  describe "MongoDB authenticaion mechanisms" do
-    subject {auth_mechanisms}
-    it {should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN','MONGODB-AWS']}
+  describe 'MongoDB authenticaion mechanisms' do
+    subject { auth_mechanisms }
+    it { should be_in ['SCRAM-SHA-1', 'SCRAM-SHA-256', 'MONGODB-X509', 'GSSAPI', 'PLAIN', 'MONGODB-AWS'] }
   end
 
   check_command = "db.getSiblingDB('admin').system.version.find({ '_id' : 'authSchema'}, {_id: 0})"
@@ -76,13 +75,12 @@ In the unlikely event that an error is encountered, safely rerun the authSchemaU
   run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
   check_output = command(run_check_command)
-  
+
   current_version = check_output.stdout.match(/currentVersion: (?<version>\d)/)
 
   describe 'authSchemaVersion' do
-    it 'should be atleast version 5' do 
+    it 'should be atleast version 5' do
       expect(current_version['version'].to_i).to be >= 5
     end
   end
-
 end

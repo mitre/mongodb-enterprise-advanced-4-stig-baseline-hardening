@@ -15,7 +15,7 @@ If any data is PII, classified or is deemed by the organization the need to be e
 
 security:
     enableEncryption: true
- 
+
 kmip:
     serverName: %KMIP Server HostName%
     port: %KMIP server port%
@@ -46,13 +46,12 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   only_if 'Encryption at rest must be enabled' do
     input('encryption_at_rest')
   end
-  
-  describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','enableEncrypt']){should eq true}
-    its(['kmip','serverName']){should match input('KMIP_server_host_name')}
-    its(['kmip','port']){should match input('KMIP_server_port')}
-    its(['kmip','ServerCAFile']){should match input('KMIP_server_ca_file')}
-    its(['kmip','clientCertificateFile']){should match input('KMIP_client_certificate_file')}
-  end
 
+  describe mongodb_conf(input('mongod_config_path')) do
+    its(['security', 'enableEncrypt']) { should eq true }
+    its(['kmip', 'serverName']) { should match input('KMIP_server_host_name') }
+    its(['kmip', 'port']) { should match input('KMIP_server_port') }
+    its(['kmip', 'ServerCAFile']) { should match input('KMIP_server_ca_file') }
+    its(['kmip', 'clientCertificateFile']) { should match input('KMIP_client_certificate_file') }
+  end
 end

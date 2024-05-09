@@ -64,35 +64,33 @@ There may be several resources in a role that contain these privileges and the r
   tag cci: ['CCI-001812']
   tag nist: ['CM-11 (2)']
 
-  get_system_users = "EJSON.stringify(db.system.users.find().toArray())"
+  get_system_users = 'EJSON.stringify(db.system.users.find().toArray())'
 
-  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
+  run_get_system_users = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/admin?authSource=#{input 'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{get_system_users}\""
 
-  system_users = json({command: run_get_system_users}).params
+  system_users = json({ command: run_get_system_users }).params
 
   system_users.each do |user|
     user_id = user['_id']
-    unless input('mongo_superusers').include?(user_id)
+    next if input('mongo_superusers').include?(user_id)
 
-      db_name = user['db']
-      user_roles = user['roles'].map { |role| "#{role['role']}" }
-      db_roles = user_roles.map { |role| "#{db_name}.#{role}" }
+    db_name = user['db']
+    user_roles = user['roles'].map { |role| (role['role']).to_s }
+    user_roles.map { |role| "#{db_name}.#{role}" }
 
-      user_roles.each do |role|
-        run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
+    user_roles.each do |role|
+      run_get_role = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/#{db_name}?authSource=#{input 'mongo_auth_source'}&tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"EJSON.stringify(db.getRole('#{role}', {showPrivileges: true}))\""
 
-        role_output = json({command: run_get_role}).params
+      role_output = json({ command: run_get_role }).params
 
-        all_actions = role_output["privileges"].map { |privilege| privilege["actions"] } +
-                role_output["inheritedPrivileges"].map { |privilege| privilege["actions"] }
-        all_actions.flatten!
+      all_actions = role_output['privileges'].map { |privilege| privilege['actions'] } +
+                    role_output['inheritedPrivileges'].map { |privilege| privilege['actions'] }
+      all_actions.flatten!
 
-        describe "Role '#{role}' of user #{user['_id']} does not have privileges for 'createCollection' and 'changeStream', and" do
-          subject { all_actions }
-          it { should_not be_in input('inappropriate_mongo_privileges') }
-        end
+      describe "Role '#{role}' of user #{user['_id']} does not have privileges for 'createCollection' and 'changeStream', and" do
+        subject { all_actions }
+        it { should_not be_in input('inappropriate_mongo_privileges') }
       end
     end
   end
-
 end

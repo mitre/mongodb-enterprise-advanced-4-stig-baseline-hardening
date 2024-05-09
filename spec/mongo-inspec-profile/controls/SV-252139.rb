@@ -57,11 +57,10 @@ https://docs.mongodb.com/v4.4/tutorial/configure-ssl/'
   tag nist: ['IA-5 (1) (c)', 'IA-5 (2) (b) (1)']
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['net','tls','mode']){should eq "requireTLS"}
-    its(['net','tls','certificateKeyFile']){should match input('certificate_key_file_dest')}
-    its(['net','tls','CAFile']){should match input('ca_file_dest')}
-    its(['net','tls','allowInvalidCertificates']){should eq false}
-    its(['net','tls','allowConnectionsWithoutCertificates']){should eq false}
+    its(['net', 'tls', 'mode']) { should eq 'requireTLS' }
+    its(['net', 'tls', 'certificateKeyFile']) { should match input('certificate_key_file_dest') }
+    its(['net', 'tls', 'CAFile']) { should match input('ca_file_dest') }
+    its(['net', 'tls', 'allowInvalidCertificates']) { should eq false }
+    its(['net', 'tls', 'allowConnectionsWithoutCertificates']) { should eq false }
   end
-    
 end

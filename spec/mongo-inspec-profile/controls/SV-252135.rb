@@ -13,7 +13,7 @@ Audit information includes all information (e.g., audit records, audit settings,
 '
   desc 'check', "MongoDB must not permit access to its audit logs by unprivileged users. The official installation packages restrict which operating system users and groups may read or modify files. The audit log destination is not configured or created at installation time and must be manually done with appropriate ownership and permissions applied with the MongoDB user and MongoDB group.
 
-Check the MongoDB configuration file (default location: /etc/mongod.conf) for a key named auditLog with  destination set to file. 
+Check the MongoDB configuration file (default location: /etc/mongod.conf) for a key named auditLog with  destination set to file.
 
 Example shown below:
 
@@ -65,17 +65,17 @@ Access: 2020-03-16 12:51:16.816000000 -0400
 Modify: 2020-03-16 12:50:48.722000000 -0400
 Change: 2020-03-16 12:50:48.722000000 -0400
  Birth: -"
-  desc 'fix', 'It is recommended to use the official installation packages provided by MongoDB. In the event the software was installed manually and permissions need to be restricted, consider a clean reinstallation. 
+  desc 'fix', 'It is recommended to use the official installation packages provided by MongoDB. In the event the software was installed manually and permissions need to be restricted, consider a clean reinstallation.
 
 If the key name auditLog.destination is set to either syslog or console, then this requirement is not applicable as there is no physical directory that MongoDB can secure. Site security requirements and operating system security requirements will need to be reviewed to ensure appropriate settings for syslog and console destinations.
 
-To correct finding where a physical auditLog directory exists (where auditLog.destination is set to file), run these commands: 
+To correct finding where a physical auditLog directory exists (where auditLog.destination is set to file), run these commands:
 
 chown mongod %MongoDB auditLog directory%
 chgrp mongod   %MongoDB auditLog directory%
 chmod 700         %MongoDB auditLog directory%
 
-(The path for the %MongoDB auditLog directory% will vary according to local circumstances.  The auditLog directory will be found in the %MongoDB configuration file% whose default location is /etc/mongod.conf.) 
+(The path for the %MongoDB auditLog directory% will vary according to local circumstances.  The auditLog directory will be found in the %MongoDB configuration file% whose default location is /etc/mongod.conf.)
 
 To find the auditLog directory name, view and search for the entry in the %MongoDB configuration file% for the auditLog.path:
 
@@ -100,18 +100,18 @@ Given the example above, the %MongoDB auditLog directory% is /var/log/mongodb/au
   tag 'documentable'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a', 'AU-9 a', 'AU-9 a']
-  
+
   mongo_owner = input('mongo_owner')
   mongo_group = input('mongo_group')
   mongo_permissions = input('mongo_permissions')
-  conf = mongodb_conf(input('mongod_config_path')) 
+  conf = mongodb_conf(input('mongod_config_path'))
   mongo_audit_file_path = input('mongo_audit_file_path')
   mongo_audit_directory_path = input('mongo_audit_directory_path')
   mongodb_audit_logs_params = conf.params['auditLog']
 
   if mongodb_audit_logs_params['destination'] == 'file'
-    describe "Audit Log" do
-      it "should be configured correctly" do
+    describe 'Audit Log' do
+      it 'should be configured correctly' do
         expect(mongodb_audit_logs_params['destination']).to eq('file')
         expect(mongodb_audit_logs_params['format']).to eq('BSON')
         expect(mongodb_audit_logs_params['path']).to eq(mongo_audit_file_path)
@@ -123,8 +123,7 @@ Given the example above, the %MongoDB auditLog directory% is /var/log/mongodb/au
 
   else
     describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog', 'destination']) { should eq "syslog"}
+      its(['auditLog', 'destination']) { should eq 'syslog' }
     end
   end
-
 end

@@ -19,14 +19,14 @@ Next, validate whether the Encrypted Storage Engine is running with an AEAD bloc
 
 Any response other than AES256-GCM is a finding.
 
-Finally, validate that the system is configured to use KMIP to obtain a master encryption key, rather than storing the master key on the local filesystem. 
+Finally, validate that the system is configured to use KMIP to obtain a master encryption key, rather than storing the master key on the local filesystem.
 
-Run: 
+Run:
 
  db.serverStatus().encryptionAtRest.encryptionKeyId
 
 If the response is local or no response, this is a finding.'
-  desc 'fix', 'Enable the Encrypted Storage Engine with KMIP as the key storage mechanism and AES256-GCM as the encryption mode. 
+  desc 'fix', 'Enable the Encrypted Storage Engine with KMIP as the key storage mechanism and AES256-GCM as the encryption mode.
 
 Consult MongoDB documentation for encryption setup instruction here:
 
@@ -48,11 +48,11 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
     input('encryption_at_rest')
   end
 
-  check_command="db.serverStatus().encryptionAtRest.encryptionEnabled"
-  
-  encrypt_check = "db.serverStatus().encryptionAtRest.encryptionCipherMode"
+  check_command = 'db.serverStatus().encryptionAtRest.encryptionEnabled'
 
-  kmip_check = "db.serverStatus().encryptionAtRest.encryptionKeyId"
+  encrypt_check = 'db.serverStatus().encryptionAtRest.encryptionCipherMode'
+
+  kmip_check = 'db.serverStatus().encryptionAtRest.encryptionKeyId'
 
   run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
@@ -67,23 +67,22 @@ https://docs.mongodb.com/v4.4/tutorial/configure-encryption/'
   kmip_output = command(run_kmip_check)
 
   describe 'Encrypted Storage Engine' do
-    it 'should be enabled' do 
+    it 'should be enabled' do
       expect(check_output.stdout).to match(/true/i)
     end
   end
 
-  #Changed in version 4.0, MongoDB Enterprise on Windows no longer supports AES256-GCM as a block cipher for encryption at rest. This usage is only supported on Linux.
+  # Changed in version 4.0, MongoDB Enterprise on Windows no longer supports AES256-GCM as a block cipher for encryption at rest. This usage is only supported on Linux.
   describe 'Encrypted Storage Engine' do
-    it 'is running with an AEAD block cipher' do 
+    it 'is running with an AEAD block cipher' do
       expect(encrypt_output.stdout).to match(/AES256-CBC/i)
     end
   end
 
   describe 'The system' do
-    it 'is configured to use KMIP to obtain a master encryption key, rather than storing the master key on the local filesystem' do 
+    it 'is configured to use KMIP to obtain a master encryption key, rather than storing the master key on the local filesystem' do
       expect(kmip_output.stdout).not_to match(/local/i)
       expect(kmip_output.stdout).not_to be_empty
     end
   end
-
 end

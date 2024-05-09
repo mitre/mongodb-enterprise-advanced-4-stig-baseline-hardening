@@ -25,7 +25,7 @@ Check if any non-MongoDB application, non-MongoDB data, or non-MongoDB directori
 If any non-MongoDB application, non-MongoDB data, or non-MongoDB directories exists under the MongoDB-created directories, this is a finding.'
   desc 'fix', 'The official installation packages from MongoDB segregates MongoDB executable software from MongoDB data directories by default.
 
-For any non-MongoDB application found, reinstall that application to use directories that are not under the MongoDB-created directories. 
+For any non-MongoDB application found, reinstall that application to use directories that are not under the MongoDB-created directories.
 
 For any non-MongoDB application that stores data under the MongoDB created directories, reinstall the application and configure the application to use non-MongoDB-created directories to store its data.
 
@@ -46,5 +46,4 @@ For any non-MongoDB data that is found under the MongoDB created directories tha
   describe 'Check if any non-MongoDB application, non-MongoDB data, or non-MongoDB directories exists under any of the MongoDB created directories or sub-directories.' do
     skip 'If any non-MongoDB application, non-MongoDB data, or non-MongoDB directories exists under the MongoDB-created directories, this is a finding.'
   end
-
 end

@@ -75,24 +75,23 @@ Run the following commands as an operating system administrator to remove the Mo
   tag cci: ['CCI-002617']
   tag nist: ['SI-2 (6)']
 
-  check_command = "EJSON.stringify(db.version())"
+  check_command = 'EJSON.stringify(db.version())'
 
   run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
-  check_output = json({command: run_check_command})
+  check_output = json({ command: run_check_command })
 
   mongo_ver = check_output.params
 
   input('mongo_version')
 
-  describe "MongoDB version" do
+  describe 'MongoDB version' do
     subject { mongo_ver }
     it { should eq input('mongo_version') }
   end
 
-  describe "MongoDB should be installed with a package manager" do
+  describe 'MongoDB should be installed with a package manager' do
     subject { package(input('mongo_edition')) }
     it { should be_installed }
   end
-
 end

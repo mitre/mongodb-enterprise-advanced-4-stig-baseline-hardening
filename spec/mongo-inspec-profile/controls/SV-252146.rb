@@ -11,7 +11,7 @@ The standard for validating cryptographic modules will transition to the NIST FI
 FIPS 140-2 modules can remain active for up to five years after validation or until September 21, 2026, when the FIPS 140-2 validations will be moved to the historical list. Even on the historical list, CMVP supports the purchase and use of these modules for existing systems. While Federal Agencies decide when they move to FIPS 140-3 only modules, purchasers are reminded that for several years there may be a limited selection of FIPS 140-3 modules from which to choose. CMVP recommends purchasers consider all modules that appear on the Validated Modules Search Page:
 https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules
 
-More information on the FIPS 140-3 transition can be found here: 
+More information on the FIPS 140-3 transition can be found here:
 https://csrc.nist.gov/Projects/fips-140-3-transition-effort/
 
 '
@@ -54,16 +54,15 @@ For the operating system finding, refer to the appropriate operating system docu
   tag cci: ['CCI-002450', 'CCI-000803']
   tag nist: ['SC-13 b', 'IA-7']
 
-  mongo_command="EJSON.stringify(db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.net.tls.FIPSMode)"
+  mongo_command = "EJSON.stringify(db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.net.tls.FIPSMode)"
 
   run_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{mongo_command}\""
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['net','tls','FIPSMode']){should eq true}
+    its(['net', 'tls', 'FIPSMode']) { should eq true }
   end
-  
+
   describe command(run_command) do
-    its('stdout') { should match /true/i }
+    its('stdout') { should match(/true/i) }
   end
-  
 end

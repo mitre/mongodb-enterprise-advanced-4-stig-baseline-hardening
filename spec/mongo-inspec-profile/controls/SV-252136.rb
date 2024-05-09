@@ -11,13 +11,13 @@ Audit tools include, but are not limited to, OS-provided audit tools, vendor-pro
 If an attacker were to gain access to audit tools, they could analyze audit logs for system weaknesses or weaknesses in the auditing itself. An attacker could also manipulate logs to hide evidence of malicious activity.
 
 '
-  desc 'check', 'To ensure audit configurations are protected from unauthorized modification, the default installation of MongoDB restricts permission on the configuration file. 
+  desc 'check', 'To ensure audit configurations are protected from unauthorized modification, the default installation of MongoDB restricts permission on the configuration file.
 
 Verify User ownership, Group ownership, and permissions on the MongoDB configuration file:
 
 (default name and location is /etc/mongod.conf)
 
-(The name and location for the MongoDB configuration file will vary according to local circumstances.) 
+(The name and location for the MongoDB configuration file will vary according to local circumstances.)
 
 Using the default name and location the command would be:
 
@@ -30,19 +30,19 @@ If the Group owner is not mongod, this is a finding.
 If the filename is more permissive than 660, this is a finding.
 
 Note that the audit destination cannot be modified at runtime.'
-  desc 'fix', 'Run these commands: 
+  desc 'fix', 'Run these commands:
 
-chown mongod %MongoDB configuration file% 
-chgrp mongod %MongoDB configuration file% 
+chown mongod %MongoDB configuration file%
+chgrp mongod %MongoDB configuration file%
 chmod 660 %MongoDB configuration file%
 
-(The name and location for the %MongoDB configuration file% will vary according to local circumstances. The default name and location is /etc/mongod.conf.) 
+(The name and location for the %MongoDB configuration file% will vary according to local circumstances. The default name and location is /etc/mongod.conf.)
 
 Using the default name and location the commands would be:
 
-chown mongod /etc/mongod.conf  
-chgrp  mongod /etc/mongod.conf  
-chmod 660 /etc/mongod.conf 
+chown mongod /etc/mongod.conf
+chgrp  mongod /etc/mongod.conf
+chmod 660 /etc/mongod.conf
 
 The output of the command:
 
@@ -80,5 +80,4 @@ Change: 2020-03-16 14:27:32.451000000 -0400
     it { should be_grouped_into input('mongo_group') }
     it { should_not be_more_permissive_than(input('mongo_permissions')) }
   end
-
 end

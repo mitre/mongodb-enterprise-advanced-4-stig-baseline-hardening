@@ -16,7 +16,7 @@ CRUD operations (requires auditAuthorizationSuccess set to true).
 
 For details on audited actions, see MongoDB documentation on the complete configuration of Audit Event Actions, Details, and Results, and Configuring Audit Filters.
 
-To ensure auditing is enabled, confirm the auditLog section in the /etc/mongod.conf configuration file exists and has been set. 
+To ensure auditing is enabled, confirm the auditLog section in the /etc/mongod.conf configuration file exists and has been set.
 
 For example, to enable syslog centralized logging of audit events, in the MongoDB configuration file (by default: /etc/mongod.conf) verify the destination type is set as:
 
@@ -69,17 +69,16 @@ Configure and/or deploy software tools to ensure that DBMS audit records are wri
 
   describe.one do
     describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog','destination']){should eq "file"}
-      its(['auditLog','format']){should eq "BSON"}
-      its(['auditLog','path']){should match mongo_audit_file_path }
-      its(['auditLog','filter']){should match mongo_filter }
+      its(['auditLog', 'destination']) { should eq 'file' }
+      its(['auditLog', 'format']) { should eq 'BSON' }
+      its(['auditLog', 'path']) { should match mongo_audit_file_path }
+      its(['auditLog', 'filter']) { should match mongo_filter }
       its(['setParameter', 'auditAuthorizationSuccess']) { should eq true }
     end
 
     describe mongodb_conf(input('mongod_config_path')) do
-      its(['auditLog', 'destination']) { should eq "syslog"}
+      its(['auditLog', 'destination']) { should eq 'syslog' }
       its(['setParameter', 'auditAuthorizationSuccess']) { should eq true }
     end
   end
-  
 end

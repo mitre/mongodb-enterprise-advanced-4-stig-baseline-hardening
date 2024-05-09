@@ -1,9 +1,9 @@
 control 'SV-252150' do
   title 'MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.'
   desc 'MongoDB must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.'
-  desc 'check', 'The MongoDB administrator must ensure that additional application access control is enforced. 
+  desc 'check', 'The MongoDB administrator must ensure that additional application access control is enforced.
 
-Review the system documentation to determine the required levels of protection for MongoDB server securables by type of login. 
+Review the system documentation to determine the required levels of protection for MongoDB server securables by type of login.
 
 Review the permissions actually in place on the server. If the actual permissions do not match the documented requirements, this is a finding.
 
@@ -17,11 +17,11 @@ Run MongoDB command to view roles and privileges in a particular database:
       showBuiltinRoles: true
     }
 )'
-  desc 'fix', 'Use 
-createRole(), 
-updateRole(), 
-dropRole(), 
-grantRole() statements 
+  desc 'fix', 'Use
+createRole(),
+updateRole(),
+dropRole(),
+grantRole() statements
 to add and remove permissions on MongoDB serverl securables, bringing them into line with the documented requirements.
 
 MongoDB commands for role management can be found here:
@@ -43,5 +43,4 @@ https://docs.mongodb.com/v4.4/reference/method/js-role-management/'
     skip 'Review the system documentation to determine the required levels of protection for MongoDB server securables by type of login.'
     skip 'Review the permissions actually in place on the server. If the actual permissions do not match the documented requirements, this is a finding.'
   end
-
 end

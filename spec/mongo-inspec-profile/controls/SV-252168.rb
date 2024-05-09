@@ -29,7 +29,7 @@ Edit the %MongoDB configuration file% (default location: /etc/mongod.conf)
 Add the following option to the security section:
 
 security:
-   redactClientLogData: true 
+   redactClientLogData: true
 
 Restart the MongoDB server from the operating system:
 
@@ -47,20 +47,19 @@ Restart the MongoDB server from the operating system:
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  check_command="db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.security.redactClientLogData"
+  check_command = "db.getSiblingDB('admin').runCommand({getCmdLineOpts: 1}).parsed.security.redactClientLogData"
 
   run_check_command = "mongosh \"mongodb://#{input('mongo_dba')}:#{input('mongo_dba_password')}@#{input('mongo_host')}:#{input('mongo_port')}/?tls=true&tlsCAFile=#{input('ca_file')}&tlsCertificateKeyFile=#{input('certificate_key_file')}\" --quiet --eval \"#{check_command}\""
 
   check_output = command(run_check_command)
 
   describe 'Client log data' do
-    it 'should be redacted' do 
+    it 'should be redacted' do
       expect(check_output.stdout).to match(/true/)
     end
   end
 
   describe mongodb_conf(input('mongod_config_path')) do
-    its(['security','redactClientLogData']){should eq true}
+    its(['security', 'redactClientLogData']) { should eq true }
   end
-  
 end

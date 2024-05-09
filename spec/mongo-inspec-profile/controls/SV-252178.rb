@@ -5,7 +5,7 @@ control 'SV-252178' do
 The authoritative list of DoD-approved PKIs is published at https://cyber.mil/pki-pke/.
 
 This requirement focuses on communications protection for MongoDB session rather than for the network packet.'
-  desc 'check', 'To run MongoDB in TLS mode, obtain a valid certificate singed by a single certificate authority. 
+  desc 'check', 'To run MongoDB in TLS mode, obtain a valid certificate singed by a single certificate authority.
 
 Before starting the MongoDB database in TLS mode, verify that certificate used is issued by a valid DoD certificate authority (openssl x509 -in path_to_certificate_pem_file -text | grep -i issuer).
 
@@ -24,10 +24,9 @@ If there is any issuer present in the certificate that is not a DoD approved cer
   tag cci: ['CCI-002470']
   tag nist: ['SC-23 (5)']
 
-  run_check_command = "openssl x509 -in /etc/ssl/CA_bundle.pem -text | grep -i issuer"
+  run_check_command = 'openssl x509 -in /etc/ssl/CA_bundle.pem -text | grep -i issuer'
 
   describe command(run_check_command) do
-    its('stdout'){should match /Issuer: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA/}
+    its('stdout') { should match(/Issuer: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA/) }
   end
-
 end
