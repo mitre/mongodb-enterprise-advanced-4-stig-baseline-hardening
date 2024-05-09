@@ -5,3 +5,4 @@ inputs.yml
 *.csr
 *.crt
 *.key
+inspec.lock
