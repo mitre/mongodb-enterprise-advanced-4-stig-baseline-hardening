@@ -387,8 +387,7 @@
         mongosh "mongodb://localhost:27017/{{ databases_155[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_155[index]}}', ['{{ roles_155[index] }}']))"
       loop: "{{ range(0, users_155|length) }}"
       loop_control:
-        loop_var: index
-      
+        loop_var: index 
   ignore_errors: true
   tags:
     - cat2
@@ -409,7 +408,7 @@
 
 - name: "MEDIUM | SV-252157 | MongoDB must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
   vars:
-    non_mongo_users: []
+    non_mongo_users_157: []
     user_ids_157: []
     db_names_157: []
     user_names_157: []
@@ -431,7 +430,7 @@
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Filter out users not in mongo_users" 
       set_fact:
-        non_mongo_users: "{{ non_mongo_users + [item] }}"
+        non_mongo_users_157: "{{ non_mongo_users_157 + [item] }}"
       loop: "{{ user_ids_157 }}"
       when: item not in all_mongo_users
 
@@ -439,7 +438,7 @@
       set_fact:
         db_names_157: "{{ db_names_157 + [item.split('.')[0]] }}"
         user_names_157: "{{ user_names_157 + [item.split('.')[1]] }}"
-      loop: "{{ non_mongo_users }}"
+      loop: "{{ non_mongo_users_157 }}"
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Drop non_mongo_users" 
       ansible.builtin.command: |
@@ -447,7 +446,6 @@
       loop: "{{ range(0, user_names_157|length) }}"
       loop_control:
         loop_var: index
-
   ignore_errors: false
   tags:
     - cat2
@@ -532,7 +530,6 @@
       loop: "{{ range(0, users_163|length) }}"
       loop_control:
         loop_var: index
-      
   ignore_errors: true
   tags:
     - cat2
@@ -782,7 +779,6 @@
       loop: "{{ range(0, dbs_filtered_174|length) }}"
       loop_control:
         loop_var: index
-
   ignore_errors: true
   tags:
     - cat2

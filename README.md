@@ -17,11 +17,23 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
    Start by cloning the `mongo-hardening` repository from GitHub to your local machine. Use the following command in your terminal:
 
    ```
-   https://github.com/mitre/mongo-hardening.git
+   git clone https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline-hardening.git
    cd mongo-hardening
    ```
 
-2. **Initialize Packer**
+2. **Download the DoD Certificates PKI Bundle**
+
+   Download the DoD Certificates PKI Bundle by following the instructions in the README under the certificates directory.
+
+3. **Create `inputs.yml`**
+
+   Execute the following command to create the inputs.yml file under `spec/mongo-inspec-profile` by copying inputs_template.yml and renaming it to inputs.yml.
+
+   ```
+   cp spec/mongo-inspec-profile/inputs_template.yml spec/mongo-inspec-profile/inputs.yml
+   ```
+
+4. **Initialize Packer**
 
    Initialize Packer to install the required Ansible and Docker plugins. Run the following command:
 
@@ -29,7 +41,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
    packer init .
    ```
 
-3. **Build the Hardened Image**
+5. **Build the Hardened Image**
 
    Execute the following command to build, test, and save the hardened Mongo image:
 
@@ -37,7 +49,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
    packer build mongo-hardening.pkr.hcl
    ```
 
-4. **Run the Hardened Image**
+6. **Run the Hardened Image**
 
    Execute the following command to run the hardened Mongo image:
 

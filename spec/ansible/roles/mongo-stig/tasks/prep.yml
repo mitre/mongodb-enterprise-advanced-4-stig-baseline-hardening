@@ -1,11 +1,11 @@
 ---
-- name: "Check or create {{ mongod_config_path }} file"
+- name: "PREP | Check or create {{ mongod_config_path }} file"
   ansible.builtin.stat:
     path: "{{ mongod_config_path }}"
   register: conf
   changed_when: no
 
-- name: Copy mongod.conf file to container
+- name: "PREP | Copy mongod.conf file to container"
   ansible.builtin.copy:
     src: files/conf.template
     dest: "{{ mongod_config_path }}"
@@ -14,7 +14,7 @@
     mode: "{{ mongo_permissions }}"
   when: conf.stat.exists == false
 
-- name: Copy certificate key file to container
+- name: "PREP | Copy certificate key file to container"
   ansible.builtin.copy:
     src: "{{ certificate_key_file_src }}"
     dest: "{{ certificate_key_file_dest }}"
@@ -22,7 +22,7 @@
     group: "{{ mongo_group }}"
     mode: "{{ mongo_permissions }}"
 
-- name: Copy certificate authority file to container
+- name: "PREP | Copy certificate authority file to container"
   ansible.builtin.copy:
     src: "{{ ca_file_src }}"
     dest: "{{ ca_file_dest }}"
@@ -30,7 +30,7 @@
     group: "{{ mongo_group }}"
     mode: "{{ mongo_permissions }}"
 
-- name: Create MongoDB admin user
+- name: "PREP | Create MongoDB admin user"
   community.mongodb.mongodb_user:
     database: "{{ mongo_auth_source }}"
     name: "{{ mongo_dba }}"
@@ -38,12 +38,12 @@
     roles: root
     state: present
 
-- name: Get all the users in a database
+- name: "PREP | Get all the users in a database"
   ansible.builtin.command: |
     mongosh "mongodb://localhost:27017/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
   register: user_list
 
-- name: Get MongoDB version
+- name: "PREP | Get MongoDB version"
   ansible.builtin.command: |
     mongosh "mongodb://localhost:27017/test" --quiet --eval "db.version()"
   register: mongodb_version
