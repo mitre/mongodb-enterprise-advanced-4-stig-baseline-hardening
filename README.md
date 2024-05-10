@@ -23,7 +23,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
 2. **Download the DoD Certificates PKI Bundle**
 
-   Download the DoD Certificates PKI Bundle by following the instructions in the `README` under the `certificates` directory.
+   Download the DoD Certificates PKI Bundle by following the instructions in the `README.md` under the `certificates` directory.
 
 3. **Create `inputs.yml`**
 
