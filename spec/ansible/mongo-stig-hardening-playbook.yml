@@ -8,5 +8,5 @@
   serial: 50
   user: 0
   vars:
-    fips_mode: true
+    fips_mode: false
     enterprise_edition: true
