@@ -9,7 +9,7 @@
 5. [Configure MongoDB to Use the Local CA](#step-5-configure-mongodb-to-use-the-local-ca)
 6. [Use the Certificates to Login to MongoDB](#step-6-use-the-certificates-to-login-to-mongodb)
 
-**Note for Users**: If you only need to generate your own certificates, skip to [Step 4](#step-2-generate-and-sign-user-certificates-each-user) and follow the instructions there.
+**Note for Users**: If you only need to generate your own certificates, skip to [Step 4](#step-4-generate-and-sign-user-certificates-each-user) and follow the instructions there.
 
 ## Step 1: DoD CA Certificates Installation
 
@@ -103,22 +103,22 @@ All users trying to log in to the database will need this file.
    cat mongodb-private.key mongodb-cert.crt > mongodb.pem
    ```
 
-   This command concatenates the private key and the certificate into a single file called `mongodb.pem`.
-
-   The `mongodb.pem` file is what is being referenced for the `net.tls.certificateKeyFile` option in the MongoDB configuration:
-
-   ```yaml
-   net:
-     tls:
-       mode: requireTLS
-       certificateKeyFile: /etc/ssl/mongodb.pem
-   ```
-
 5. **Move PEM File**
 
    ```bash
    mv mongodb.pem certificates/
    ```
+
+This command concatenates the private key and the certificate into a single file called `mongodb.pem`.
+
+The `mongodb.pem` file is what is being referenced for the `net.tls.certificateKeyFile` option in the MongoDB configuration:
+
+```yaml
+net:
+  tls:
+    mode: requireTLS
+    certificateKeyFile: /etc/ssl/mongodb.pem
+```
 
 ## Step 4: Generate and Sign User Certificates (Each User)
 
