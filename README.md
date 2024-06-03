@@ -16,7 +16,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
    Start by cloning the `mongo-hardening` repository from GitHub to your local machine:
 
-   ```
+   ```sh
    git clone https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline-hardening.git
    cd mongo-hardening
    ```
@@ -29,7 +29,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
    Execute the following command to create the inputs.yml file under `spec/mongo-inspec-profile` by copying `inputs_template.yml` and renaming it to `inputs.yml`:
 
-   ```
+   ```sh
    cp spec/mongo-inspec-profile/inputs_template.yml spec/mongo-inspec-profile/inputs.yml
    ```
 
@@ -37,7 +37,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
    Initialize Packer to install the required Ansible and Docker plugins:
 
-   ```
+   ```sh
    packer init .
    ```
 
@@ -45,7 +45,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
    Execute the following command to build, test, and save the hardened Mongo image:
 
-   ```
+   ```sh
    packer build mongo-hardening.pkr.hcl
    ```
 
@@ -53,7 +53,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
    Execute the following command to run the hardened Mongo image:
 
-   ```
+   ```sh
    docker run -d \
       --name mongo-hardened \
       -p 27017:27017 \
@@ -74,14 +74,14 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
   - Remove the `--controls` flag to run all inspec checks at once.
 
-    ```
-    inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --no-create-lockfile --input-file=spec/mongo-inspec-profile/inputs.yml
+    ```sh
+    inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --no-create-lockfile --show-progress
     ```
 
 - To get into the inspec shell for deeper testing
 
-  ```
-  inspec shell -t docker://mongo-hardened --depends=spec/mongo-inspec-profile/ --no-create-lockfile --input-file=spec/mongo-inspec-profile/inputs.yml
+  ```sh
+  inspec shell -t docker://mongo-hardened --depends=spec/mongo-inspec-profile/ --input-file=spec/mongo-inspec-profile/inputs.yml
   ```
 
 ---

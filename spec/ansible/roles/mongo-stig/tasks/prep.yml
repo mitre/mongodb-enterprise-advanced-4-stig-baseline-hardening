@@ -30,7 +30,7 @@
     group: "{{ mongo_group }}"
     mode: "{{ mongo_permissions }}"
 
-- name: "PREP | Create MongoDB admin user"
+- name: "PREP | Create MongoDB root user"
   community.mongodb.mongodb_user:
     database: "{{ mongo_auth_source }}"
     name: "{{ mongo_dba }}"
