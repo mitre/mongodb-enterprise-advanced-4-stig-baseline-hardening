@@ -111,7 +111,7 @@ inputs:
     description: "Authorized superuser accounts"
     type: array
     value:
-      - "admin.admin"
+      - "admin.root"
     required: true
     sensitive: true
 

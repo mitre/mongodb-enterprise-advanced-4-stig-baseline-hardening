@@ -4,14 +4,14 @@ enterprise_edition: true
 fips_mode: true
 mongostig_cat1: true
 mongostig_cat2: true
-# If any data is PII, classified or is deemed by the organization the need to be encrypted at rest.
+# Enable if any data is PII, classified or is deemed by the organization the need to be encrypted at rest.
 encryption_at_rest: false
 kmip_enabled: false
 
 mongo_owner: root
 mongo_group: root
-mongo_dba: admin
-mongo_dba_password: admin
+mongo_dba: root
+mongo_dba_password: root
 mongo_host: localhost
 mongo_port: 27017
 mongo_auth_source: admin
@@ -19,14 +19,13 @@ mongo_permissions: 0600
 mongo_admin_roles:
   - "root"
 mongo_super_users:
-  - "admin.admin"
+  - "admin.root"
 mongo_users:
   - "test.myTester"
   - "products.myRoleTestUser"
 inappropriate_mongo_privileges:
   - "changeStream"
   - "createCollection"
-  - "find"
 
 authentication_mechanism: 
   - SCRAM-SHA-256

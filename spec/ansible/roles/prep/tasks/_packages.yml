@@ -1,11 +1,11 @@
 ---
 - name: "PREP | Upgrade all packages"
-  apt:
+  ansible.builtin.package:
     name: '*'
     state: latest
 
 - name: "PREP | Install required packages"
-  apt:
+  ansible.builtin.package:
     name:
       - jq
       - vim

@@ -1,5 +1,5 @@
-mongo_dba: "admin"
-mongo_dba_password: "admin"
+mongo_dba: "root"
+mongo_dba_password: "root"
 mongo_host: "localhost"
 mongo_port: "27017"
 mongo_auth_source: "admin"
