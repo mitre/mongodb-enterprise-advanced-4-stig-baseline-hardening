@@ -206,7 +206,7 @@ inputs:
   - name: mongo_version
     description: "The edition of MongoDB in use"
     type: string
-    value: "7.0.5"
+    value: "7.0.11"
     required: true
 
   # SV-252182

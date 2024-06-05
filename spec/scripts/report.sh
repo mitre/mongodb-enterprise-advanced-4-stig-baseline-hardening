@@ -9,8 +9,8 @@ then
         curl -F "data=@$(pwd)/$f" \
         -F "filename=$f" \
         -F 'public=false' \
-        -H "Authorization: Api-Key $API_KEY" \
-        "https://localhost/evaluations" \
+        -H "Authorization: Api-Key $HEIMDALL_API_KEY" \
+        "$HEIMDALL_URL" \
         -k
     done
 else
