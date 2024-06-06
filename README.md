@@ -54,19 +54,28 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
    cd mongo-hardening
    ```
 
-2. **Download the DoD Certificates PKI Bundle**
+2. **Create MongoDB Certificates**
 
-   Download the DoD Certificates PKI Bundle by following the instructions in the `README.md` under the `certificates` directory.
+   Follow the `README.md` under the `certificates` directory to download the DoD Certificates PKI Bundle and to create any other necessary certificates.
 
-3. **Create `inputs.yml`**
+3. **Update `main.yml` for the Ansible Playbook**
 
-   Execute the following command to create the inputs.yml file under `spec/mongo-inspec-profile` by copying `inputs_template.yml` and renaming it to `inputs.yml`:
+   Update the `main.yml` file located at `spec/ansible/roles/mongo-stig/defaults/main.yml` with your values.
+
+4. **Create and Update `inputs.yml` for Inspec**
+
+   Execute the following command to create the `inputs.yml` file under `spec/mongo-inspec-profile` by copying `inputs_template.yml` and renaming it to `inputs.yml`.
+   Update this file with your values.
 
    ```sh
    cp spec/mongo-inspec-profile/inputs_template.yml spec/mongo-inspec-profile/inputs.yml
    ```
 
-4. **Initialize Packer**
+5. **Update `inspec.yml` for InSpec**
+
+   Update the `inspec.yml` file located at `spec/mongo-inspec-profile/inspec.yml` with any your values.
+
+6. **Initialize Packer**
 
    Initialize Packer to install the required Ansible and Docker plugins:
 
@@ -74,7 +83,7 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
    packer init .
    ```
 
-5. **Build the Hardened Image**
+7. **Build the Hardened Image**
 
    Execute the following command to build, test, and save the hardened Mongo image:
 
@@ -82,7 +91,7 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
    packer build mongo-hardening.pkr.hcl
    ```
 
-6. **Run the Hardened Image**
+8. **Run the Hardened Image**
 
    Execute the following command to run the hardened Mongo image:
 

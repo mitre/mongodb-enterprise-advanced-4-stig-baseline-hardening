@@ -4,7 +4,7 @@ enterprise_edition: true
 fips_mode: true
 mongostig_cat1: true
 mongostig_cat2: true
-# Enable if any data is PII, classified or is deemed by the organization the need to be encrypted at rest.
+# Enable 'encryption_at_rest' if any data is PII, classified or is deemed by the organization the need to be encrypted at rest.
 encryption_at_rest: false
 kmip_enabled: false
 
@@ -32,7 +32,7 @@ authentication_mechanism:
 
 mongod_config_path: /etc/mongod.conf
 
-# Set `audit_log_destination` to either "file" or "syslog"
+# Set 'audit_log_destination' to either "file" or "syslog"
 audit_log_destination: file
 mongo_audit_directory_path: /var/log/mongodb/audit/
 mongo_audit_file_path: /var/log/mongodb/audit/auditLog.bson
