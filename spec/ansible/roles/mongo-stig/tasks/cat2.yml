@@ -127,7 +127,7 @@
       
     - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Get users" 
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ db_names_140[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_140[index] }}'))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ db_names_140[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_140[index] }}'))"
       loop: "{{ range(0, user_names_140|length) }}"
       loop_control:
         loop_var: index
@@ -161,7 +161,7 @@
 
     - name: "MEDIUM | SV-252140 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Revoke roles"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ databases_140[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_140[index]}}', ['{{ roles_140[index] }}']))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ databases_140[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_140[index]}}', ['{{ roles_140[index] }}']))"
       loop: "{{ range(0, users_140|length) }}"
       loop_control:
         loop_var: index
@@ -350,7 +350,7 @@
       
     - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Get users" 
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ db_names_155[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_155[index] }}'))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ db_names_155[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_155[index] }}'))"
       loop: "{{ range(0, user_names_155|length) }}"
       loop_control:
         loop_var: index
@@ -384,7 +384,7 @@
 
     - name: "MEDIUM | SV-252155 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be restricted to authorized users. | Revoke roles"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ databases_155[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_155[index]}}', ['{{ roles_155[index] }}']))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ databases_155[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_155[index]}}', ['{{ roles_155[index] }}']))"
       loop: "{{ range(0, users_155|length) }}"
       loop_control:
         loop_var: index 
@@ -442,7 +442,7 @@
 
     - name: "MEDIUM | SV-252157 | Enable authorization in MongoDB configuration | Drop non_mongo_users" 
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ db_names_157[index] }}" --quiet --eval "db.dropUser('{{ user_names_157[index] }}', {w: 'majority', wtimeout: 5000})"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ db_names_157[index] }}" --quiet --eval "db.dropUser('{{ user_names_157[index] }}', {w: 'majority', wtimeout: 5000})"
       loop: "{{ range(0, user_names_157|length) }}"
       loop_control:
         loop_var: index
@@ -492,7 +492,7 @@
 
     - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Get users" 
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ db_names_163[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_163[index] }}'))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ db_names_163[index] }}" --quiet --eval "EJSON.stringify(db.getUser('{{ user_names_163[index] }}'))"
       loop: "{{ range(0, user_names_163|length) }}"
       loop_control:
         loop_var: index
@@ -526,7 +526,7 @@
 
     - name: "MEDIUM | SV-252163 | MongoDB must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users). | Revoke roles"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ databases_163[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_163[index]}}', ['{{ roles_163[index] }}']))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ databases_163[index] }}" --quiet --eval "EJSON.stringify(db.revokeRolesFromUser('{{ users_163[index]}}', ['{{ roles_163[index] }}']))"
       loop: "{{ range(0, users_163|length) }}"
       loop_control:
         loop_var: index
@@ -678,7 +678,7 @@
   block:
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Get list of databases"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/admin" --quiet --eval "EJSON.stringify(db.adminCommand({listDatabases: 1}))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/admin" --quiet --eval "EJSON.stringify(db.adminCommand({listDatabases: 1}))"
       register: db_list_174
     
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Extract stdout from each command execution" 
@@ -691,7 +691,7 @@
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Get list of roles"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ db_names_174[index] }}" --quiet --eval "EJSON.stringify(db.getRoles({rolesInfo: 1,showPrivileges: true}))"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ db_names_174[index] }}" --quiet --eval "EJSON.stringify(db.getRoles({rolesInfo: 1,showPrivileges: true}))"
       loop: "{{ range(0, db_names_174|length) }}"
       loop_control:
         loop_var: index
@@ -775,7 +775,7 @@
 
     - name: "MEDIUM | SV-252174 | MongoDB must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status. | Revoke inappropriate privileges from each role"
       ansible.builtin.command: |
-        mongosh "mongodb://localhost:27017/{{ dbs_filtered_174[index] }}" --quiet --eval "db.revokePrivilegesFromRole('{{ roles_filtered_174[index] }}', [{{ updated_resource_list_174[index] }}])"
+        mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/{{ dbs_filtered_174[index] }}" --quiet --eval "db.revokePrivilegesFromRole('{{ roles_filtered_174[index] }}', [{{ updated_resource_list_174[index] }}])"
       loop: "{{ range(0, dbs_filtered_174|length) }}"
       loop_control:
         loop_var: index
