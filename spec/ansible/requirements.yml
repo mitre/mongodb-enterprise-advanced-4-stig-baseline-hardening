@@ -3,5 +3,5 @@
 
 - src: mitre.yedit
 
-- src: community.mongodb.mongodb_user
+- src: community.mongodb
   
