@@ -2,6 +2,4 @@
   src: https://github.com/ansible-lockdown/RHEL8-STIG
 
 - src: mitre.yedit
-
-- src: community.mongodb
   
