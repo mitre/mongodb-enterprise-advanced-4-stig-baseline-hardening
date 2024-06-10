@@ -1,5 +1,9 @@
-- name: rhel8STIG
-  src: https://github.com/ansible-lockdown/RHEL8-STIG
+---
+roles:
+  - name: rhel8STIG
+    src: https://github.com/ansible-lockdown/RHEL8-STIG
 
-- src: mitre.yedit
-  
+  - src: mitre.yedit
+
+collections:
+  - name: community.mongodb

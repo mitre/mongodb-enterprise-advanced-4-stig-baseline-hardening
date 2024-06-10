@@ -30,22 +30,13 @@
     group: "{{ mongo_group }}"
     mode: "{{ mongo_permissions }}"
 
-# - name: "PREP | Create MongoDB root user"
-#   community.mongodb.mongodb_user:
-#     database: "{{ mongo_auth_source }}"
-#     name: "{{ mongo_dba }}"
-#     password: "{{ mongo_dba_password }}"
-#     roles: root
-#     state: present
-
 - name: "PREP | Create MongoDB root user"
-  ansible.builtin.command: |
-    mongosh "mongodb://{{ mongo_host }}:{{ mongo_port }}/admin" --quiet --eval '
-    db.createUser({
-      user: "{{ mongo_dba }}",
-      pwd: "{{ mongo_dba_password }}",
-      roles: [{ role: "root", db: "{{ mongo_auth_source }}" }]
-    })'
+  community.mongodb.mongodb_user:
+    database: "{{ mongo_auth_source }}"
+    name: "{{ mongo_dba }}"
+    password: "{{ mongo_dba_password }}"
+    roles: root
+    state: present
 
 - name: "PREP | Get all the users in a database"
   ansible.builtin.command: |

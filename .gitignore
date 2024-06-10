@@ -1,8 +1,9 @@
 reports/**
 inputs.yml
+inspec.lock
 *.zip
 *.pem
 *.csr
 *.crt
 *.key
-inspec.lock
+*.srl
