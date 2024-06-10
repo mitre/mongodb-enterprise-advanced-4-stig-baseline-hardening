@@ -103,7 +103,7 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
       -v mongodb_db:/data/db \
       -e PATH="/usr/local/src/openssl-3.1.0/apps:$PATH" \
       -e LD_LIBRARY_PATH="/usr/local/src/openssl-3.1.0:$LD_LIBRARY_PATH" \
-      mongo-hardened --config /etc/mongod.conf
+      mongo-hardened mongod --config /etc/mongod.conf
    ```
 
 ## Notes

@@ -40,10 +40,10 @@
 
 - name: "PREP | Get all the users in a database"
   ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
+    mongosh "mongodb://{{ mongo_host }}:{{ mongo_port }}/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
   register: user_list
 
 - name: "PREP | Get MongoDB version"
   ansible.builtin.command: |
-    mongosh "mongodb://localhost:27017/test" --quiet --eval "db.version()"
+    mongosh "mongodb://{{ mongo_host }}:{{ mongo_port }}/test" --quiet --eval "db.version()"
   register: mongodb_version
