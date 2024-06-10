@@ -40,7 +40,7 @@
 
 - name: "PREP | Create MongoDB root user"
   ansible.builtin.command: |
-    mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/admin" --quiet --eval '
+    mongosh "mongodb://{{ mongo_host }}:{{ mongo_port }}/admin" --quiet --eval '
     db.createUser({
       user: "{{ mongo_dba }}",
       pwd: "{{ mongo_dba_password }}",
@@ -49,7 +49,7 @@
 
 - name: "PREP | Get all the users in a database"
   ansible.builtin.command: |
-    mongosh "mongodb://{{ localhost }}:{{ mongo_port }}/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
+    mongosh "mongodb://{{ mongo_host }}:{{ mongo_port }}/admin" --quiet --eval "EJSON.stringify(db.system.users.find().toArray())"
   register: user_list
 
 - name: "PREP | Get MongoDB version"
