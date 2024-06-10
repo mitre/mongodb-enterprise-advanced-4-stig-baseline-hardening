@@ -94,7 +94,7 @@ All users trying to log in to the database will need this file.
 3. **Sign the MongoDB Server's CSR with the Local CA**
 
    ```bash
-   openssl x509 -req -days 397 -sha256 -in mongodb.csr -CA localCA.pem -CAkey localCA.key -out mongodb-cert.crt
+   openssl x509 -req -days 397 -sha256 -in mongodb.csr -CA localCA.pem -CAkey localCA.key -CAcreateserial -out mongodb-cert.crt
    ```
 
 4. **Combine the MongoDB Server's Private Key and Certificate into One PEM File**
@@ -137,7 +137,7 @@ net:
 3. **Sign User’s CSR with the Local CA**
 
    ```bash
-   openssl x509 -req -days 397 -sha256 -in user1.csr -CA localCA.pem -CAkey localCA.key -out user1.crt
+   openssl x509 -req -days 397 -sha256 -in user1.csr -CA localCA.pem -CAkey localCA.key -CAcreateserial -out user1.crt
    ```
 
 4. **Combine User’s Private Key and Certificate**
