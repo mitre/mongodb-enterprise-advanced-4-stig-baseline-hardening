@@ -54,5 +54,5 @@
 
 - name: "PREP | Get MongoDB version"
   ansible.builtin.command: |
-    mongosh "mongodb://{ localhost }}:{{ mongo_port }}/test" --quiet --eval "db.version()"
+    mongosh "mongodb://{{ mongo_host }}:{{ mongo_port }}/test" --quiet --eval "db.version()"
   register: mongodb_version
