@@ -101,14 +101,15 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
    Execute the following command to run the hardened Mongo image:
 
    ```sh
-   docker run -d \
+      docker run -d \
       --name mongo-hardened \
       -p 27017:27017 \
       -v mongodb_configdb:/data/configdb \
       -v mongodb_db:/data/db \
       -e PATH="/usr/local/src/openssl-3.1.0/apps:$PATH" \
       -e LD_LIBRARY_PATH="/usr/local/src/openssl-3.1.0:$LD_LIBRARY_PATH" \
-      mongo-hardened mongod --config /etc/mongod.conf
+      mongo-hardened \
+      mongod --config /etc/mongod.conf
    ```
 
 ## Notes
