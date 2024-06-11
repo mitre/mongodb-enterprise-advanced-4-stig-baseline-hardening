@@ -73,9 +73,14 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
 
 5. **Update `inspec.yml` for InSpec**
 
-   Update the `inspec.yml` file located at `spec/mongo-inspec-profile/inspec.yml` with any your values.
+   Update the `inspec.yml` file located at `spec/mongo-inspec-profile/inspec.yml` with your values.
+   Most values should remain unchanged; only modify them if you are certain about the changes to avoid causing issues with the Ansible playbook execution.
 
-6. **Initialize Packer**
+6. **Check Configuration Flags**
+
+   If you want to disable the `fips_mode` or `enterprise_edition` flags, ensure they are disabled in both `spec/ansible/mongo-stig-hardening-playbook.yml` and `spec/ansible/roles/mongo-stig/defaults/main.yml`.
+
+7. **Initialize Packer**
 
    Initialize Packer to install the required Ansible and Docker plugins:
 
@@ -83,7 +88,7 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
    packer init .
    ```
 
-7. **Build the Hardened Image**
+8. **Build the Hardened Image**
 
    Execute the following command to build, test, and save the hardened Mongo image:
 
@@ -91,7 +96,7 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
    packer build mongo-hardening.pkr.hcl
    ```
 
-8. **Run the Hardened Image**
+9. **Run the Hardened Image**
 
    Execute the following command to run the hardened Mongo image:
 
@@ -108,25 +113,31 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
 
 ## Notes
 
-- You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library](https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
+### InSpec
 
-- The `verify_threshold.sh` script will tag the generated image as "passing" if it exceeds the compliance threshold set in `threshold.yml`, and "failing" if it does not. A real hardening pipeline would instead do something like push an image that passes the threshold to a registry, and simply ignore it if it does not.
+Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline).
 
-- To run the inspec seperately:
-
-  Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline).
+- Running InSpec Checks
 
   - Remove the `--controls` flag to run all inspec checks at once.
 
-    ```sh
-    inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --no-create-lockfile --show-progress
-    ```
+  ```sh
+  inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --no-create-lockfile --show-progress
+  ```
 
-  - To get into the inspec shell for deeper testing
+- Deeper Testing with InSpec Shell
 
-    ```sh
-    inspec shell -t docker://mongo-hardened --depends=spec/mongo-inspec-profile/ --input-file=spec/mongo-inspec-profile/inputs.yml
-    ```
+  ```sh
+  inspec shell -t docker://mongo-hardened --depends=spec/mongo-inspec-profile/ --input-file=spec/mongo-inspec-profile/inputs.yml
+  ```
+
+- You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library] (https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
+
+### Certificates
+
+For the full `README`, refer to the `certificates` folder.
+
+- If you encounter connection errors, ensure you have the latest OpenSSL version (last tested with OpenSSL 3.3.0).
 
 ## Authors
 

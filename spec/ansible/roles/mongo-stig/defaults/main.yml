@@ -1,4 +1,5 @@
 ---
+### CONFIGURATION FLAGS
 prep_conf: true
 enterprise_edition: true
 fips_mode: true
@@ -8,6 +9,7 @@ mongostig_cat2: true
 encryption_at_rest: false
 kmip_enabled: false
 
+### CONNECTION VARIABLES
 mongo_owner: root
 mongo_group: root
 mongo_dba: root
@@ -15,7 +17,11 @@ mongo_dba_password: root
 mongo_host: localhost
 mongo_port: 27017
 mongo_auth_source: admin
-mongo_permissions: 0600
+max_incoming_connections: 800000
+authentication_mechanism: 
+  - SCRAM-SHA-256
+
+### ROLES AND USERS
 mongo_admin_roles:
   - "root"
 mongo_super_users:
@@ -27,31 +33,26 @@ inappropriate_mongo_privileges:
   - "changeStream"
   - "createCollection"
 
-authentication_mechanism: 
-  - SCRAM-SHA-256
-
+### FILE PATHS
+mongo_permissions: 0600
 mongod_config_path: /etc/mongod.conf
-
 # Set 'audit_log_destination' to either "file" or "syslog"
 audit_log_destination: file
 mongo_audit_directory_path: /var/log/mongodb/audit/
 mongo_audit_file_path: /var/log/mongodb/audit/auditLog.bson
-
 certificate_key_file_dest: /etc/ssl/mongodb.pem
 certificate_key_file_src: ../../../../certificates/mongodb.pem
 ca_file_dest: /etc/ssl/CA_bundle.pem
 ca_file_src: ../../../../certificates/dod_CAs.pem
-
 data_file_directory_path: /data/db/
 
-max_incoming_connections: 800000
-
-mongo_filter: "'{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }'"
-
+### ENCRYPTION SETTINGS
 encryption_cipher_mode: AES256-GCM
 KMIP_server_host_name: 
 KMIP_server_port: 
 KMIP_server_ca_file: 
 KMIP_client_certificate_file: 
-
 security_encryption_key_file: 
+
+### AUDIT SETTINGS
+mongo_filter: "'{ atype: { $in: [ \"createCollection\", \"dropCollection\" ] } }'"

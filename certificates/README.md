@@ -9,7 +9,11 @@
 5. [Configure MongoDB to Use the Local CA](#step-5-configure-mongodb-to-use-the-local-ca)
 6. [Use the Certificates to Login to MongoDB](#step-6-use-the-certificates-to-login-to-mongodb)
 
-**Note for Users**: If you only need to generate your own certificates, skip to [Step 4](#step-4-generate-and-sign-user-certificates-each-user) and follow the instructions there.
+## Notes
+
+- Ensure you have the latest OpenSSL version (last tested with OpenSSL 3.3.0) to avoid connection errors
+
+- To generate user certificates, skip to [Step 4](#step-4-generate-and-sign-user-certificates-each-user).
 
 ## Step 1: DoD CA Certificates Installation
 
