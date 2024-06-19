@@ -25,8 +25,8 @@ variable "ansible_vars" {
 variable "input_image" {
   type = map(string)
   default = {
-    "tag"     = "mongodb/mongodb-enterprise-server"
-    "version" = "latest"
+    "name"  = "mongodb/mongodb-enterprise-server"
+    "tag"   = "latest"
   }
 }
 
@@ -38,27 +38,9 @@ variable "output_image" {
   }
 }
 
-variable "scan" {
-  type = map(string)
-  default = {
-    "report_dir"             = "reports",
-    "inspec_profile"         = "spec/mongo-inspec-profile",
-    "inspec_report_filename" = "inspec_results.json",
-    "inspec_input_file"      = "spec/mongo-inspec-profile/inputs.yml"
-  }
-}
-
-variable "report" {
-  type = map(string)
-  default = {
-    "report_to_heimdall"     = true
-    "heimdall_url"           = "https://heimdall-demo.mitre.org/evaluations"
-    "heimdall_api_key"       = "" 
-  }
-}
-
+# Docker container to harden
 source "docker" "target" {
-  image       = "${var.input_image.tag}:${var.input_image.version}"
+  image       = "${var.input_image.name}:${var.input_image.tag}"
   commit      = true
   pull        = true
   run_command = [
@@ -72,12 +54,14 @@ source "docker" "target" {
   ]
 }
 
+# Run the process to harden the docker container
 build {
   name = "harden"
   sources = [
     "source.docker.target"
   ]
 
+  # Create docker volumes
   provisioner "shell-local" {
     inline = [
       "docker volume create mongodb_configdb",
@@ -94,6 +78,7 @@ build {
     ]
   }
 
+  # Run Ansible playbook
   provisioner "ansible" {
     playbook_file = "spec/ansible/mongo-stig-hardening-playbook.yml"
     galaxy_file   = "spec/ansible/requirements.yml"
@@ -105,47 +90,10 @@ build {
     ]
   }
 
-  ### SCAN
-  # Use raw bash script to invoke scanning tools that don't have their own plugin.
-  provisioner "shell-local" {
-    environment_vars = [
-      "CHEF_LICENSE=accept",
-      "PROFILE=${var.scan.inspec_profile}",
-      "CONTAINER_ID=${var.output_image.name}",
-      "REPORT_DIR=${var.scan.report_dir}",
-      "REPORT_FILE=${var.scan.inspec_report_filename}",
-      "INPUT_FILE=${var.scan.inspec_input_file}",
-      "TARGET_IMAGE=${var.output_image.name}",
-    ]
-    valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
-    scripts          = ["spec/scripts/scan.sh"]
-  }
-
-  // ### REPORT
-  // provisioner "shell-local" {
-  //   environment_vars = [
-  //     "REPORT_DIR=${var.scan.report_dir}",
-  //     "REPORT_TO_HEIMDALL=${var.report.report_to_heimdall}",
-  //     "HEIMDALL_URL=${var.report.heimdall_url}",
-  //     "HEIMDALL_API_KEY=${var.report.heimdall_api_key}"
-  //   ]
-  //   scripts          = ["spec/scripts/report.sh"]
-  // }
-
-  // ### VERIFY
-  // provisioner "shell-local" {
-  //   environment_vars = [
-  //     "TARGET_IMAGE=${var.output_image.name}",
-  //     "REPORT_DIR=${var.scan.report_dir}"
-  //   ]
-  //   valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
-  //                             # this does not mean we want to halt the run 
-  //   scripts          = ["spec/scripts/verify_threshold.sh"]
-  // }
-
   ### TAG DOCKER IMAGE
   post-processor "docker-tag" {
     repository = "${var.output_image.name}"
     tags = ["latest"]
   }
+
 }
