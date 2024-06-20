@@ -12,7 +12,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
 ## Tailoring Your Scan to Your Environment
 
-To ensure the profile runs correctly in your specific environment, you need to configure the inputs the `inspec.yml` and the `inputs.yml` file. A template file named `inputs_template.yml` is provided to help you get started. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://docs.chef.io/inspec/profiles/).
+To ensure the profile runs correctly in your specific environment, you need to configure the inputs in the `inputs.yml`. This will **OVERRIDE THE VALUE SET** in `inspec.yml`. A template file named `inputs_template.yml` is provided to help you get started. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://docs.chef.io/inspec/profiles/).
 
 ### Verify Ansible Variables
 
@@ -41,6 +41,11 @@ ca_file: "/etc/ssl/CA_bundle.pem"
 
 # The path to the MongoDB SSL/TLS certificate key file.
 certificate_key_file: "/etc/ssl/mongodb.pem"
+
+# Adding a user to 'mongo_superusers'
+mongo_superusers:
+  - "admin.root"
+  - "test.myTester"
 ```
 
 ## Usage
@@ -90,27 +95,35 @@ certificate_key_file: "/etc/ssl/mongodb.pem"
 
 8. **Build the Hardened Image**
 
-   Execute the following command to build, test, and save the hardened Mongo image:
+   Execute the following command to build and save the hardened Mongo image:
 
    ```sh
    packer build mongo-hardening.pkr.hcl
    ```
 
-9. **Run the Hardened Image**
+9. **Validate the Hardened Image**
 
-   Execute the following command to run the hardened Mongo image:
+   Execute the following command to test the hardened Mongo image:
 
    ```sh
-   docker run -d \
-      --name mongo-hardened \
-      -p 27017:27017 \
-      -v mongodb_configdb:/data/configdb \
-      -v mongodb_db:/data/db \
-      -e PATH="/usr/local/src/openssl-3.1.0/apps:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-      -e LD_LIBRARY_PATH="/usr/local/src/openssl-3.1.0:" \
-      mongo-hardened \
-      mongod --config /etc/mongod.conf
+   packer build mongo-validate.pkr.hcl
    ```
+
+10. **Run the Hardened Image**
+
+    Execute the following command to run the hardened Mongo image:
+
+    ```sh
+    docker run -d \
+       --name mongo-hardened \
+       -p 27017:27017 \
+       -v mongodb_configdb:/data/configdb \
+       -v mongodb_db:/data/db \
+       -e PATH="/usr/local/src/openssl-3.1.0/apps:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+       -e LD_LIBRARY_PATH="/usr/local/src/openssl-3.1.0:" \
+       mongo-hardened \
+       mongod --config /etc/mongod.conf
+    ```
 
 ## Notes
 

@@ -32,11 +32,7 @@ variable "scan" {
 
 variable "report" {
   type = map(string)
-  default = {
-    "report_to_heimdall"     = true
-    "heimdall_url"           = "https://heimdall-demo.mitre.org/evaluations"
-    "heimdall_api_key"       = "" 
-  }
+  description = "Configuration for reporting to Heimdall"
 }
 
 # Hardened docker container to be validated

@@ -1,3 +1,4 @@
+# Required Inputs
 mongo_dba: "root"
 mongo_dba_password: "root"
 mongo_host: "localhost"
@@ -5,3 +6,8 @@ mongo_port: "27017"
 mongo_auth_source: "admin"
 ca_file: "/etc/ssl/CA_bundle.pem"
 certificate_key_file: "/etc/ssl/mongodb.pem"
+
+# Modified Inputs
+mongo_superusers:
+  - "admin.root"
+  - "test.myTester"
