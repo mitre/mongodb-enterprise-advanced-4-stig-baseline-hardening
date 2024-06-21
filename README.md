@@ -97,6 +97,13 @@ mongo_superusers:
 
    Update the `variables.pkrvar.hcl` with your variables for `mongo-validate.pkr.hcl`
 
+   Execute the following command to create the `variables.pkrvar.hcl` file by copying `variables_template.pkrvar.hcl` and renaming it to `variables.pkrvar.hcl`.
+   Update this file with your values.
+
+   ```sh
+   cp variables_template.pkrvar.hcl variables.pkrvar.hcl
+   ```
+
 9. **Build the Hardened Image**
 
    Execute the following command to build and save the hardened Mongo image:

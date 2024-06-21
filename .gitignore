@@ -1,6 +1,7 @@
 reports/**
 inputs.yml
 inspec.lock
+variables.pkrvar.hcl
 *.zip
 *.pem
 *.csr

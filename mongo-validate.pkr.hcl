@@ -73,16 +73,16 @@ build {
     script           = "spec/scripts/scan.sh"
   }
 
-  // ### REPORT
-  // provisioner "shell-local" {
-  //   environment_vars = [
-  //     "REPORT_DIR=${var.scan.report_dir}",
-  //     "REPORT_TO_HEIMDALL=${var.report.report_to_heimdall}",
-  //     "HEIMDALL_URL=${var.report.heimdall_url}",
-  //     "HEIMDALL_API_KEY=${var.report.heimdall_api_key}"
-  //   ]
-  //   scripts          = ["spec/scripts/report.sh"]
-  // }
+  ### REPORT
+  provisioner "shell-local" {
+    environment_vars = [
+      "REPORT_DIR=${var.scan.report_dir}",
+      "REPORT_TO_HEIMDALL=${var.report.report_to_heimdall}",
+      "HEIMDALL_URL=${var.report.heimdall_url}",
+      "HEIMDALL_API_KEY=${var.report.heimdall_api_key}"
+    ]
+    scripts          = ["spec/scripts/report.sh"]
+  }
 
   // ### VERIFY
   // provisioner "shell-local" {
