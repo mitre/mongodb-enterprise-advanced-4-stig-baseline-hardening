@@ -93,7 +93,11 @@ mongo_superusers:
    packer init .
    ```
 
-8. **Build the Hardened Image**
+8. **Update `variables.pkrvar.hcl` for Packer Variables**
+
+   Update the `variables.pkrvar.hcl` with your variables for `mongo-validate.pkr.hcl`
+
+9. **Build the Hardened Image**
 
    Execute the following command to build and save the hardened Mongo image:
 
@@ -101,15 +105,15 @@ mongo_superusers:
    packer build mongo-hardening.pkr.hcl
    ```
 
-9. **Validate the Hardened Image**
+10. **Validate the Hardened Image**
 
-   Execute the following command to test the hardened Mongo image:
+    Execute the following command to test the hardened Mongo image:
 
-   ```sh
-   packer build mongo-validate.pkr.hcl
-   ```
+    ```sh
+    packer build -var-file="variables.pkrvar.hcl" mongo-validate.pkr.hcl
+    ```
 
-10. **Run the Hardened Image**
+11. **Run the Hardened Image**
 
     Execute the following command to run the hardened Mongo image:
 
