@@ -12,7 +12,7 @@ A workflow for hardening a MongoDB container against a STIG using Packer and Ans
 
 ## Tailoring Your Scan to Your Environment
 
-To ensure the profile runs correctly in your specific environment, you need to configure the inputs in the `inputs.yml`. This will **OVERRIDE THE VALUE SET** in `inspec.yml`. A template file named `inputs_template.yml` is provided to help you get started. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://docs.chef.io/inspec/profiles/).
+To ensure the profile runs correctly in your specific environment, you need to configure the inputs in the `inputs.yml`. This will **OVERRIDE THE VALUE SET** in `inspec.yml` located [here](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline/blob/main/inspec.yml). A template file named `inputs_template.yml` is provided to help you get started. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://docs.chef.io/inspec/profiles/).
 
 ### Verify Ansible Variables
 
