@@ -59,6 +59,7 @@ build {
   name    = "validate"
   sources = ["source.docker.hardened"]
 
+  ### SCAN
   provisioner "shell-local" {
     environment_vars = [
       "CHEF_LICENSE=accept",
@@ -84,21 +85,14 @@ build {
     scripts          = ["spec/scripts/report.sh"]
   }
 
-  // ### VERIFY
-  // provisioner "shell-local" {
-  //   environment_vars = [
-  //     "TARGET_IMAGE=${var.input_hardened_image.name}",
-  //     "REPORT_DIR=${var.scan.report_dir}"
-  //   ]
-  //   valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
-  //                             # this does not mean we want to halt the run 
-  //   scripts          = ["spec/scripts/verify_threshold.sh"]
-  // }
-
-  // provisioner "shell" {
-  //   inline = [
-  //     "docker stop ${var.input_hardened_image.name}",
-  //     //"docker rm ${var.input_hardened_image.name}"
-  //   ]
-  // }
+  ### VERIFY
+  provisioner "shell-local" {
+    environment_vars = [
+      "TARGET_IMAGE=${var.input_hardened_image.name}",
+      "REPORT_DIR=${var.scan.report_dir}"
+    ]
+    valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
+                              # this does not mean we want to halt the run 
+    scripts          = ["spec/scripts/verify_threshold.sh"]
+  }
 }

@@ -9,5 +9,4 @@ inspec exec $PROFILE \
     -t docker://$CONTAINER_ID \
     --input-file=$INPUT_FILE \
     --reporter cli json:$REPORT_DIR/$REPORT_FILE \
-    --no-create-lockfile \
-    --show-progress
+    --no-create-lockfile
