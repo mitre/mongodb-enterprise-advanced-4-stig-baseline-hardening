@@ -3,6 +3,7 @@ inputs.yml
 inspec.lock
 variables.pkrvar.hcl
 *.zip
+*.log
 *.pem
 *.csr
 *.crt
