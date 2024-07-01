@@ -23,8 +23,8 @@ variable "input_hardened_image" {
 variable "scan" {
   type = map(string)
   default = {
+    "inspec_profile"         = "https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline.git",
     "report_dir"             = "reports",
-    "inspec_profile"         = "spec/mongo-inspec-profile",
     "inspec_report_filename" = "inspec_results.json",
     "inspec_input_file"      = "spec/mongo-inspec-profile/inputs.yml"
   }

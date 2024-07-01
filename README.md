@@ -147,7 +147,7 @@ Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-st
   - Remove the `--controls` flag to run all inspec checks at once.
 
   ```sh
-  inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --reporter cli json:reports/inspec_results.json --no-create-lockfile --show-progress
+  inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --reporter cli json:reports/inspec_results.json --no-create-lockfile --enhanced-outcomes
   ```
 
 - Deeper Testing with InSpec Shell

@@ -1,8 +1,9 @@
 ---
 roles:
-  - name: rhel8STIG
-    src: https://github.com/ansible-lockdown/RHEL8-STIG
-
+  - name: mongoSTIG
+    src: https://github.com/mitre/ansible-mongodb-enterprise-advanced-4-stig-hardening
+    version: main
+    
   - src: mitre.yedit
 
 collections:

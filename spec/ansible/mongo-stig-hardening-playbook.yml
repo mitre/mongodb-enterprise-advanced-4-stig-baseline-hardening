@@ -2,11 +2,12 @@
 - hosts:
     - localhost
   roles:
-    - roles/prep
-    - mitre.yedit
-    - mongo-stig
+    - role: roles/prep
+    - role: mitre.yedit
+    - role: mongoSTIG
+      vars:
+        fips_mode: true
+        enterprise_edition: true
   serial: 50
   user: 0
-  vars:
-    fips_mode: true
-    enterprise_edition: true
+
