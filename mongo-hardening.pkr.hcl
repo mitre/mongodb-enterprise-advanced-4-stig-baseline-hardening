@@ -18,6 +18,7 @@ variable "ansible_vars" {
     # "ansible_connection" uses the docker socket instead of the default SSH connection.
     "ansible_connection" = "docker",
     "python_version"     = "3.9"
+    "roles_path"         = "spec/ansible/roles"
   }
 }
 
@@ -82,11 +83,12 @@ build {
   provisioner "ansible" {
     playbook_file = "spec/ansible/mongo-stig-hardening-playbook.yml"
     galaxy_file   = "spec/ansible/requirements.yml"
+    roles_path    = "${var.ansible_vars.roles_path}"
     extra_arguments = [ 
       "--extra-vars", "ansible_host=${var.output_image.name}",
       "--extra-vars", "ansible_connection=${var.ansible_vars.ansible_connection}",
       "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
-      "--extra-vars", "ansible_pip_executable=pip3"
+      "--extra-vars", "ansible_pip_executable=pip3",
     ]
   }
 

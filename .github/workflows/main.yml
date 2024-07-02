@@ -9,33 +9,33 @@ jobs:
     name: Harden MongoDB Container
     runs-on: ubuntu-latest
     env:
-      foo: bar
+      REPORT_TO_HEIMDALL: "true"
+      HEIMDALL_URL: "https://heimdall-demo.mitre.org/evaluations"
+      HEIMDALL_API_KEY: ${{ secrets.SAF_HEIMDALL_UPLOAD_KEY }}
     steps:
-      - name: add dependencies
+      - name: Add Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install packer
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install packer
           python3 -m pip install --user ansible
           python3 -m pip install --upgrade --user ansible
-          pip install jmespath
           npm install -g @mitre/saf
-          curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
-          sudo apt-get install wget apt-transport-https gnupg lsb-release
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install trivy
-      - name: Clone repository in
-        uses: actions/checkout@v3
-      - name: run packer
+          curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
+
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Run Packer
         run: |
-          packer init ubi8-hardening.pkr.hcl
-          packer build -var 'report={"report_to_heimdall":"false"}' .
-      - name: Save scan artifacts
-        uses: actions/upload-artifact@v3
+          packer init mongo-hardening.pkr.hcl
+          packer build mongo-hardening.pkr.hcl
+          packer build -var "report_to_heimdall=${{env.REPORT_TO_HEIMDALL}}" -var "heimdall_url=${{ env.HEIMDALL_URL }}" -var "heimdall_api_key=${{ env.HEIMDALL_API_KEY }}" mongo-validate.pkr.hcl
+
+      - name: Save Scan Artifacts
+        uses: actions/upload-artifact@v4
         with:
           path: reports/*.json
         if: always()
