@@ -7,11 +7,14 @@ on:
 jobs:
   my_job:
     name: Harden MongoDB Container
+
     runs-on: ubuntu-latest
+
     env:
       REPORT_TO_HEIMDALL: "true"
       HEIMDALL_URL: "https://heimdall-demo.mitre.org/evaluations"
       HEIMDALL_API_KEY: ${{ secrets.SAF_HEIMDALL_UPLOAD_KEY }}
+
     steps:
       - name: Add Dependencies
         run: |
@@ -27,6 +30,17 @@ jobs:
 
       - name: Clone Repository
         uses: actions/checkout@v4
+
+      - name: Move Certificates
+        env:
+          CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
+          CA_FILE_BASE64_AB: ${{ secrets.CA_FILE_BASE64_AB }}
+          CERTIFICATE_KEY_FILE_BASE64: ${{secrets.CERTIFICATE_KEY_FILE_BASE64}}
+        run: |
+          echo $CA_FILE_BASE64_AA > CA_FILE_BASE64
+          echo $CA_FILE_BASE64_AB >> CA_FILE_BASE64
+          base64 --decode CA_FILE_BASE64 > certificates/dod_CAs.pem
+          base64 --decode CERTIFICATE_KEY_FILE_BASE64 > certificates/mongodb.pem
 
       - name: Run Packer
         run: |
