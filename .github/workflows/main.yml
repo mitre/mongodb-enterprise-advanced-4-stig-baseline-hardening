@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      REPORT_TO_HEIMDALL: "true"
-      HEIMDALL_URL: "https://heimdall-demo.mitre.org/evaluations"
+      REPORT_TO_HEIMDALL: true
+      HEIMDALL_URL: https://heimdall-demo.mitre.org/evaluations
       HEIMDALL_API_KEY: ${{ secrets.SAF_HEIMDALL_UPLOAD_KEY }}
       CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
       CA_FILE_BASE64_AB: ${{ secrets.CA_FILE_BASE64_AB }}
@@ -36,17 +36,17 @@ jobs:
 
       - name: Move Certificates
         run: |
-          echo $CA_FILE_BASE64_AA > CA_FILE
-          echo $CA_FILE_BASE64_AB >> CA_FILE
+          echo ${{ env.CA_FILE_BASE64_AA }} > CA_FILE
+          echo ${{ env.CA_FILE_BASE64_AB }} >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
-          echo "$CERTIFICATE_KEY_FILE_BASE64" > CERTIFICATE_KEY_FILE
+          echo ${{ env.CERTIFICATE_KEY_FILE_BASE64 }} > CERTIFICATE_KEY_FILE
           base64 --decode CERTIFICATE_KEY_FILE > certificates/mongodb.pem
 
       - name: Run Packer
         run: |
           packer init mongo-hardening.pkr.hcl
           packer build mongo-hardening.pkr.hcl
-          packer build -var 'report={"report_to_heimdall":${{ env.REPORT_TO_HEIMDALL }},"heimdall_url":${{ env.HEIMDALL_URL }},"heimdall_api_key":${{ env.HEIMDALL_API_KEY }}}' mongo-validate.pkr.hcl
+          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' mongo-validate.pkr.hcl
 
       - name: Save Scan Artifacts
         uses: actions/upload-artifact@v4
