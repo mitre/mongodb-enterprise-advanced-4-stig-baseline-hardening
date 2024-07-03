@@ -16,7 +16,7 @@ jobs:
       HEIMDALL_API_KEY: ${{ secrets.SAF_HEIMDALL_UPLOAD_KEY }}
       CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
       CA_FILE_BASE64_AB: ${{ secrets.CA_FILE_BASE64_AB }}
-      CERT_KEY_FILE_BASE64: ${{secrets.CERTIFICATE_KEY_FILE_BASE64}}
+      CERTIFICATE_KEY_FILE_BASE64: ${{ secrets.CERTIFICATE_KEY_FILE_BASE64 }}
 
     steps:
       - name: Add Dependencies
@@ -39,9 +39,7 @@ jobs:
           echo $CA_FILE_BASE64_AA > CA_FILE_BASE64
           echo $CA_FILE_BASE64_AB >> CA_FILE_BASE64
           base64 --decode CA_FILE_BASE64 > certificates/dod_CAs.pem
-          cat certificates/dod_CAs.pem
-          base64 --decode CERT_KEY_FILE_BASE64 > certificates/mongodb.pem
-          cat certificates/mongodb.pem
+          base64 --decode CERTIFICATE_KEY_FILE_BASE64 > certificates/mongodb.pem
 
       - name: Run Packer
         run: |
