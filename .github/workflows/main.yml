@@ -41,14 +41,12 @@ jobs:
           base64 --decode CA_FILE > certificates/dod_CAs.pem
           echo "$CERTIFICATE_KEY_FILE_BASE64" > CERTIFICATE_KEY_FILE
           base64 --decode CERTIFICATE_KEY_FILE > certificates/mongodb.pem
-          pwd
-          tree
 
       - name: Run Packer
         run: |
           packer init mongo-hardening.pkr.hcl
           packer build mongo-hardening.pkr.hcl
-          packer build -var "report_to_heimdall=${{ env.REPORT_TO_HEIMDALL }}" -var "heimdall_url=${{ env.HEIMDALL_URL }}" -var "heimdall_api_key=${{ env.HEIMDALL_API_KEY }}" mongo-validate.pkr.hcl
+          packer build -var "report={"report_to_heimdall":${{ env.REPORT_TO_HEIMDALL }},"heimdall_url":${{ env.HEIMDALL_URL }},"heimdall_api_key":${{ env.HEIMDALL_API_KEY }}}" mongo-validate.pkr.hcl
 
       - name: Save Scan Artifacts
         uses: actions/upload-artifact@v4
