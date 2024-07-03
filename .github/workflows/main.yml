@@ -36,10 +36,11 @@ jobs:
 
       - name: Move Certificates
         run: |
-          echo $CA_FILE_BASE64_AA > CA_FILE_BASE64
-          echo $CA_FILE_BASE64_AB >> CA_FILE_BASE64
-          base64 --decode CA_FILE_BASE64 > certificates/dod_CAs.pem
-          base64 --decode $CERTIFICATE_KEY_FILE_BASE64 > certificates/mongodb.pem
+          echo $CA_FILE_BASE64_AA > CA_FILE
+          echo $CA_FILE_BASE64_AB >> CA_FILE
+          base64 --decode CA_FILE > certificates/dod_CAs.pem
+          echo "$CERTIFICATE_KEY_FILE_BASE64" > CERTIFICATE_KEY_FILE
+          base64 --decode CERTIFICATE_KEY_FILE > certificates/dod_CAs.pem
 
       - name: Run Packer
         run: |
