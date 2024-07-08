@@ -63,6 +63,8 @@ build {
   provisioner "shell-local" {
     inline = [
       "docker ps -a",
+      "docker logs mongo-hardened",
+      "sleep 5",
       "docker exec mongo-hardened sh -c 'ls'",
       "inspec detect -t docker://mongo-hardened",
       "docker ps -a"
