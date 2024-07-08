@@ -28,7 +28,8 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Move Certificates
+      - name: Move Certificates and Input file
+        shell: bash
         run: |
           echo "${{ env.CA_FILE_BASE64_AA }}" > CA_FILE
           echo "${{ env.CA_FILE_BASE64_AB }}" >> CA_FILE
