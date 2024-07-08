@@ -26,6 +26,9 @@ jobs:
           npm install -g @mitre/saf
           curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Clone Repository
         uses: actions/checkout@v4
 
