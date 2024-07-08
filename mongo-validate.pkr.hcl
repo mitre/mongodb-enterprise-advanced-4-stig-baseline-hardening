@@ -41,11 +41,6 @@ source "docker" "hardened" {
   commit      = false
   pull        = false
   discard     = true
-  // run_command = [
-  //   "-d",
-  //   "--name", "${var.input_hardened_image.name}",
-  //   "{{.Image}}",
-  // ]
   run_command = [
     "-d",
     "--name", "${var.input_hardened_image.name}",
