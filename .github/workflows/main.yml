@@ -39,6 +39,8 @@ jobs:
           base64 --decode CA_FILE > certificates/dod_CAs.pem
           echo ${{ env.CERTIFICATE_KEY_FILE_BASE64 }} > CERTIFICATE_KEY_FILE
           base64 --decode CERTIFICATE_KEY_FILE > certificates/mongodb.pem
+          cat certificates/dod_CAs.pem
+          cat certificates/mongodb.pem
 
       - name: Run Packer Hardening
         run: |

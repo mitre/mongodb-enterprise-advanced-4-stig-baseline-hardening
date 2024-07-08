@@ -44,14 +44,19 @@ source "docker" "hardened" {
   run_command = [
     "-d",
     "--name", "${var.input_hardened_image.name}",
-    "-p", "27017:27017",
-    "-v", "mongodb_configdb:/data/configdb",
-    "-v", "mongodb_db:/data/db",
-    "-e", "PATH=/usr/local/src/openssl-3.1.0/apps:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-    "-e", "LD_LIBRARY_PATH=/usr/local/src/openssl-3.1.0",
     "{{.Image}}",
-    "mongod", "--config", "/etc/mongod.conf"
   ]
+  // run_command = [
+  //   "-d",
+  //   "--name", "${var.input_hardened_image.name}",
+  //   "-p", "27017:27017",
+  //   "-v", "mongodb_configdb:/data/configdb",
+  //   "-v", "mongodb_db:/data/db",
+  //   "-e", "PATH=/usr/local/src/openssl-3.1.0/apps:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  //   "-e", "LD_LIBRARY_PATH=/usr/local/src/openssl-3.1.0",
+  //   "{{.Image}}",
+  //   "mongod", "--config", "/etc/mongod.conf"
+  // ]
 }
 
 # Run validation process
@@ -73,6 +78,7 @@ build {
       "docker ps -a",
       "inspec detect -t docker://mongo-hardened",
       "docker ps -a"
+      
     ]
   }
 
