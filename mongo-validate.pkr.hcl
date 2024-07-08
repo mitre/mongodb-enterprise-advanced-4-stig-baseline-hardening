@@ -59,10 +59,16 @@ build {
   name    = "validate"
   sources = ["source.docker.hardened"]
 
+  # docker ps
+  provisioner "shell-local" {
+    inline = [
+      "docker ps -a"
+    ]
+  }
+
   ### SCAN
   provisioner "shell-local" {
     environment_vars = [
-      "CHEF_LICENSE=accept",
       "PROFILE=${var.scan.inspec_profile}",
       "CONTAINER_ID=${var.input_hardened_image.name}",
       "REPORT_DIR=${var.scan.report_dir}",
