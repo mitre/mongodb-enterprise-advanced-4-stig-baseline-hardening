@@ -64,8 +64,10 @@ build {
     inline = [
       "docker ps -a",
       "docker logs mongo-hardened",
+      "docker ps -a",
       "sleep 5",
       "docker exec mongo-hardened sh -c 'ls'",
+      "docker ps -a",
       "inspec detect -t docker://mongo-hardened",
       "docker ps -a"
     ]
