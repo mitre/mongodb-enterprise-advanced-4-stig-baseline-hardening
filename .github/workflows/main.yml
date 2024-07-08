@@ -16,14 +16,13 @@ jobs:
       HEIMDALL_API_KEY: ${{ secrets.SAF_HEIMDALL_UPLOAD_KEY }}
       CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
       CA_FILE_BASE64_AB: ${{ secrets.CA_FILE_BASE64_AB }}
-      CERTIFICATE_KEY_FILE_BASE64: ${{ secrets.CERTIFICATE_KEY_FILE_BASE64 }}
       CERTIFICATE_KEY_FILE: ${{ secrets.CERTIFICATE_KEY_FILE }}
 
     steps:
-      # - name: Add Dependencies
-      #   run: |
-      #     npm install -g @mitre/saf
-      #     curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
+      - name: Add Dependencies
+        run: |
+          npm install -g @mitre/saf
+          curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
 
       - name: Clone Repository
         uses: actions/checkout@v4
@@ -34,37 +33,31 @@ jobs:
           echo "${{ env.CA_FILE_BASE64_AB }}" >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
           echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
-          cat certificates/mongodb.pem
-          cat certificates/dod_CAs.pem
 
-      - name: Display first 100 characters of CERTIFICATE_KEY_FILE
+      - name: Run Packer Hardening
         run: |
-          head -c 100 certificates/mongodb.pem
+          packer init mongo-hardening.pkr.hcl
+          packer build mongo-hardening.pkr.hcl
 
-      # - name: Run Packer Hardening
-      #   run: |
-      #     packer init mongo-hardening.pkr.hcl
-      #     packer build mongo-hardening.pkr.hcl
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Log in to GitHub Container Registry
-      #   uses: docker/login-action@v2
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag and Push Docker Image
+        run: |
+          docker tag mongo-hardened:latest ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
+          docker push ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
 
-      # - name: Tag and Push Docker Image
-      #   run: |
-      #     docker tag mongo-hardened:latest ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
-      #     docker push ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
+      - name: Run Packer Validation
+        run: |
+          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' mongo-validate.pkr.hcl
+          docker ps -a
 
-      # - name: Run Packer Validation
-      #   run: |
-      #     packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' mongo-validate.pkr.hcl
-      #     docker ps -a
-
-      # - name: Save Scan Artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     path: reports/*.json
-      #   if: always()
+      - name: Save Scan Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: reports/*.json
+        if: always()
