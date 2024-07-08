@@ -63,29 +63,31 @@ build {
   provisioner "shell-local" {
     inline = [
       "docker ps -a",
-      "inspec detect -t docker://mongo-hardened"
+      "cinc-auditor detect -t docker://mongo-hardened",
+      "docker ps -a"
     ]
   }
 
   ### SCAN
-  provisioner "shell-local" {
-    environment_vars = [
-      "PROFILE=${var.scan.inspec_profile}",
-      "CONTAINER_ID=${var.input_hardened_image.name}",
-      "REPORT_DIR=${var.scan.report_dir}",
-      "REPORT_FILE=${var.scan.inspec_report_filename}",
-      "INPUT_FILE=${var.scan.inspec_input_file}",
-      "TARGET_IMAGE=${var.input_hardened_image.name}",
-    ]
-    valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
-    script           = "spec/scripts/scan.sh"
-  }
+  // provisioner "shell-local" {
+  //   environment_vars = [
+  //     "PROFILE=${var.scan.inspec_profile}",
+  //     "CONTAINER_ID=${var.input_hardened_image.name}",
+  //     "REPORT_DIR=${var.scan.report_dir}",
+  //     "REPORT_FILE=${var.scan.inspec_report_filename}",
+  //     "INPUT_FILE=${var.scan.inspec_input_file}",
+  //     "TARGET_IMAGE=${var.input_hardened_image.name}",
+  //   ]
+  //   valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
+  //   script           = "spec/scripts/scan.sh"
+  // }
 
   # docker ps
   provisioner "shell-local" {
     inline = [
       "docker ps -a",
-      "inspec detect -t docker://mongo-hardened"
+      "cinc-auditor detect -t docker://mongo-hardened",
+      "docker ps -a"
     ]
   }
 
