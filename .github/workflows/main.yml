@@ -31,6 +31,7 @@ jobs:
       - name: Move Certificates and Input file
         shell: bash
         run: |
+          set +x
           echo "${{ env.CA_FILE_BASE64_AA }}" > CA_FILE
           echo "${{ env.CA_FILE_BASE64_AB }}" >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
