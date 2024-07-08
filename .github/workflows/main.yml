@@ -30,10 +30,12 @@ jobs:
 
       - name: Move Certificates
         run: |
-          echo ${{ env.CA_FILE_BASE64_AA }} > CA_FILE
-          echo ${{ env.CA_FILE_BASE64_AB }} >> CA_FILE
+          echo "${{ env.CA_FILE_BASE64_AA }}" > CA_FILE
+          echo "${{ env.CA_FILE_BASE64_AB }}" >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
           echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
+          cat certificates/mongodb.pem
+          cat certificates/dod_CAs.pem
 
       - name: Display first 100 characters of CERTIFICATE_KEY_FILE
         run: |
