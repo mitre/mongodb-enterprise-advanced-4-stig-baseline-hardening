@@ -20,10 +20,10 @@ jobs:
       CERTIFICATE_KEY_FILE: ${{ secrets.CERTIFICATE_KEY_FILE }}
 
     steps:
-      - name: Add Dependencies
-        run: |
-          npm install -g @mitre/saf
-          curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
+      # - name: Add Dependencies
+      #   run: |
+      #     npm install -g @mitre/saf
+      #     curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
 
       - name: Clone Repository
         uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
           echo ${{ env.CA_FILE_BASE64_AA }} > CA_FILE
           echo ${{ env.CA_FILE_BASE64_AB }} >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
-          echo ${{ env.CERTIFICATE_KEY_FILE }} > certificates/mongodb.pem
+          echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
 
       - name: Display first 100 characters of CERTIFICATE_KEY_FILE
         run: |
