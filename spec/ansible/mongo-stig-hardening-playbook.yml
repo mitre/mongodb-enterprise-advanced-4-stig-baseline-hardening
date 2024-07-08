@@ -6,7 +6,7 @@
     - role: mitre.yedit
     - role: mongoSTIG
       vars:
-        fips_mode: false
+        fips_mode: true
         enterprise_edition: true
   serial: 50
   user: 0

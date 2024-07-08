@@ -31,11 +31,11 @@ jobs:
       - name: Move Certificates and Input file
         shell: bash
         run: |
-          printf "%s" "${{ env.CA_FILE_BASE64_AA }}" > CA_FILE
-          printf "%s" "${{ env.CA_FILE_BASE64_AB }}" >> CA_FILE
+          echo "${{ env.CA_FILE_BASE64_AA }}" > CA_FILE
+          echo "${{ env.CA_FILE_BASE64_AB }}" >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
-          printf "%s" "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
-          printf "%s" "${{ env.INSPEC_INPUTS }}" > spec/mongo-inspec-profile/inputs.yml
+          echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
+          echo "${{ env.INSPEC_INPUTS }}" > spec/mongo-inspec-profile/inputs.yml
 
       - name: Run Packer Hardening
         run: |
