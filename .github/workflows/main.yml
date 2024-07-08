@@ -34,7 +34,10 @@ jobs:
           echo ${{ env.CA_FILE_BASE64_AB }} >> CA_FILE
           base64 --decode CA_FILE > certificates/dod_CAs.pem
           echo ${{ env.CERTIFICATE_KEY_FILE }} > certificates/mongodb.pem
-          head -c 10 certificates/mongodb.pem
+
+      - name: Display first 100 characters of CERTIFICATE_KEY_FILE
+        run: |
+          head -c 100 certificates/mongodb.pem
 
       # - name: Run Packer Hardening
       #   run: |
