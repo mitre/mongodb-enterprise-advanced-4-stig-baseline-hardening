@@ -47,6 +47,7 @@ jobs:
           packer init mongo-hardening.pkr.hcl
           packer build mongo-hardening.pkr.hcl
           docker ps -a
+          docker image ls
           packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' mongo-validate.pkr.hcl
           docker ps -a
 
