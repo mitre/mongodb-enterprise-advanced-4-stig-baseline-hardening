@@ -57,8 +57,8 @@ source "docker" "target" {
 
 # Run the process to harden the docker container
 build {
-  name = "harden"
-  sources = "source.docker.target"
+  name    = "harden"
+  sources = ["source.docker.target"]
 
   # Create docker volumes
   provisioner "shell-local" {

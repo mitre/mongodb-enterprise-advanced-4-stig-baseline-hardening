@@ -57,7 +57,7 @@ source "docker" "hardened" {
 # Run validation process
 build {
   name    = "validate"
-  sources = "source.docker.hardened"
+  sources = ["source.docker.hardened"]
 
   # docker ps
   provisioner "shell-local" {
