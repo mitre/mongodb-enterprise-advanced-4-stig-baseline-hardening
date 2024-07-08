@@ -62,7 +62,8 @@ build {
   # docker ps
   provisioner "shell-local" {
     inline = [
-      "docker ps -a"
+      "docker ps -a",
+      "inspec detect -t docker://mongo-hardened"
     ]
   }
 
@@ -80,6 +81,14 @@ build {
     script           = "spec/scripts/scan.sh"
   }
 
+  # docker ps
+  provisioner "shell-local" {
+    inline = [
+      "docker ps -a",
+      "inspec detect -t docker://mongo-hardened"
+    ]
+  }
+
   ### REPORT
   provisioner "shell-local" {
     environment_vars = [
@@ -89,6 +98,13 @@ build {
       "HEIMDALL_API_KEY=${var.report.heimdall_api_key}"
     ]
     scripts          = ["spec/scripts/report.sh"]
+  }
+
+  # docker ps
+  provisioner "shell-local" {
+    inline = [
+      "docker ps -a"
+    ]
   }
 
   ### VERIFY

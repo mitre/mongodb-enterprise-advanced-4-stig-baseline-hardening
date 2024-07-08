@@ -21,13 +21,8 @@ jobs:
     steps:
       - name: Add Dependencies
         run: |
-          sudo apt-get update
-          curl -fsSL https://get.docker.com -o get-docker.sh
-          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          sudo apt-get install packer
-          python3 -m pip install --user ansible
-          python3 -m pip install --upgrade --user ansible
+          # python3 -m pip install --user ansible
+          # python3 -m pip install --upgrade --user ansible
           npm install -g @mitre/saf
           curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
 
