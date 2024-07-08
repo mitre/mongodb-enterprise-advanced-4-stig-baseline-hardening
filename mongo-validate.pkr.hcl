@@ -59,15 +59,15 @@ build {
   name    = "validate"
   sources = ["source.docker.hardened"]
 
-  // # docker ps
-  // provisioner "shell-local" {
-  //   inline = [
-  //     "docker ps -a",
-  //     "docker exec mongo-hardened sh -c 'ls'",
-  //     "inspec detect -t docker://mongo-hardened",
-  //     "docker ps -a"
-  //   ]
-  // }
+  # docker ps
+  provisioner "shell-local" {
+    inline = [
+      "docker ps -a",
+      "docker exec mongo-hardened sh -c 'ls'",
+      "inspec detect -t docker://mongo-hardened",
+      "docker ps -a"
+    ]
+  }
 
   ### SCAN
   provisioner "shell-local" {
