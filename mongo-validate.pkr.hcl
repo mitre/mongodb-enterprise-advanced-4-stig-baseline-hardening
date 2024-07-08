@@ -57,13 +57,13 @@ source "docker" "hardened" {
 # Run validation process
 build {
   name    = "validate"
-  sources = ["source.docker.hardened"]
+  sources = "source.docker.hardened"
 
   # docker ps
   provisioner "shell-local" {
     inline = [
       "docker ps -a",
-      "docker exec -it mongo-hardened sh -c 'ls'",
+      "docker exec mongo-hardened sh -c 'ls'",
       "cinc-auditor detect -t docker://mongo-hardened",
       "docker ps -a"
     ]
