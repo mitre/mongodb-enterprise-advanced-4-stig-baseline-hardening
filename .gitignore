@@ -1,6 +1,8 @@
 reports/**
 inputs.yml
 inspec.lock
+spec/ansible/roles/mongo-stig
+spec/ansible/roles/mitre.yedit
 variables.pkrvar.hcl
 *.zip
 *.log

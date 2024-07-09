@@ -1,6 +1,6 @@
 ---
 roles:
-  - name: mongoSTIG
+  - name: mongo-stig
     src: https://github.com/mitre/ansible-mongodb-enterprise-advanced-4-stig-hardening
     version: main
     
