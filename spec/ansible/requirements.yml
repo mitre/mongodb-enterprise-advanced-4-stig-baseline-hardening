@@ -1,10 +1,4 @@
 ---
 roles:
-  - name: mongo-stig
-    src: https://github.com/mitre/ansible-mongodb-enterprise-advanced-4-stig-hardening
-    version: main
-    
+  - src: mitre.mongo-stig
   - src: mitre.yedit
-
-collections:
-  - name: community.mongodb

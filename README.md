@@ -138,7 +138,13 @@ mongo_superusers:
 
 ## Notes
 
-### InSpec
+### Certificates
+
+For the full `README`, refer to the `certificates` folder.
+
+- If you encounter connection errors, ensure you have the latest OpenSSL version (last tested with OpenSSL 3.3.0).
+
+### InSpec Profile
 
 Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline).
 
@@ -158,11 +164,9 @@ Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-st
 
 - You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library] (https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
 
-### Certificates
+### Ansible Role
 
-For the full `README`, refer to the `certificates` folder.
-
-- If you encounter connection errors, ensure you have the latest OpenSSL version (last tested with OpenSSL 3.3.0).
+Full repository [here](https://github.com/mitre/ansible-mongodb-enterprise-advanced-4-stig-hardening).
 
 ## Authors
 

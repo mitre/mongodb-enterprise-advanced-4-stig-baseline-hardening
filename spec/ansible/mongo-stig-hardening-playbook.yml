@@ -4,7 +4,7 @@
   roles:
     - role: roles/prep
     - role: mitre.yedit
-    - role: mongo-stig
+    - role: mitre.mongo-stig
       vars:
         fips_mode: true
         enterprise_edition: true
