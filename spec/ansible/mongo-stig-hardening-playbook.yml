@@ -3,7 +3,6 @@
     - localhost
   roles:
     - role: roles/prep
-    - role: mitre.yedit
     - role: mitre.mongo-stig
       vars:
         fips_mode: true
