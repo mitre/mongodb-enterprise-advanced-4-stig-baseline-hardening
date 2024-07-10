@@ -7,6 +7,5 @@
       vars:
         fips_mode: true
         enterprise_edition: true
-  serial: 50
-  user: 0
+  user: root
 
