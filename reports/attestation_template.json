@@ -1,0 +1,154 @@
+[
+  {
+    "control_id": "SV-252144",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252147",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252150",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252151",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252152",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252153",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252158",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252161",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252162",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252165",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252166",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252170",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252172",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252173",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252177",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252181",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252183",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252184",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  },
+  {
+    "control_id": "SV-252185",
+    "explanation": "This attestation is provided as a template.",
+    "frequency": "1y",
+    "status": "not_reviewed",
+    "updated": "2024-07-11T17:30:33.627Z",
+    "updated_by": "MITRE SAF"
+  }
+]

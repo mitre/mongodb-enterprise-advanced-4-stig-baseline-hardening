@@ -35,6 +35,11 @@ variable "report" {
   description = "Configuration for reporting to Heimdall"
 }
 
+variable "attestation" {
+  type = map(string)
+  description = "Configuration for attesting inspec results"
+}
+
 # Hardened docker container to be validated
 source "docker" "hardened" {
   image       = "${var.input_hardened_image.name}:${var.input_hardened_image.tag}"
@@ -67,10 +72,21 @@ build {
       "REPORT_DIR=${var.scan.report_dir}",
       "REPORT_FILE=${var.scan.inspec_report_filename}",
       "INPUT_FILE=${var.scan.inspec_input_file}",
-      "TARGET_IMAGE=${var.input_hardened_image.name}",
+      "TARGET_IMAGE=${var.input_hardened_image.name}"
     ]
     valid_exit_codes = [0, 100, 101] # inspec has multiple valid exit codes
     script           = "spec/scripts/scan.sh"
+  }
+
+  ### ATTEST
+  provisioner "shell-local" {
+    environment_vars = [
+      "INSPEC_FILE=${var.attestation.inspec_report_filename}",
+      "REPORT_DIR=${var.attestation.report_dir}",
+      "ATTESTATION_FILE=${var.attestation.attestation_filename}",
+      "ATTESTED_FILE=${var.attestation.attested_inspec_filename}"
+    ]
+    script           = "spec/scripts/attestation.sh"
   }
 
   ### REPORT
@@ -88,7 +104,8 @@ build {
   provisioner "shell-local" {
     environment_vars = [
       "TARGET_IMAGE=${var.input_hardened_image.name}",
-      "REPORT_DIR=${var.scan.report_dir}"
+      "REPORT_DIR=${var.scan.report_dir}",
+      "ATTESTED_FILE=${var.attestation.attested_inspec_filename}"
     ]
     valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
                               # this does not mean we want to halt the run 

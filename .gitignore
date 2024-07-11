@@ -1,4 +1,5 @@
 reports/**
+!reports/attestation_template.json
 inputs.yml
 inspec.lock
 spec/ansible/roles/mitre.mongo-stig

@@ -14,6 +14,12 @@ jobs:
       REPORT_TO_HEIMDALL: true
       HEIMDALL_URL: https://heimdall-demo.mitre.org/evaluations
       HEIMDALL_API_KEY: ${{ secrets.SAF_HEIMDALL_UPLOAD_KEY }}
+
+      REPORT_DIR: reports
+      INSPEC_REPORT_FILENAME: inspec_results.json
+      ATTESTATION_FILENAME: ${{ secrets.ATTESTATION_FILE}}
+      ATTESTED_INSPEC_FILE_NAME: inspec_results.json
+
       CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
       CA_FILE_BASE64_AB: ${{ secrets.CA_FILE_BASE64_AB }}
       CERTIFICATE_KEY_FILE: ${{ secrets.CERTIFICATE_KEY_FILE }}
@@ -42,6 +48,22 @@ jobs:
           packer init mongo-hardening.pkr.hcl
           packer build mongo-hardening.pkr.hcl
 
+      - name: Run Packer Validation
+        run: |
+          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"${{ env.ATTESTATION_FILENAME }}","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
+          docker ps -a
+
+      - name: Get Docker Image Tag
+        run: |
+          if docker images | grep -q 'passed'; then
+            echo "image_tag=passed" >> $GITHUB_ENV
+          elif docker images | grep -q 'failed'; then
+            echo "image_tag=failed" >> $GITHUB_ENV
+          else
+            echo "No suitable image found"
+            exit 1
+          fi
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -49,15 +71,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Tag and Push Docker Image
+      - name: Tag and Push Docker Image to GHCR
         run: |
           docker tag mongo-hardened:latest ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
           docker push ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
 
-      - name: Run Packer Validation
+      - name: Tag and Push Docker Image to GHCR
         run: |
-          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' mongo-validate.pkr.hcl
-          docker ps -a
+          docker tag mongo-hardened:${{ env.image_tag }} ghcr.io/${{ github.repository_owner }}/mongo-hardened:${{ env.image_tag }}
+          docker push ghcr.io/${{ github.repository_owner }}/mongo-hardened:${{ env.image_tag }}
+        if: env.image_tag != ''
 
       - name: Save Scan Artifacts
         uses: actions/upload-artifact@v4

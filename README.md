@@ -104,6 +104,12 @@ mongo_superusers:
    cp variables_template.pkrvar.hcl variables.pkrvar.hcl
    ```
 
+   8.1 **Optional: Update the `attestation_template.json` Now if Using a STIG Viewer**
+
+   If you have a STIG Viewer available, you can update the `attestation_template.json` now to avoid rerunning the validation Packer file. This allows you to look up the control IDs beforehand and check for compliance in advance.
+
+   Follow the instructions [here](#inspec-report) to proceed, and then return to this step once done.
+
 9. **Build the Hardened Image**
 
    Execute the following command to build and save the hardened Mongo image:
@@ -135,6 +141,44 @@ mongo_superusers:
        mongo-hardened \
        mongod --config /etc/mongod.conf
     ```
+
+## Inspec Report
+
+After running the hardening and validation packer files, a report will be generated in `reports/inspec_results.json`.
+
+1. **Upload the Results**:
+
+   Upload the `inspec_results.json` file to [Heimdall](https://heimdall-lite.mitre.org/). There should be 19 _Not Reviewed_ controls. These controls need to be attested to.
+
+2. **Edit the Attestation Template**:
+
+   Execute the following command to create the `attestation.json` file under `reports` by copying `attestation_template.json` and renaming it to `attestation.json`.
+
+   ```sh
+   cp spec/mongo-inspec-profile/inputs_template.yml spec/mongo-inspec-profile/inputs.yml
+   ```
+
+   Alternatively, you can also have the SAF CLI guide you through the creation of the attestation file. For instructions on how to use the CLI to create an attestation, please refer to the [SAF CLI documentation](https://saf-cli.mitre.org/#create-attestations).
+
+3. **Review and Provide Explanations**:
+
+   Manually review each control and provide an explanation on whether it `passed` or `failed`.
+
+4. **Update `variables.pkrvar.hcl`**:
+
+   Update `variables.pkrvar.hcl` with your new attestation file values.
+
+5. **Re-run the Packer Validation to Apply Your Attestations**
+
+   Execute the following command to test the hardened Mongo image, it should now produce a docker image tagged with `passed`:
+
+   ```sh
+   packer build -var-file="variables.pkrvar.hcl" mongo-validate.pkr.hcl
+   ```
+
+6. **Re-upload to Heimdall**:
+
+   Upload the new `inspec_results.json` file back into [Heimdall](https://heimdall-lite.mitre.org/) see your compliance level.
 
 ## Notes
 
