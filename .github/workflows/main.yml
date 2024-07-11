@@ -43,6 +43,8 @@ jobs:
           echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
           echo "${{ env.INSPEC_INPUTS }}" > spec/mongo-inspec-profile/inputs.yml
           echo "${{ env.ATTESTATION_FILE }}" > reports/attestation.json
+          ls reports
+          cat reports/attestation.json
 
       - name: Run Packer Hardening
         run: |
