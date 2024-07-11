@@ -17,7 +17,6 @@ jobs:
 
       REPORT_DIR: reports
       INSPEC_REPORT_FILENAME: inspec_results.json
-      ATTESTATION_FILE: ${{ secrets.ATTESTATION_FILE}}
       ATTESTED_INSPEC_FILE_NAME: inspec_results.json
 
       CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
