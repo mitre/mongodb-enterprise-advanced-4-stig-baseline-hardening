@@ -34,7 +34,7 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Move Certificates and Input file
+      - name: Move Certificates and Input files
         shell: bash
         run: |
           echo "${{ env.CA_FILE_BASE64_AA }}" > CA_FILE
@@ -42,6 +42,7 @@ jobs:
           base64 --decode CA_FILE > certificates/dod_CAs.pem
           echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
           echo "${{ env.INSPEC_INPUTS }}" > spec/mongo-inspec-profile/inputs.yml
+          echo "${{ env.ATTESTATION_FILE }}" > reports/attestation.json
 
       - name: Run Packer Hardening
         run: |
@@ -50,7 +51,6 @@ jobs:
 
       - name: Run Packer Validation
         run: |
-          echo "${{ env.ATTESTATION_FILE }}" > reports/attestation.json
           packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"reports/attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
           docker ps -a
 
