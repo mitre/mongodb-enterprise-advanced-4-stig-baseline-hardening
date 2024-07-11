@@ -43,8 +43,6 @@ jobs:
           echo "${{ env.CERTIFICATE_KEY_FILE }}" > certificates/mongodb.pem
           echo "${{ env.INSPEC_INPUTS }}" > spec/mongo-inspec-profile/inputs.yml
           echo '${{ env.ATTESTATION_FILE }}' | jq . > reports/attestation.json
-          ls reports
-          cat reports/attestation.json
 
       - name: Run Packer Hardening
         run: |
@@ -53,10 +51,7 @@ jobs:
 
       - name: Run Packer Validation
         run: |
-          pwd
-          cat reports/attestation.json
           packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
-          docker ps -a
 
       - name: Get Docker Image Tag
         run: |
@@ -75,11 +70,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Tag and Push Docker Image to GHCR
-        run: |
-          docker tag mongo-hardened:latest ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
-          docker push ghcr.io/${{ github.repository_owner }}/mongo-hardened:latest
 
       - name: Tag and Push Docker Image to GHCR
         run: |
