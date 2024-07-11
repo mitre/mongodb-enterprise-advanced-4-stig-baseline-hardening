@@ -17,7 +17,7 @@ jobs:
 
       REPORT_DIR: reports
       INSPEC_REPORT_FILENAME: inspec_results.json
-      ATTESTATION_FILENAME: ${{ secrets.ATTESTATION_FILE}}
+      ATTESTATION_FILE: ${{ secrets.ATTESTATION_FILE}}
       ATTESTED_INSPEC_FILE_NAME: inspec_results.json
 
       CA_FILE_BASE64_AA: ${{ secrets.CA_FILE_BASE64_AA }}
@@ -50,7 +50,8 @@ jobs:
 
       - name: Run Packer Validation
         run: |
-          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"${{ env.ATTESTATION_FILENAME }}","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
+          echo "${{ env.ATTESTATION_FILE }}" > reports/attestation.json
+          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"reports/attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
           docker ps -a
 
       - name: Get Docker Image Tag
