@@ -55,9 +55,9 @@ jobs:
 
       - name: Get Docker Image Tag
         run: |
-          if docker images | grep -q 'passed'; then
+          if docker images | grep 'passed'; then
             echo "image_tag=passed" >> $GITHUB_ENV
-          elif docker images | grep -q 'failed'; then
+          elif docker images | grep 'failed'; then
             echo "image_tag=failed" >> $GITHUB_ENV
           else
             echo "No suitable image found"
