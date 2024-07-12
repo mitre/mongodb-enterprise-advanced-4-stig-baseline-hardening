@@ -5,7 +5,7 @@
     - role: roles/prep
     - role: mitre.mongo-stig
       vars:
-        fips_mode: true
+        fips_mode: false
         enterprise_edition: true
   user: root
 
