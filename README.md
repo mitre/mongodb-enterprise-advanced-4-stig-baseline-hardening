@@ -206,7 +206,7 @@ Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-st
   inspec shell -t docker://mongo-hardened --depends=spec/mongo-inspec-profile/ --input-file=spec/mongo-inspec-profile/inputs.yml
   ```
 
-- You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library] (https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
+- You can add additional types of scanning beyond InSpec (or get InSpec to run more than one testing profile) by modifying the `scripts/scan.sh` file. See the [MITRE SAF(c) Validation Library](https://saf.mitre.org/#/validate) for more InSpec profiles, or use your favorite image scanning tool.
 
 ### Ansible Role
 
