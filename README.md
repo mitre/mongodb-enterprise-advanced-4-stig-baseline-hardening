@@ -144,11 +144,11 @@ mongo_superusers:
 
 ## Inspec Report
 
-After running the hardening and validation packer files, a report will be generated in `reports/inspec_results.json`.
+After running the hardening and validation packer files, a report will be generated in `reports/mongo_inspec_results.json`.
 
 1. **Upload the Results**:
 
-   Upload the `inspec_results.json` file to [Heimdall](https://heimdall-lite.mitre.org/). There should be 19 _Not Reviewed_ controls. These controls need to be attested to.
+   Upload the `mongo_inspec_results.json` file to [Heimdall](https://heimdall-lite.mitre.org/). There should be 19 _Not Reviewed_ controls. These controls need to be attested to.
 
 2. **Edit the Attestation Template**:
 
@@ -178,7 +178,7 @@ After running the hardening and validation packer files, a report will be genera
 
 6. **Re-upload to Heimdall**:
 
-   Upload the new `inspec_results.json` file back into [Heimdall](https://heimdall-lite.mitre.org/) see your compliance level.
+   Upload the new `mongo_inspec_results.json` file back into [Heimdall](https://heimdall-lite.mitre.org/) see your compliance level.
 
 ## Notes
 
@@ -197,7 +197,7 @@ Full repository [here](https://github.com/mitre/mongodb-enterprise-advanced-4-st
   - Remove the `--controls` flag to run all inspec checks at once.
 
   ```sh
-  inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --reporter cli json:reports/inspec_results.json --no-create-lockfile --enhanced-outcomes
+  inspec exec spec/mongo-inspec-profile/ -t docker://mongo-hardened --controls=SV-252134 --input-file=spec/mongo-inspec-profile/inputs.yml --reporter cli json:reports/mongo_inspec_results.json --no-create-lockfile --enhanced-outcomes
   ```
 
 - Deeper Testing with InSpec Shell

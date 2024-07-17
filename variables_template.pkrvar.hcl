@@ -6,7 +6,7 @@ report = {
 
 attestation = {
   "report_dir"                  = "reports",
-  "inspec_report_filename"      = "inspec_results.json",
+  "inspec_report_filename"      = "mongo_inspec_results.json",
   "attestation_filename"        = "attestation_template.json"
-  "attested_inspec_filename"    = "inspec_results_attested.json"
+  "attested_inspec_filename"    = "mongo_inspec_results_attested.json"
 }

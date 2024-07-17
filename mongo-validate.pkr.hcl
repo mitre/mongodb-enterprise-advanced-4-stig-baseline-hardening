@@ -25,7 +25,7 @@ variable "scan" {
   default = {
     "inspec_profile"         = "https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline.git",
     "report_dir"             = "reports",
-    "inspec_report_filename" = "inspec_results.json",
+    "inspec_report_filename" = "mongo_inspec_results.json",
     "inspec_input_file"      = "spec/mongo-inspec-profile/inputs.yml"
   }
 }
@@ -78,16 +78,16 @@ build {
     script           = "spec/scripts/scan.sh"
   }
 
-  ### ATTEST
-  provisioner "shell-local" {
-    environment_vars = [
-      "INSPEC_FILE=${var.attestation.inspec_report_filename}",
-      "REPORT_DIR=${var.attestation.report_dir}",
-      "ATTESTATION_FILE=${var.attestation.attestation_filename}",
-      "ATTESTED_FILE=${var.attestation.attested_inspec_filename}"
-    ]
-    script           = "spec/scripts/attestation.sh"
-  }
+  // ### ATTEST
+  // provisioner "shell-local" {
+  //   environment_vars = [
+  //     "INSPEC_FILE=${var.attestation.inspec_report_filename}",
+  //     "REPORT_DIR=${var.attestation.report_dir}",
+  //     "ATTESTATION_FILE=${var.attestation.attestation_filename}",
+  //     "ATTESTED_FILE=${var.attestation.attested_inspec_filename}"
+  //   ]
+  //   script           = "spec/scripts/attestation.sh"
+  // }
 
   ### REPORT
   provisioner "shell-local" {
