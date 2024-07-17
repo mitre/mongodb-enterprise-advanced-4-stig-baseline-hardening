@@ -78,16 +78,16 @@ build {
     script           = "spec/scripts/scan.sh"
   }
 
-  // ### ATTEST
-  // provisioner "shell-local" {
-  //   environment_vars = [
-  //     "INSPEC_FILE=${var.attestation.inspec_report_filename}",
-  //     "REPORT_DIR=${var.attestation.report_dir}",
-  //     "ATTESTATION_FILE=${var.attestation.attestation_filename}",
-  //     "ATTESTED_FILE=${var.attestation.attested_inspec_filename}"
-  //   ]
-  //   script           = "spec/scripts/attestation.sh"
-  // }
+  ### ATTEST
+  provisioner "shell-local" {
+    environment_vars = [
+      "INSPEC_FILE=${var.attestation.inspec_report_filename}",
+      "REPORT_DIR=${var.attestation.report_dir}",
+      "ATTESTATION_FILE=${var.attestation.attestation_filename}",
+      "ATTESTED_FILE=${var.attestation.attested_inspec_filename}"
+    ]
+    script           = "spec/scripts/attestation.sh"
+  }
 
   ### REPORT
   provisioner "shell-local" {

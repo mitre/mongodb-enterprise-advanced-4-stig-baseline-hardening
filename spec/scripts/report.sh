@@ -2,6 +2,8 @@
 set -uo pipefail
 
 ### Report InSpec results to Heimdall ###
+echo "--- Reporting InSpec results to Heimdall ---"
+
 saf view summary -i $REPORT_DIR/*.json
 if $REPORT_TO_HEIMDALL
 then 
