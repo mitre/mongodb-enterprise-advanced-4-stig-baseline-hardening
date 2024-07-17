@@ -3,7 +3,7 @@ set -uo pipefail
 
 ### Run InSpec wrapper profile against hardened target ###
 # Note - Packer has an InSpec provisioner plugin, but it doesn't work well with Docker containers
-echo "--- Running InSpec Profile ($PROFILE) against target ---"
+echo "--- Running InSpec profile ($PROFILE) against target ---"
 
 inspec exec $PROFILE \
     -t docker://$CONTAINER_ID \
