@@ -142,6 +142,23 @@ mongo_superusers:
        mongod --config /etc/mongod.conf
     ```
 
+12. **Cleanup Test Users and Roles**
+
+      Once the hardened Mongo image is up and running, ensure you review and clean up any test users, roles, and databases that may have been created during the validation process.
+
+      - **Users**:
+         - `test.myTester`
+         - `products.myRoleTestUser`
+
+      - **Roles**:
+         - `products.myTestRole`
+         - `test.read`
+
+      - **Databases**:
+         - `products`
+
+      For a full check of what could have been created, visit the [inspec repository](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline/blob/main/inspec.yml) and review the users and roles listed there.
+
 ## Inspec Report
 
 After running the hardening and validation packer files, a report will be generated in `reports/mongo_inspec_results.json`.
