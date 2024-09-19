@@ -37,7 +37,12 @@ variable "report" {
 
 variable "attestation" {
   type = map(string)
-  description = "Configuration for attesting inspec results"
+  description = "Configuration for attesting InSpec results"
+}
+
+variable "mongo" {
+  type = map(string)
+  description = "Configuration for connecting to MongoDB"
 }
 
 # Hardened docker container to be validated
@@ -97,7 +102,7 @@ build {
       "HEIMDALL_URL=${var.report.heimdall_url}",
       "HEIMDALL_API_KEY=${var.report.heimdall_api_key}"
     ]
-    scripts          = ["spec/scripts/report.sh"]
+    script          = "spec/scripts/report.sh"
   }
 
   ### VERIFY
@@ -109,6 +114,21 @@ build {
     ]
     valid_exit_codes = [0, 1] # the threshold checks return 1 if the thresholds aren't met
                               # this does not mean we want to halt the run 
-    scripts          = ["spec/scripts/verify_threshold.sh"]
+    script          = "spec/scripts/verify_threshold.sh"
   }
+
+  ### CLEANUP
+  provisioner "shell-local" {
+    environment_vars = [
+      "CONTAINER_NAME=${var.mongo.container_name}",
+      "MONGO_DBA=${var.mongo.mongo_dba}",
+      "MONGO_DBA_PASSWORD=${var.mongo.mongo_dba_password}",
+      "MONGO_HOST=${var.mongo.mongo_host}",
+      "MONGO_PORT=${var.mongo.mongo_port}",
+      "CA_FILE=${var.mongo.ca_file}",
+      "CERTIFICATE_KEY_FILE=${var.mongo.certificate_key_file}",
+      "AUTH_MECHANISM=${var.mongo.auth_mechanism}"
+    ]
+    script          = "spec/scripts/cleanup.sh"
+}
 }

@@ -145,8 +145,10 @@ mongo_superusers:
     ```
 
 12. **Cleanup Test Users and Roles**
-
       Once the hardened Mongo image is up and running, ensure you review and clean up any test users, roles, and databases that may have been created during the validation process.
+
+      - **Databases**:
+         - `products`
 
       - **Users**:
          - `test.myTester`
@@ -154,10 +156,6 @@ mongo_superusers:
 
       - **Roles**:
          - `products.myTestRole`
-         - `test.read`
-
-      - **Databases**:
-         - `products`
 
       For a full check of what could have been created, visit the [inspec repository](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline/blob/main/inspec.yml) and review the users and roles listed there.
 

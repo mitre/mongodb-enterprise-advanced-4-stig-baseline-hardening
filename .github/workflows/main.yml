@@ -53,6 +53,14 @@ jobs:
         run: |
           packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
 
+      - name: Run Packer Validation
+        run: |
+          packer build \
+            -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' \
+            -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' \
+            -var 'mongo={"container_name":"mongo-hardened","mongo_dba":"root","mongo_dba_password":"root","mongo_host":"localhost","mongo_port":"27017","ca_file":"/etc/ssl/CA_bundle.pem","certificate_key_file":"/etc/ssl/mongodb.pem","auth_mechanism":"SCRAM-SHA-256"}' \
+            mongo-validate.pkr.hcl
+
       - name: Get Docker Image Tag
         run: |
           if docker images | grep 'passed'; then
