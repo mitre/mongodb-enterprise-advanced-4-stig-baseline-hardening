@@ -63,9 +63,11 @@ mongo_superusers:
 
    Follow the `README.md` under the `certificates` directory to download the DoD Certificates PKI Bundle and to create any other necessary certificates.
 
-3. **Update `main.yml` for the Ansible Playbook**
+3. **Update the Ansible Role's Default Values**
 
-   Update the `main.yml` file located at `spec/ansible/roles/mongo-stig/defaults/main.yml` with your values.
+   Visit the [defaults/main.yml](https://github.com/mitre/ansible-mongodb-enterprise-advanced-4-stig-hardening/blob/main/defaults/main.yml) in the `mongo-stig` role repository to see the available variables. Review these variables and decide which ones, if any, you want to update for your environment.
+
+   If you decide to update any variables, modify the `vars` section of the playbook located at `spec/ansible/mongo-stig-hardening-playbook.yml`
 
 4. **Create and Update `inputs.yml` for Inspec**
 
