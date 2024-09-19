@@ -51,10 +51,6 @@ jobs:
 
       - name: Run Packer Validation
         run: |
-          packer build -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' mongo-validate.pkr.hcl
-
-      - name: Run Packer Validation
-        run: |
           packer build \
             -var 'report={"report_to_heimdall":"${{ env.REPORT_TO_HEIMDALL }}","heimdall_url":"${{ env.HEIMDALL_URL }}","heimdall_api_key":"${{ env.HEIMDALL_API_KEY }}"}' \
             -var 'attestation={"report_dir":"${{ env.REPORT_DIR }}","inspec_report_filename":"${{ env.INSPEC_REPORT_FILENAME }}","attestation_filename":"attestation.json","attested_inspec_filename":"${{ env.ATTESTED_INSPEC_FILE_NAME }}"}' \
