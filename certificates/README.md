@@ -20,10 +20,10 @@
 1. **Download the PKI CA Certificate Bundles**
 
    - **Download**: Access the PKI CA Certificate Bundles from the [DoD PKI/PKE Document Library](https://public.cyber.mil/pki-pke/pkipke-document-library/).
-     - **Direct link**: For PKCS#7 Bundle V5.13, download [here](https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/zip/unclass-certificates_pkcs7_DoD.zip).
+     - **Direct link**: For PKCS#7 Bundle V5.14, download [here](https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/zip/unclass-certificates_pkcs7_DoD.zip).
 
    ```bash
-   curl -L https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/zip/unclass-certificates_pkcs7_DoD.zip -o dod_certificates.zip
+   curl -L https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/zip/unclass-certificates_pkcs7_DoD.zip-o dod_certificates.zip
    ```
 
 2. **Extract and Convert the Certificates**
@@ -32,7 +32,7 @@
 
    ```bash
    unzip dod_certificates.zip
-   openssl pkcs7 -in certificates_pkcs7_v5_13_dod/certificates_pkcs7_v5_13_dod_der.p7b -inform der -print_certs -out certificates_pkcs7_v5_13_dod/dod_CAs.pem
+   openssl pkcs7 -in Certificates_PKCS7_v5_14_DoD/Certificates_PKCS7_v5_14_DoD.der.p7b -inform der -print_certs -out Certificates_PKCS7_v5_14_DoD/dod_CAs.pem
    ```
 
 3. **Place the Certificate**
@@ -40,7 +40,7 @@
    Move the extracted `dod_CAs.pem` file to the `certificates` folder.
 
    ```bash
-   mv certificates_pkcs7_v5_13_dod/dod_CAs.pem certificates/
+   mv Certificates_PKCS7_v5_14_DoD/dod_CAs.pem certificates/
    ```
 
 The `dod_CAs.pem` file is what is being referenced for the `net.tls.CAFile` option in the MongoDB configuration:
@@ -61,21 +61,21 @@ For a streamlined setup, you can execute all steps with a single command:
 ```bash
 curl -L https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/zip/unclass-certificates_pkcs7_DoD.zip -o dod_certificates.zip && \
 unzip dod_certificates.zip && \
-openssl pkcs7 -in certificates_pkcs7_v5_13_dod/certificates_pkcs7_v5_13_dod_der.p7b -inform der -print_certs -out certificates_pkcs7_v5_13_dod/dod_CAs.pem && \
-mv certificates_pkcs7_v5_13_dod/dod_CAs.pem certificates/
+openssl pkcs7 -in Certificates_PKCS7_v5_14_DoD/Certificates_PKCS7_v5_14_DoD.der.p7b -inform der -print_certs -out Certificates_PKCS7_v5_14_DoD/dod_CAs.pem && \
+mv Certificates_PKCS7_v5_14_DoD/dod_CAs.pem certificates/
 ```
 
 ## Optional Step 2: Create a Local CA (Only if a CA Does Not Exist)
 
 All users trying to log in to the database will need this file.
 
-1. **Generate the CA Private Key**:
+1. **Generate the CA Private Key**
 
    ```bash
    openssl genrsa -out localCA.key 2048
    ```
 
-2. **Create the CA Certificate**:
+2. **Create the CA Certificate**
 
    ```bash
    openssl req -x509 -new -nodes -key localCA.key -sha256 -days 3650 -out localCA.pem
@@ -83,31 +83,70 @@ All users trying to log in to the database will need this file.
 
 ## Step 3: Generate and Sign the MongoDB Server Certificate (Initial Setup by Server Administrator Only)
 
-1. **Generate a New Private Key**
+1. **Create the SAN configuration file**
+
+   ```bash
+   cat <<'EOF' > san.cnf
+   [ req ]
+   distinguished_name = req_distinguished_name
+   req_extensions     = v3_req
+   prompt             = no
+
+   [ req_distinguished_name ]
+   CN = your.common.name
+   O  = your_organization
+   OU = your_organizational_unit
+   L  = your_location
+   ST = your_state
+   C  = your_country
+   emailAddress = your@email.com
+
+   [ v3_req ]
+   subjectAltName = @alt_names
+
+   [ alt_names ]
+   DNS.1 = your.dns.name
+   DNS.2 = localhost
+   EOF
+   ```
+
+2. **Generate a New Private Key**
 
    ```bash
    openssl genrsa -out mongodb-private.key 2048
    ```
 
-2. **Generate a Certificate Signing Request (CSR)**
+3. **Generate a Certificate Signing Request (CSR) with SAN**
 
    ```bash
-   openssl req -new -key mongodb-private.key -out mongodb.csr
+   openssl req \
+   -new \
+   -key mongodb-private.key \
+   -out mongodb.csr \
+   -config san.cnf
    ```
 
-3. **Sign the MongoDB Server's CSR with the Local CA**
+4. **Sign the MongoDB Server’s CSR with the Local CA**
 
    ```bash
-   openssl x509 -req -days 397 -sha256 -in mongodb.csr -CA localCA.pem -CAkey localCA.key -CAcreateserial -out mongodb-cert.crt
+   openssl x509 -req \
+   -days 397 \
+   -in mongodb.csr \
+   -CA localCA.pem \
+   -CAkey localCA.key \
+   -CAcreateserial \
+   -out mongodb-cert.crt \
+   -extensions v3_req \
+   -extfile san.cnf
    ```
 
-4. **Combine the MongoDB Server's Private Key and Certificate into One PEM File**
+5. **Combine the MongoDB Server’s Private Key and Certificate into One PEM File**
 
    ```bash
    cat mongodb-private.key mongodb-cert.crt > mongodb.pem
    ```
 
-5. **Move PEM File**
+6. **Move PEM File into your certificates directory**
 
    ```bash
    mv mongodb.pem certificates/
@@ -135,13 +174,13 @@ net:
 2. **Create User’s CSR**
 
    ```bash
-   openssl req -new -key user1.key -out user1.csr
+   openssl req -new -key user1.key -out user1.csr -config san.cnf
    ```
 
 3. **Sign User’s CSR with the Local CA**
 
    ```bash
-   openssl x509 -req -days 397 -sha256 -in user1.csr -CA localCA.pem -CAkey localCA.key -CAcreateserial -out user1.crt
+   openssl x509 -req -days 397 -sha256 -in user1.csr -CA localCA.pem -CAkey localCA.key -CAcreateserial -out user1.crt -extensions v3_req -extfile san.cnf
    ```
 
 4. **Combine User’s Private Key and Certificate**

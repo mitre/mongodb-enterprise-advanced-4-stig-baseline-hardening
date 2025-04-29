@@ -73,21 +73,17 @@ mongo_superusers:
 
    Execute the following command to create the `inputs.yml` file under `spec/mongo-inspec-profile` by copying `inputs_template.yml` and renaming it to `inputs.yml`.
    Update this file with your values.
+   Refer to other values [here](https://github.com/mitre/mongodb-enterprise-advanced-4-stig-baseline/blob/main/inspec.yml).
 
    ```sh
    cp spec/mongo-inspec-profile/inputs_template.yml spec/mongo-inspec-profile/inputs.yml
    ```
 
-5. **Update `inspec.yml` for InSpec**
+5. **Check Configuration Flags**
 
-   Update the `inspec.yml` file located at `spec/mongo-inspec-profile/inspec.yml` with your values.
-   Most values should remain unchanged; only modify them if you are certain about the changes to avoid causing issues with the Ansible playbook execution.
+   If you want to disable the `fips_mode` or `enterprise_edition` flags, ensure they are disabled in `spec/ansible/mongo-stig-hardening-playbook.yml`.
 
-6. **Check Configuration Flags**
-
-   If you want to disable the `fips_mode` or `enterprise_edition` flags, ensure they are disabled in both `spec/ansible/mongo-stig-hardening-playbook.yml` and `spec/ansible/roles/mongo-stig/defaults/main.yml`.
-
-7. **Initialize Packer**
+6. **Initialize Packer**
 
    Initialize Packer to install the required Ansible and Docker plugins:
 
@@ -95,7 +91,7 @@ mongo_superusers:
    packer init .
    ```
 
-8. **Update `variables.pkrvar.hcl` for Packer Variables**
+7. **Update `variables.pkrvar.hcl` for Packer Variables**
 
    Update the `variables.pkrvar.hcl` with your variables for `mongo-validate.pkr.hcl`
 
@@ -106,13 +102,13 @@ mongo_superusers:
    cp variables_template.pkrvar.hcl variables.pkrvar.hcl
    ```
 
-   8.1 **Optional: Update the `attestation_template.json` Now if Using a STIG Viewer**
+   7.1 **Optional: Update the `attestation_template.json` Now if Using a STIG Viewer**
 
    If you have a STIG Viewer available, you can update the `attestation_template.json` now to avoid rerunning the validation Packer file. This allows you to look up the control IDs beforehand and check for compliance in advance.
 
    Follow the instructions [here](#inspec-report) to proceed, and then return to this step once done.
 
-9. **Build the Hardened Image**
+8. **Build the Hardened Image**
 
    Execute the following command to build and save the hardened Mongo image:
 
@@ -120,15 +116,15 @@ mongo_superusers:
    packer build mongo-hardening.pkr.hcl
    ```
 
-10. **Validate the Hardened Image**
+9. **Validate the Hardened Image**
 
-    Execute the following command to test the hardened Mongo image:
+   Execute the following command to test the hardened Mongo image:
 
-    ```sh
-    packer build -var-file="variables.pkrvar.hcl" mongo-validate.pkr.hcl
-    ```
+   ```sh
+   packer build -var-file="variables.pkrvar.hcl" mongo-validate.pkr.hcl
+   ```
 
-11. **Run the Hardened Image**
+10. **Run the Hardened Image**
 
     Execute the following command to run the hardened Mongo image:
 
@@ -144,7 +140,8 @@ mongo_superusers:
        mongod --config /etc/mongod.conf
     ```
 
-12. **Cleanup Test Users and Roles**
+11. **Cleanup Test Users and Roles**
+
       Once the hardened Mongo image is up and running, ensure you review and clean up any test users, roles, and databases that may have been created during the validation process.
 
       - **Databases**:

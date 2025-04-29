@@ -12,3 +12,4 @@ variables.pkrvar.hcl
 *.crt
 *.key
 *.srl
+*.cnf
